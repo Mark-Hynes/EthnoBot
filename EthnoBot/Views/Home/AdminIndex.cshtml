@@ -1,0 +1,13 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1>EthnoBotanicals Ireland - ADMIN</h1>
+    <p class="lead">Hello Admin, please select an object type below to add, edit or remove records from the database..</p>
+
+</div>
+<li type="button", class = "btn btn-info btn-lg btn-block">@Html.ActionLink("Products", "Index", "AdminProducts", new {@type="button", @class = "btn btn-info btn-lg btn-block" }, null)</li>
+<li type="button", class = "btn btn-info btn-lg btn-block">@Html.ActionLink("Producers", "Index", "AdminProducers", new { @type = "button", @class = "btn btn-info btn-lg btn-block" }, null)</li >
+<li type="button", class = "btn btn-info btn-lg btn-block">@Html.ActionLink("Categories", "Index", "AdminCategories", new { @type = "button", @class = "btn btn-info btn-lg btn-block" }, null)</li>
+<li type="button", class = "btn btn-info btn-lg btn-block">@Html.ActionLink("ProducerProducts", "Index", "AdminProducerProducts", new { @type = "button", @class = "btn btn-info btn-lg btn-block" ,@style="color:white;" }, null)</li>

@@ -25,6 +25,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -196,18 +197,27 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdminCategoriesController.cs" />
+    <Compile Include="Controllers\AdminProducerProductsController.cs" />
+    <Compile Include="Controllers\AdminProducersController.cs" />
+    <Compile Include="Controllers\AdminProductsController.cs" />
+    <Compile Include="Controllers\CategoriesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\ProducerController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\ListingInfo.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Producer.cs" />
     <Compile Include="Models\ProducerProduct.cs" />
     <Compile Include="Models\Product.cs" />
+    <Compile Include="Models\ProductAndListingsModel.cs" />
     <Compile Include="Models\StoreEntities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -270,9 +280,38 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Home\AdminIndex.cshtml" />
+    <Content Include="Views\AdminCategories\Create.cshtml" />
+    <Content Include="Views\AdminCategories\Delete.cshtml" />
+    <Content Include="Views\AdminCategories\Details.cshtml" />
+    <Content Include="Views\AdminCategories\Edit.cshtml" />
+    <Content Include="Views\AdminCategories\Index.cshtml" />
+    <Content Include="Views\AdminProducers\Create.cshtml" />
+    <Content Include="Views\AdminProducers\Delete.cshtml" />
+    <Content Include="Views\AdminProducers\Details.cshtml" />
+    <Content Include="Views\AdminProducers\Edit.cshtml" />
+    <Content Include="Views\AdminProducers\Index.cshtml" />
+    <Content Include="Views\AdminProducerProducts\Create.cshtml" />
+    <Content Include="Views\AdminProducerProducts\Delete.cshtml" />
+    <Content Include="Views\AdminProducerProducts\Details.cshtml" />
+    <Content Include="Views\AdminProducerProducts\Edit.cshtml" />
+    <Content Include="Views\AdminProducerProducts\Index.cshtml" />
+    <Content Include="Views\AdminProducts\Create.cshtml" />
+    <Content Include="Views\AdminProducts\Delete.cshtml" />
+    <Content Include="Views\AdminProducts\Details.cshtml" />
+    <Content Include="Views\AdminProducts\Edit.cshtml" />
+    <Content Include="Views\AdminProducts\Index.cshtml" />
+    <Content Include="Views\Categories\Create.cshtml" />
+    <Content Include="Views\Categories\Delete.cshtml" />
+    <Content Include="Views\Categories\Details.cshtml" />
+    <Content Include="Views\Categories\Edit.cshtml" />
+    <Content Include="Views\Categories\Index.cshtml" />
+    <Content Include="Views\Categories\ListProducts.cshtml" />
+    <Content Include="Views\Categories\ProductAndListings.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Producer\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
