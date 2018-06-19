@@ -25,10 +25,11 @@ namespace EthnoBot.Models
         [DisplayName("Latin Name")]
 
         public string LatinName { get; set; }
-        [DisplayName("Image Link")]
-        public string ItemArtURL { get; set; }
+        
         [DisplayName("Product Family")]
         public string Family { get; set; }
+        [DisplayName("Product Image")]
+        public string ImagePath { get; set; }
 
 
     }

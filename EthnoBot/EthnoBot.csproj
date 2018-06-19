@@ -218,6 +218,7 @@
     <Compile Include="Models\ProducerProduct.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\ProductAndListingsModel.cs" />
+    <Compile Include="Models\ProductPageModel.cs" />
     <Compile Include="Models\StoreEntities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -229,6 +230,17 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\Categories\Bush1.png" />
+    <Content Include="Images\Categories\Grass1.png" />
+    <Content Include="Images\Categories\Herbs1.png" />
+    <Content Include="Images\Categories\Trees1.png" />
+    <Content Include="Images\Categories\Vegetables1.png" />
+    <Content Include="Images\Products\Beets.jpg" />
+    <Content Include="Images\Products\EnglishTree.jpg" />
+    <Content Include="Images\Products\GermanGrass.jpg" />
+    <Content Include="Images\Products\IrishGrass.jpg" />
+    <Content Include="Images\Three.jpg" />
+    <Content Include="Images\Four.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
@@ -246,6 +258,8 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="Images\One.PNG" />
+    <Content Include="Images\Two.png" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -311,6 +325,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Images\Producers\" />
     <Folder Include="Views\Producer\" />
   </ItemGroup>
   <ItemGroup>

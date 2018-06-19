@@ -22,6 +22,9 @@ namespace EthnoBot.Models
         [Required(ErrorMessage = "Category Description is required.")]
         public string Description { get; set; }
 
+        [DisplayName("Image Path")]
+        public string ImagePath { get; set; }
+
         public List<Product> Products { get; set; }
     }
 }

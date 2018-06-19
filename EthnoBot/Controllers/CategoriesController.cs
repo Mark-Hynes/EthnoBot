@@ -24,6 +24,7 @@ namespace EthnoBot.Controllers
         public ActionResult ListProducts(int id)
         {
             var Products = db.Products.Where(x => x.CategoryId == id).ToList();
+            ViewData["CategoryName"] = db.Categories.Where(x => x.CategoryId == id).ToList().First().Name;
             return View(Products);
         }
 
@@ -52,21 +53,23 @@ namespace EthnoBot.Controllers
                 {
                     Producer prod = prods.ElementAt(j);
                     Debug.WriteLine(prod.ProducerId);
-                    lo.ProducerName = prod.Name;
-                    lo.ProducerMobile = prod.Mobile;
-                    lo.ProducerAddress = prod.Address;
+                    lo.Producer = prod ;
+                    
                     Debug.WriteLine("Name: " + prod.Name);
                     Debug.WriteLine("Mobile: " + prod.Mobile);
                     Debug.WriteLine("Address: " + prod.Address);
                 }
                 Debug.WriteLine("Cost: " + listOfListings.ElementAt(i).Price);
                 lo.Price = listOfListings.ElementAt(i).Price.ToString();
+                lo.Product = product;
                 listings.Add(lo);
                 
             }
             ViewData["Listings"] = listings;
-
-            return View(Listings);
+            ProductPageModel pm = new ProductPageModel();
+            pm.listings = listings;
+            pm.product = product;
+            return View(pm);
         }
 
         // GET: Categories/Details/5

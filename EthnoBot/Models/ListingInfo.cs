@@ -7,12 +7,9 @@ namespace EthnoBot.Models
 {
     public class ListingInfo
     {
-        public string ProductName;
+        public Product Product;
 
-        public string ProducerName;
-        public string ProducerAddress;
-
-        public string ProducerMobile;
+        public Producer Producer;
         public string Price;
         public ListingInfo()
         { }

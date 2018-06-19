@@ -1,48 +1,41 @@
-﻿@model IEnumerable<EthnoBot.Models.ProducerProduct>
+﻿@model EthnoBot.Models.ProductPageModel
 @using EthnoBot.Models;
 @{
     ViewBag.Title = "ProductAndListings";
 }
 @{
-    var prod = (Product)ViewData["ProdObj"];
-    var listings = (List<ListingInfo>)ViewData["listings"];
+
+    var prod = Model.product;
+    var listings = Model.listings;
+    int i = 0;
 }
-<h2>@prod.Title</h2>
+<h2>Name: @prod.Title</h2>
+<h2>Family: @prod.Family</h2>
+<h2>Latin Name:@prod.LatinName</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.ProducerId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ProductId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Price)
-        </th>
-        <th></th>
-    </tr>
+<p ></p>
 
-@foreach (var item in listings) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem =>item.ProducerName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Price)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ProducerAddress)
-        </td>
-        <td>
-            @Html.ActionLink("Buy!", "Edit", new { id=item.ProducerMobile }) |
+<div class="list-group">
 
+    @foreach (var item in listings)
+    {
+    
+    <div class="list-group">
+        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start ">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">@item.Producer.Name.ToString()</h5>
+                <small>Buy</small>
+            </div>
+            <p class="mb-1">@item.Producer</p>
+            <small>Donec id elit non mi porta.</small>
+        </a>
+       
+    </div>
 
-        </td>
-    </tr>
-}
+    }
+</div>
+       
+   
 
-</table>
+  
+
