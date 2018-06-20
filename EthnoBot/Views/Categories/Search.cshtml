@@ -1,0 +1,40 @@
+﻿@model EthnoBot.Models.SearchResultsViewModel
+@{
+    ViewBag.Title = "Search";
+}
+
+<h2>Search</h2>
+<p>@ViewData["parameters"]</p>
+
+<h2>Categories:</h2>
+@foreach (var item in Model.categories)
+{
+    <div class="jumbotron">
+        <h1 class="display-4">@item.Name</h1>
+        <p class="lead">@item.Description</p>
+        <hr class="my-4">
+        <img alt="Widget View" src="@Url.Content("~/Images/Categories/" + @item.ImagePath)">
+        @Html.ActionLink("View Items", "ListProducts", new { id = item.CategoryId }, new { @class = "btn btn-primary btn-lg", @role = "button" })
+    </div>
+}
+<h2>Products:</h2>
+@foreach (var item in Model.products)
+{
+    <div class="jumbotron">
+        <h1 class="display-4">@item.Title</h1>
+        <p class="lead">@item.LatinName @item.Family</p>
+        <hr class="my-4">
+        <img alt="Widget View" src="@Url.Content("~/Images/Products/" + @item.ImagePath)">
+        @Html.ActionLink("View Product", "ProductAndListings", new { id = item.ProductId }, new { @class = "btn btn-primary btn-lg", @role = "button" })
+    </div>
+}
+<h2>Producers:</h2>
+@foreach (var item in Model.producers)
+{
+    <div class="jumbotron">
+        <h1 class="display-4">@item.Name</h1>
+        <p class="lead">@item.Description </p>
+        <hr class="my-4">
+    </div>
+
+}

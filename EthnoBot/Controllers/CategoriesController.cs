@@ -20,7 +20,18 @@ namespace EthnoBot.Controllers
         {
             return View(db.Categories.ToList());
         }
+        public ActionResult Search(String searchString)
+        { ViewData["parameters"] = searchString;
 
+            var products =db.Products.Where(x => x.Title.Contains(searchString) | x.Family.Contains(searchString) | x.LatinName.Contains(searchString)).ToList();
+            var producers = db.Producers.Where(x => x.Name.Contains(searchString) ).ToList();
+            var categories = db.Categories.Where(x => x.Name.Contains(searchString) ).ToList();
+            SearchResultsViewModel model = new SearchResultsViewModel();
+            model.products = (List<Product>)products;
+            model.producers = (List<Producer>)producers;
+            model.categories = (List<Category>)categories;
+            return View(model);
+        }
         public ActionResult ListProducts(int id)
         {
             var Products = db.Products.Where(x => x.CategoryId == id).ToList();

@@ -1,8 +1,10 @@
 ﻿@model IEnumerable<EthnoBot.Models.Category>
 
 @{
-    ViewBag.Title = "Products";
-    string imagePath = (string)ViewData["ImagePath"];
+                /**/
+
+                ViewBag.Title = "Products";
+                string imagePath = (string)ViewData["ImagePath"];
 }
 <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
 
@@ -15,18 +17,22 @@
 
 
 
-<div class="container fluid" style="background-color:cadetblue">
-    @foreach (var item in Model)
-    {       
-    <div class="jumbotron">
-        <h1 class="display-4">@item.Name</h1>
-        <p class="lead">@item.Description</p>
-        <hr class="my-4">
-        <img alt="Widget View" src="@Url.Content("~/Images/Categories/" + @item.ImagePath)">
-        <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-        @Html.ActionLink("View Items", "ListProducts", new { id = item.CategoryId }, new { @class = "btn btn-primary btn-lg", @role = "button" })
-    </div>
 
-    }
-</div>
+<div class="container fluid" style="background-color:cadetblue">
+
+    @foreach (var item in Model)
+    {
+        
+
+            <div class="jumbotron">
+                <h1 class="display-4">@item.Name</h1>
+                <p class="lead">@item.Description</p>
+                <hr class="my-4">
+                <img alt="Widget View" src="@Url.Content("~/Images/Categories/" + @item.ImagePath)">
+                <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+                @Html.ActionLink("View Items", "ListProducts", new { id = item.CategoryId }, new { @class = "btn btn-primary btn-lg", @role = "button" })
+            </div>
+
+            }
+    </div>
 
