@@ -38,7 +38,10 @@ namespace EthnoBot.Controllers
             ViewData["CategoryName"] = db.Categories.Where(x => x.CategoryId == id).ToList().First().Name;
             return View(Products);
         }
-
+        public ActionResult CSSTest()
+        {
+            return View();
+        }
         public ActionResult ProductAndListings(int id)
         {
             Product product = db.Products.FirstOrDefault(acc=>acc.ProductId==id);
