@@ -9,22 +9,22 @@
 </div>
 
 <div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
+    <div class="col-md-4 border-success">
+        <h2 class="text-success">Getting started</h2>
+        <p class="text-success">
             Need to find and obtain a product listed on this site? Create an account and browse our Products and Partners
         </p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Sign up &raquo;</a></p>
+        <p>@Html.ActionLink("Sign Up", "Index", "Home", new { @class = "btn btn-outline-success btn-lg", @role = "button" })</p>
     </div>
-    <div class="col-md-4">
-        <h2>Become a Partner</h2>
-        <p>Looking to sign up as a trusted partner? Once your details and Products have been verified, you can start selling your products on our site. It's easy, just fill out this form</p>
-        <p>@Html.ActionLink("Home", "Index", "Home")</p>
+    <div class="col-md-4 border-success">
+        <h2 class="text-success">Become a Partner</h2>
+        <p class="text-success">Looking to sign up as a trusted partner? Once your details and Products have been verified, you can start selling your products on our site. It's easy, just fill out this form</p>
+        <p class="text-success">@Html.ActionLink("Join", "Index", "Home", new { @class = "btn btn-outline-success btn-lg", @role = "button" })</p>
     </div>
-    <div class="col-md-4">
-        <h2>Contact Us</h2>
-        <p>Have any questions for us? Visit our contact page for extra details about EthnoBotanicals. All feedback is appreciated.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Contact Us &raquo;</a></p>
+    <div class="col-md-4 border-success">
+        <h2 class="text-success">Contact Us</h2>
+        <p class="text-success">Have any questions for us? Visit our contact page for extra details about EthnoBotanicals. All feedback is appreciated.</p>
+        <p class="text-success">@Html.ActionLink("Contact Us", "Index", "Home", new { @class = "btn btn-outline-success btn-lg", @role = "button" })</p>
     </div>
 </div>
 

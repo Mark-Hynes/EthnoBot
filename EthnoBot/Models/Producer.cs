@@ -41,5 +41,8 @@ namespace EthnoBot.Models
         [DisplayName("Customer Service Address")]
         [Required(ErrorMessage = "Customer Service Email Address is required.")]
         public string CustomerServiceEmail { get; set; }
+        [DisplayName("Image Path")]
+
+        public string ImagePath { get; set; }
     }
 }

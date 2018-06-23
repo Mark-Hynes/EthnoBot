@@ -3,75 +3,82 @@
     ViewBag.Title = "Search";
 }
 
-<h2>Search</h2>
+<h2>Search Results</h2>
 <p>@ViewData["parameters"]</p>
 
-<h2>Categories:</h2>
-<div class="card-deck">
-    @foreach (var item in Model.categories)
-    {
-        <div class="card border-success mb-3" style="max-width: 17rem;">
-            <img class="card-img-top" src="@Url.Content("~/Images/Categories/" + @item.ImagePath)" alt="Card image cap" style="width:270px;height:180px">
-            <div class="card-body">
-                <h5 class="card-title text-success">@item.Name</h5>
-                <p class="card-text text-success">@item.Description</p>
-                </div>
-                <div class="card-body">
-                    @Html.ActionLink("View Items", "ListProducts", new { id = item.CategoryId }, new { @class = "btn btn-outline-success btn-lg", @role = "button" })
-                </div>              
-            </div>
-    }
 
+<h2>Products</h2>
+<div class="container">
+    <div class="card-deck">
+        @foreach (var item in Model.products)
+        {
+            <row>
+                <div class="card border-success mb-4">
+                    <img class="card-img-top img-fluid" src="@Url.Content("~/Images/Products/" + @item.ImagePath)" alt="Card image cap" style="width:300px;height:180px">
+                    <div class="card-body ">
+                        <h5 class="card-title text-success">@item.Title</h5>
+                        <p class="card-text text-success" style="width:250px">Latin Name: @item.LatinName</p>
+                        <p class="card-text text-success" style="width:250px">Plant Family: @item.Family</p>
 
-</div>
- 
-<h2>Products:</h2>
-@foreach (var item in Model.products)
-{
-    <div class="jumbotron">
-        <h1 class="display-4">@item.Title</h1>
-        <p class="lead">@item.LatinName @item.Family</p>
-        <hr class="my-4">
-        <img alt="Widget View" src="@Url.Content("~/Images/Products/" + @item.ImagePath)">
-        @Html.ActionLink("View Product", "ProductAndListings", new { id = item.ProductId }, new { @class = "btn btn-primary btn-lg", @role = "button" })
-    </div>
-}
-<h2>Producers:</h2>
-@foreach (var item in Model.producers)
-{
-    <div class="jumbotron">
-        <h1 class="display-4">@item.Name</h1>
-        <p class="lead">@item.Description </p>
-        <hr class="my-4">
-    </div>
-
-}
-<main role="main">
-
-
-
-    <div class="album py-5 bg-light">
-        <div class="container">
-
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="card mb-4 box-shadow">
-                        <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&bg=55595c&fg=eceeef&text=Thumbnail" alt="Card image cap">
-                        <div class="card-body">
-                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                                </div>
-                                <small class="text-muted">9 mins</small>
-                            </div>
-                        </div>
+                    </div>
+                    <div class="card-body">
+                        @Html.ActionLink("View Product", "ListProducts", new { id = item.CategoryId }, new { @class = "btn btn-outline-success btn-lg", @role = "button" })
                     </div>
                 </div>
+            </row>
 
-            </div>
-        </div>
+        }
+
+
     </div>
 
-</main>
+</div>
+
+<h2>Categories</h2>
+<div class="container">
+    <div class="card-deck">
+        @foreach (var item in Model.categories)
+        {
+            <row>
+                <div class="card border-success mb-4">
+                    <img class="card-img-top img-fluid" src="@Url.Content("~/Images/Categories/" + @item.ImagePath)" alt="Card image cap" style="width:300px;height:180px">
+                    <div class="card-body ">
+                        <h5 class="card-title text-success">@item.Name</h5>
+                        <p class="card-text text-success" style="width:250px;height:50px">@item.Description</p>
+                    </div>
+                    <div class="card-body">
+                        @Html.ActionLink("View Items", "ListProducts", new { id = item.CategoryId }, new { @class = "btn btn-outline-success btn-lg", @role = "button" })
+                    </div>
+                </div>
+            </row>
+
+        }
+
+
+    </div>
+
+</div>
+<h2>Producers</h2>
+<div class="container">
+    <div class="card-deck">
+        @foreach (var item in Model.producers)
+        {
+            <row>
+                <div class="card border-info mb-4">
+                    <img class="card-img-top img-fluid" src="@Url.Content("~/Images/Producers/" + @item.ImagePath)" alt="@item.Name" style="width:300px;height:180px">
+                    <div class="card-body ">
+                        <h5 class="card-title text-info">@item.Name</h5>
+                        <p class="card-text text-info" style="width:250px;height:100px">@item.Description</p>
+                    </div>
+                    <div class="card-body">
+                        @Html.ActionLink("View Producer", "Index", "Categories" , new { @class = "btn btn-outline-info btn-lg", @role = "button" })
+                    </div>
+                </div>
+            </row>
+
+        }
+
+
+    </div>
+
+</div>

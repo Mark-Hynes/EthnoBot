@@ -24,9 +24,17 @@ namespace EthnoBot.Controllers
         public ActionResult Search(String searchString)
         { ViewData["parameters"] = searchString;
 
-            var products =db.Products.Where(x => x.Title.Contains(searchString) | x.Family.Contains(searchString) | x.LatinName.Contains(searchString)).ToList();
+            var categories = db.Categories.Where(x => x.Name.Contains(searchString)).ToList();
+            List<int> categoryIds = new List<int>();
+            for (int i = 0; i > categories.Count; i++)
+            {
+                categoryIds.Add(categories.ElementAt(i).CategoryId);
+                Debug.Print("Added: " + categories.ElementAt(i).CategoryId + " to category ids!");
+            }
+           
+            var products =db.Products.Where(x => x.Title.Contains(searchString) | x.Family.Contains(searchString) | categoryIds.Contains(x.CategoryId) | x.LatinName.Contains(searchString)).ToList();
             var producers = db.Producers.Where(x => x.Name.Contains(searchString) ).ToList();
-            var categories = db.Categories.Where(x => x.Name.Contains(searchString) ).ToList();
+           
             SearchResultsViewModel model = new SearchResultsViewModel();
             model.products = (List<Product>)products;
             model.producers = (List<Producer>)producers;

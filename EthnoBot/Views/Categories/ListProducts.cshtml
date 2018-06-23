@@ -4,7 +4,7 @@
     string categoryName = (string)ViewData["CategoryName"];
     ViewBag.Title = categoryName;
 }
-
+@Html.ActionLink("<-- Back to Categories", "Index","Categories", new { @class = "text-success" })
 <h2>@categoryName</h2>
 
 <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -13,22 +13,27 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.3.5/jquery.fancybox.min.js"></script>
 
 
-<div style="background-color:black"></div>
-<h2>Product Categories</h2>
+<div class="container">
+    <div class="card-deck">
+        @foreach (var item in Model)
+        {
+            <row>
+                <div class="card border-info mb-4">
+                    <img class="card-img-top img-fluid" src="@Url.Content("~/Images/Products/" + @item.ImagePath)" alt="Card image cap" style="width:300px;height:180px">
+                    <div class="card-body ">
+                        <h5 class="card-title text-info">@item.Title</h5>
+                        <p class="card-text text-info" style="width:250px">@item.LatinName</p>
+                        <p class="card-text text-info" style="width:250px">@item.Family</p>
+                    </div>
+                    <div class="card-body">
+                        @Html.ActionLink("View Product", "ListProducts", new { id = item.CategoryId }, new { @class = "btn btn-outline-info btn-lg", @role = "button" })
+                    </div>
+                </div>
+            </row>
+
+        }
 
 
-
-<div class="container fluid" style="background-color:cadetblue">
-    @foreach (var item in Model)
-    {
-        <div class="jumbotron">
-            <h1 class="display-4">@item.Title</h1>
-            <p class="lead">@item.LatinName</p>
-            <hr class="my-4">
-            <img alt="Widget View" src="@Url.Content("~/Images/Products/" + @item.ImagePath)">
-            <p>@item.Family</p>
-            @Html.ActionLink("View Product", "ProductAndListings", new { id = item.ProductId }, new { @class = "btn btn-primary btn-lg", @role = "button" })
-        </div>
-
-    }
     </div>
+
+</div>
