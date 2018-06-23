@@ -6,7 +6,7 @@ using System.Web;
 
 namespace EthnoBot.Models
 {
-    public class StoreEntities : DbContext
+    public class EthnoBotEntities : DbContext
     {
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }

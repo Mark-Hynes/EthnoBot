@@ -12,11 +12,13 @@ namespace EthnoBot.Controllers
 {
     public class AdminCategoriesController : Controller
     {
-        private StoreEntities db = new StoreEntities();
+        private EthnoBotEntities db = new EthnoBotEntities();
 
         // GET: AdminCategories
         public ActionResult Index()
         {
+            var categories = db.Categories.ToList();
+
             return View(db.Categories.ToList());
         }
 

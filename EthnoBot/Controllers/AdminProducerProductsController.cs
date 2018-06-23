@@ -12,7 +12,7 @@ namespace EthnoBot.Controllers
 {
     public class AdminProducerProductsController : Controller
     {
-        private StoreEntities db = new StoreEntities();
+        private EthnoBotEntities db = new EthnoBotEntities();
 
         // GET: AdminProducerProducts
         public ActionResult Index()

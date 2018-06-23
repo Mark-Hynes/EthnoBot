@@ -13,13 +13,14 @@ namespace EthnoBot.Controllers
 {
     public class CategoriesController : Controller
     {
-        private StoreEntities db = new StoreEntities();
+        private EthnoBotEntities db = new EthnoBotEntities();
 
         // GET: Categories
         public ActionResult Index()
         {
             return View(db.Categories.ToList());
         }
+     
         public ActionResult Search(String searchString)
         { ViewData["parameters"] = searchString;
 

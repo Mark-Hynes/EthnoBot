@@ -1,74 +1,59 @@
 ﻿<!DOCTYPE html>
 <html>
-<script src="chrome-extension://ljdobmomdgdljniojadhoplhkpialdid/page/prompt.js"></script>
-<script src="chrome-extension://ljdobmomdgdljniojadhoplhkpialdid/page/runScript.js"></script>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - EthnoBotanicals Ireland</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
+    
 </head>
-<body>
+    <body style="padding-top:unset; padding-bottom:unset">
 
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("EthnoBotanicals Ireland", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-fixed-top" style="top:0;display:flex">
 
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Products", "Index", "Categories")</li>
-                    <li>@Html.ActionLink("Partners", "Index", "Producers")</li>
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+                <a class="navbar-brand" href="#">Ethnobotanicals Ireland</a>
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                    <li class="nav-item active">
+                        @Html.ActionLink("Home", "Index", "Home", new object { }, new { @class = "nav-link" })
+                    </li>
+                    <li class="nav-item active">
+                        @Html.ActionLink("Products", "Index", "Categories", new object { }, new { @class = "nav-link" })
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Producers <span class="sr-only">(current)</span></a>
+                    </li>
 
 
                 </ul>
-                @using (@Html.BeginForm("Search", "Categories"))
-                {
 
-                    <form class="form-inline">
-                        <div class="form-group mx-sm-3 mb-2">
-                            <input type="text" class="form-control" name="searchString" placeholder="Find Products">
-                        </div>
-                        <button type="submit" class="btn btn-primary mb-2">Search</button>
+                @using (Html.BeginForm("Search", "Categories", new { @class = "form-inline!important;", role = "form" }))
+                {<form class="form-inline!important">
+
+                        <input class="form-control " type="text" name="searchString" placeholder="Search">
+                        <button type="submit" class="btn btn-outline-success">Submit</button>
+
                     </form>
-
-
                 }
-                @Html.Partial("_LoginPartial")
+
+
+
             </div>
+            @Html.Partial("_LoginPartial")
 
+        </nav>
+        <div class="container body-content">
+            @RenderBody()
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - EthnoBotanicals Ireland</p>
+            </footer>
         </div>
-    </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - EthnoBotanicals Ireland</p>
-        </footer>
-    </div>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
-    <script src="../../assets/js/vendor/popper.min.js"></script>
-    <script src="../../dist/js/bootstrap.min.js"></script>
-    <script src="../../assets/js/vendor/holder.min.js"></script>
-    <svg xmlns="http://www.w3.org/2000/svg" width="508" height="225" viewBox="0 0 508 225" preserveAspectRatio="none" style="display: none; visibility: hidden; position: absolute; top: -100%; left: -100%;"><defs><style type="text/css"></style></defs><text x="0" y="25" style="font-weight:bold;font-size:25pt;font-family:Arial, Helvetica, Open Sans, sans-serif">Thumbnail</text></svg>
 
-</body>
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
-
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @RenderSection("scripts", required: false)
+    </body>
 </html>
-
-
-
