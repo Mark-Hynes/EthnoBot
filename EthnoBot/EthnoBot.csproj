@@ -200,6 +200,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminCategoriesController.cs" />
+    <Compile Include="Controllers\AdminImageController.cs" />
     <Compile Include="Controllers\AdminProducerProductsController.cs" />
     <Compile Include="Controllers\AdminProducersController.cs" />
     <Compile Include="Controllers\AdminProductsController.cs" />
@@ -217,6 +218,7 @@
     <Compile Include="Models\ListingInfo.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Producer.cs" />
+    <Compile Include="Models\ProducerAndListingsModel.cs" />
     <Compile Include="Models\ProducerProduct.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\ProductAndListingsModel.cs" />
@@ -233,15 +235,16 @@
     <Content Include="Content\bootstrap-reboot.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\images\Jcrop.gif" />
+    <Content Include="Content\jquery.Jcrop.css" />
+    <Content Include="Content\jquery.Jcrop.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Images\Categories\Bush1.png" />
+    <Content Include="Images\Categories\CategoryDefault.png" />
     <Content Include="Images\Categories\CardDefault.png" />
-    <Content Include="Images\Categories\Grass1.png" />
-    <Content Include="Images\Categories\Herbs1.png" />
-    <Content Include="Images\Categories\Trees1.png" />
-    <Content Include="Images\Categories\Vegetables1.png" />
+    <Content Include="Images\Producers\DefaultProducer.jpg" />
+    <Content Include="Images\Products\DefaultProduct.jpg" />
     <Content Include="Images\Products\Beets.jpg" />
     <Content Include="Images\Products\EnglishTree.jpg" />
     <Content Include="Images\Products\GermanGrass.jpg" />
@@ -282,6 +285,8 @@
     <Content Include="Scripts\jquery-3.0.0.slim.min.map" />
     <Content Include="Scripts\jquery-3.0.0.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.Jcrop.js" />
+    <Content Include="Scripts\jquery.Jcrop.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -361,7 +366,6 @@
     <Content Include="Views\Categories\Edit.cshtml" />
     <Content Include="Views\Categories\Index.cshtml" />
     <Content Include="Views\Categories\ListProducts.cshtml" />
-    <Content Include="Views\Categories\ProductAndListings.cshtml" />
     <Content Include="Views\Categories\Search.cshtml" />
     <Content Include="Views\Categories\CSSTest.cshtml" />
     <Content Include="Scripts\umd\popper.min.js.map" />
@@ -373,10 +377,13 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="Views\AdminImage\Index.cshtml" />
+    <Content Include="Views\Categories\ProductAndListings.cshtml" />
+    <Content Include="Views\Categories\ProducerAndListings.cshtml" />
+    <Content Include="Views\Categories\ProducerList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Images\Producers\" />
     <Folder Include="Views\Producer\" />
   </ItemGroup>
   <ItemGroup>

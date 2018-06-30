@@ -1,0 +1,104 @@
+﻿@model EthnoBot.Models.ProducerAndListingsModel
+
+@{
+    ViewBag.Title = "ProducerAndListings";
+}
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-6 col-md-4">
+            <img class="card-img-top img-fluid" src="@Url.Content("~/Images/Producers/" + Model.producer.ImagePath)" alt="Card image cap" style="width:300px;height:180px">
+        </div>
+        <div class="col-6 col-md-4">
+            <h2 class="text-info">@Model.producer.Name</h2>
+
+
+            <h3 class="text-info ">Address: @Model.producer.Address</h3>
+
+        </div>
+    </div>
+    </div>
+<div class="container">
+  
+        <h4 class="text-info">About: @Model.producer.About</h4>
+        <h4 class="text-info">@Model.producer.Description</h4>
+        <br />
+   
+    </div>
+    <div class="container">
+            <h3 class="text-info">Contact:</h3>
+            <a class="text-info">Email: @Model.producer.CustomerServiceEmail</a>
+            <p class="text-info">Mobile: @Model.producer.Mobile</p>
+        </div>
+                
+        
+    
+
+
+   
+    <div class="container">
+        <h3 class="text-info">Products that @Model.producer.Name sells: </h3>
+
+        <div class="list-group text-info">
+            @foreach (var item in Model.listings)
+            {
+
+
+                <li class="list-group-item">
+                    <h5 class=" text-info">@Html.ActionLink(item.Product.Title, "ProductAndListings", new { id = item.Product.ProductId }, new { @class = "text-info", })<span href="#" class="badge badge-pill badge-light">@Html.ActionLink("$" + @item.Price + " per 1kg", "Index", new { @class = "btn btn-outline-info", @role = "button" })</span></h5>
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary" data-toggle="modal" onclick="showPopup('@item.Producer.ProducerId','@item.Producer.Name','@item.Price','@item.Product.ProductId','@item.Product.Title')" data-target="#Modal">
+                        Add to Cart
+                    </button>
+
+                </li>
+
+            }
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add selected items to cart</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="Modal-Product"></p>
+                        <p id="Modal-Producer"></p>
+                        <p id="Modal-Price"></p>
+                        <div class="input-group mb-3">
+                            <input type="number" class="form-control" min="1" max="100" placeholder="1" aria-label="KGUnits" aria-describedby="basic-addon2" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text" id="basic-addon2"> kgs</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+
+    <script>
+        function showPopup(prodId, name, price,productId,title) {
+            document.getElementById("Modal-Product").innerText = "Product: " +title;
+            document.getElementById("Modal-Producer").innerText = "Seller Name: " + name;
+            document.getElementById("Modal-Price").innerText = "Price per 1kg: " + price;
+}
+    </script>
+
+
+

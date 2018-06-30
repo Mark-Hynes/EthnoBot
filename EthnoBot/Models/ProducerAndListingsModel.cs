@@ -5,10 +5,10 @@ using System.Web;
 
 namespace EthnoBot.Models
 {
-    public class ProductAndListingsModel
+    public class ProducerAndListingsModel
     {
-        public Product product;
+        public Producer producer;
         public List<ListingInfo> listings;
-        public Category category;
+        
     }
 }

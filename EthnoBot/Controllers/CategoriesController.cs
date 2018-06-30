@@ -53,48 +53,93 @@ namespace EthnoBot.Controllers
         }
         public ActionResult ProductAndListings(int id)
         {
+
             Product product = db.Products.FirstOrDefault(acc=>acc.ProductId==id);
-            var Listings = db.ProducerProducts.Where(x => x.ProductId == id).ToList();
-            var model = new ProductAndListingsModel { product = product, producerProducts = Listings };
-            ViewData["ProdObj"] = product;
+            List<ProducerProduct> Listings = db.ProducerProducts.Where(x => x.ProductId == id).ToList();
+            Category category = db.Categories.FirstOrDefault(x => x.CategoryId == product.CategoryId);
+            
+           
 
 
             List<ListingInfo> listings = new List<ListingInfo>();
-                List<ProducerProduct> listOfListings=null;
+              
 
-                if (Listings != null)
-                {
-                    listOfListings = (List<ProducerProduct>) Listings;
-                }
-            for (int i = 0; i < listOfListings.Count; i++)
+              
+            for (int i = 0; i < Listings.Count; i++)
             {
                 ListingInfo lo = new ListingInfo();
-                int prodID = listOfListings.ElementAt(i).ProducerId;
+                int prodID =Listings.ElementAt(i).ProducerId;
                 
                 var prods = db.Producers.Where(x => x.ProducerId == prodID).ToList();
                 for (int j = 0; j < prods.Count; j++)
                 {
                     Producer prod = prods.ElementAt(j);
-                    Debug.WriteLine(prod.ProducerId);
+                   
                     lo.Producer = prod ;
                     
-                    Debug.WriteLine("Name: " + prod.Name);
-                    Debug.WriteLine("Mobile: " + prod.Mobile);
-                    Debug.WriteLine("Address: " + prod.Address);
+                    
                 }
-                Debug.WriteLine("Cost: " + listOfListings.ElementAt(i).Price);
-                lo.Price = listOfListings.ElementAt(i).Price.ToString();
+             
+                lo.Price = Listings.ElementAt(i).Price.ToString();
                 lo.Product = product;
                 listings.Add(lo);
                 
             }
-            ViewData["Listings"] = listings;
-            ProductPageModel pm = new ProductPageModel();
+
+
+            ProductAndListingsModel pm = new ProductAndListingsModel();
             pm.listings = listings;
             pm.product = product;
+            pm.category = category;
             return View(pm);
         }
 
+        public ActionResult ProducerAndListings(int id)
+        {
+            Producer producer = db.Producers.FirstOrDefault(acc => acc.ProducerId == id);
+            List<ProducerProduct> Listings = db.ProducerProducts.Where(x => x.ProducerId == id).ToList();
+  
+
+
+
+            List<ListingInfo> listings = new List<ListingInfo>();
+
+
+
+            for (int i = 0; i < Listings.Count; i++)
+            {
+                ListingInfo lo = new ListingInfo();
+                int prodID = Listings.ElementAt(i).ProductId;
+
+                var prods = db.Products.Where(x => x.ProductId == prodID).ToList();
+                for (int j = 0; j < prods.Count; j++)
+                {
+                    Product prod = prods.ElementAt(j);
+
+                    lo.Product = prod;
+
+
+                }
+
+                lo.Price = Listings.ElementAt(i).Price.ToString();
+                lo.Producer = producer;
+                listings.Add(lo);
+
+            }
+
+
+            ProducerAndListingsModel pm = new ProducerAndListingsModel();
+            pm.listings = listings;
+            pm.producer = producer;
+           
+            return View(pm);
+        }
+
+        public ActionResult ProducerList()
+        {
+
+            return View(db.Producers.ToList());
+        }
         // GET: Categories/Details/5
         public ActionResult Details(int? id)
         {

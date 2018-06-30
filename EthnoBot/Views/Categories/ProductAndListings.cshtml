@@ -1,7 +1,7 @@
-﻿@model EthnoBot.Models.ProductPageModel
+﻿@model EthnoBot.Models.ProductAndListingsModel
 @using EthnoBot.Models;
 @{
-    ViewBag.Title = "ProductAndListings";
+    ViewBag.Title = Model.product.Title;
 }
 @{
 
@@ -9,33 +9,82 @@
     var listings = Model.listings;
     int i = 0;
 }
-<h2>Name: @prod.Title</h2>
-<h2>Family: @prod.Family</h2>
-<h2>Latin Name:@prod.LatinName</h2>
+<!-- Stack the columns on mobile by making one full-width and the other half-width -->
+@Html.ActionLink("<-- Back to " + Model.category.Name, "ListProducts", new { id = Model.category.CategoryId }, new { @class = "text-info" })
 
-<p ></p>
-
-<div class="list-group">
-
-    @foreach (var item in listings)
-    {
-    
-    <div class="list-group">
-        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start ">
-            <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">@item.Producer.Name.ToString()</h5>
-                <small>Buy</small>
-            </div>
-            <p class="mb-1">@item.Producer</p>
-            <small>Donec id elit non mi porta.</small>
-        </a>
-       
+<br />
+<div class="container">
+    <div class="row">
+        <div class="col-6 col-md-4">
+            <img class="card-img-top img-fluid" src="@Url.Content("~/Images/Products/" + Model.product.ImagePath)" alt="Card image cap" style="width:300px;height:180px">
+        </div>
+        <div class="col-6 col-md-4">
+            <h2 class="text-info">@prod.Title</h2>
+           
+            <h3 class="text-info">Family: @prod.Family</h3>
+            <h3 class="text-info">Latin Name: @prod.LatinName</h3>
+        </div>
     </div>
 
-    }
-</div>
-       
-   
 
-  
+    <h2 class="text-info">Producers who sell this product:</h2>
+
+    <div class="list-group text-info">
+        @foreach (var item in listings)
+        {
+
+
+            <li class="list-group-item">
+                <h5 class=" text-info">@Html.ActionLink(item.Producer.Name, "ProducerAndListings", new { id = item.Producer.ProducerId }, new { @class = "text-info",})<span href="#" class="badge badge-pill badge-light">@Html.ActionLink("$" + @item.Price + " per 1kg", "Index", new { @class = "btn btn-outline-info", @role = "button" })</span></h5>
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary" data-toggle="modal" onclick="showPopup('@item.Producer.ProducerId','@item.Producer.Name','@item.Price')" data-target="#Modal">
+                   Add to Cart
+                </button>
+
+            </li>
+
+        }
+        <!-- Modal -->
+        <div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add selected items to cart</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="Modal-Product"></p>
+                       <p id="Modal-Producer"></p>
+                        <p id="Modal-Price"></p>
+                        <div class="input-group mb-3">
+                            <input type="number" min="1" max="100" required class="form-control" placeholder="1" aria-label="KGUnits" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <span class="input-group-text" id="basic-addon2"> kgs</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+
+    <script>
+        function showPopup(prodId, name, price) {
+            document.getElementById("Modal-Producer").innerText = "Seller Name: " + name;
+            document.getElementById("Modal-Price").innerText = "Price per 1kg: " + price;
+}
+    </script>
+
+
 

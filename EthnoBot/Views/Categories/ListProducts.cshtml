@@ -26,7 +26,7 @@
                         <p class="card-text text-info" style="width:250px">@item.Family</p>
                     </div>
                     <div class="card-body">
-                        @Html.ActionLink("View Product", "ListProducts", new { id = item.CategoryId }, new { @class = "btn btn-outline-info btn-lg", @role = "button" })
+                        @Html.ActionLink("View Items", "ProductAndListings", new { id = item.ProductId }, new { @class = "btn btn-info btn-lg", @role = "button" })
                     </div>
                 </div>
             </row>

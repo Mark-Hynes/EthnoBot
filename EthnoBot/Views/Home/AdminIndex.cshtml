@@ -2,12 +2,63 @@
     ViewBag.Title = "Home Page";
 }
 
-<div class="jumbotron">
+
     <h1>EthnoBotanicals Ireland - ADMIN</h1>
     <p class="lead">Hello Admin, please select an object type below to add, edit or remove records from the database..</p>
+    <div class="container">
+        <div class="card-deck">
 
-</div>
-<li type="button", class = "btn btn-info btn-lg btn-block">@Html.ActionLink("Products", "Index", "AdminProducts", new {@type="button", @class = "btn btn-info btn-lg btn-block" }, null)</li>
-<li type="button", class = "btn btn-info btn-lg btn-block">@Html.ActionLink("Producers", "Index", "AdminProducers", new { @type = "button", @class = "btn btn-info btn-lg btn-block" }, null)</li >
-<li type="button", class = "btn btn-info btn-lg btn-block">@Html.ActionLink("Categories", "Index", "AdminCategories", new { @type = "button", @class = "btn btn-info btn-lg btn-block" }, null)</li>
-<li type="button", class = "btn btn-info btn-lg btn-block">@Html.ActionLink("ProducerProducts", "Index", "AdminProducerProducts", new { @type = "button", @class = "btn btn-info btn-lg btn-block" ,@style="color:white;" }, null)</li>
+            <row>
+                <div class="card border-success mb-4">
+                    <img class="card-img-top img-fluid" src="@Url.Content("~/Images/Products/DefaultProduct.png")" alt="Card image cap" style="width:300px;height:180px">
+                    <div class="card-body ">
+                        <h5 class="card-title text-success">Products</h5>
+                        <p class="card-text text-success" style="width:250px;height:50px">Add, Edit, or Delete products.</p>
+                    </div>
+                    <div class="card-body">
+                        @Html.ActionLink("Manage", "Index", "AdminProducts", new { @class = "btn btn-info btn-lg btn-block" }, null)
+                    </div>
+                </div>
+            </row>
+            <row>
+                <div class="card border-success mb-4">
+                    <img class="card-img-top img-fluid" src="@Url.Content("~/Images/Producers/DefaultProducer.png" )" alt="Card image cap" style="width:300px;height:180px">
+                    <div class="card-body ">
+                        <h5 class="card-title text-success">Producers</h5>
+                        <p class="card-text text-success" style="width:250px;height:50px">Add, Edit, or Delete producers.</p>
+                    </div>
+                    <div class="card-body">
+                        @Html.ActionLink("Manage", "Index", "AdminProducers", new { @class = "btn btn-info btn-lg" }, null)
+                    </div>
+                </div>
+            </row>
+            <row>
+                <div class="card border-success mb-4">
+                    <img class="card-img-top img-fluid" src="@Url.Content("~/Images/Categories/CategoryDefault.png" )" alt="Card image cap" style="width:300px;height:180px">
+                    <div class="card-body ">
+                        <h5 class="card-title text-success">Categories</h5>
+                        <p class="card-text text-success" style="width:250px;height:50px">Add, Edit, or Delete categories.</p>
+                    </div>
+                    <div class="card-body">
+                        @Html.ActionLink("Manage", "Index", "AdminCategories", new {  @class = "btn btn-info btn-lg" }, null)
+                    </div>
+                </div>
+            </row>
+            <row>
+                <div class="card border-success mb-4">
+                    <img class="card-img-top img-fluid" src="@Url.Content("~/Images/Categories/CardDefault.png" )" alt="Card image cap" style="width:300px;height:180px">
+                    <div class="card-body ">
+                        <h5 class="card-title text-success">Product Listings</h5>
+                        <p class="card-text text-success" style="width:250px;height:50px">Add, Edit, or Delete products.</p>
+                    </div>
+                    <div class="card-body">
+                        @Html.ActionLink("Manage", "Index", "AdminProducerProducts", new { @class = "btn btn-info btn-lg" }, null)
+                    </div>
+                </div>
+            </row>
+
+
+
+
+       
+    </div>

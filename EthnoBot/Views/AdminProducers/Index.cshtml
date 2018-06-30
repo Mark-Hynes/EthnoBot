@@ -38,6 +38,11 @@
         <th>
             @Html.DisplayNameFor(model => model.CustomerServiceEmail)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ImagePath)
+        </th>
+
+     
         <th></th>
     </tr>
 
@@ -69,6 +74,9 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.CustomerServiceEmail)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ImagePath)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.ProducerId }) |
