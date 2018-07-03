@@ -20,7 +20,7 @@
         </div>
         <div class="col-6 col-md-4">
             <h2 class="text-info">@prod.Title</h2>
-           
+
             <h3 class="text-info">Family: @prod.Family</h3>
             <h3 class="text-info">Latin Name: @prod.LatinName</h3>
         </div>
@@ -35,10 +35,10 @@
 
 
             <li class="list-group-item">
-                <h5 class=" text-info">@Html.ActionLink(item.Producer.Name, "ProducerAndListings", new { id = item.Producer.ProducerId }, new { @class = "text-info",})<span href="#" class="badge badge-pill badge-light">@Html.ActionLink("$" + @item.Price + " per 1kg", "Index", new { @class = "btn btn-outline-info", @role = "button" })</span></h5>
+                <h5 class=" text-info">@Html.ActionLink(item.Producer.Name, "ProducerAndListings", new { id = item.Producer.ProducerId }, new { @class = "text-info", })<span href="#" class="badge badge-pill badge-light">@Html.ActionLink("$" + @item.Price + " per 1kg", "Index", new { @class = "btn btn-outline-info", @role = "button" })</span></h5>
                 <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary" data-toggle="modal" onclick="showPopup('@item.Producer.ProducerId','@item.Producer.Name','@item.Price')" data-target="#Modal">
-                   Add to Cart
+                <button type="button" class="btn btn-primary" data-toggle="modal" onclick="showPopup('@item.Producer.ProducerId','@item.Producer.Name','@item.Price','@item.Product.ProductId','@item.Product.Title')" data-target="#Modal">
+                    Add to Cart
                 </button>
 
             </li>
@@ -55,11 +55,12 @@
                         </button>
                     </div>
                     <div class="modal-body">
+                        <p id="Modal-ProductID"></p>
                         <p id="Modal-Product"></p>
-                       <p id="Modal-Producer"></p>
+                        <p id="Modal-Producer"></p>
                         <p id="Modal-Price"></p>
                         <div class="input-group mb-3">
-                            <input type="number" min="1" max="100" required class="form-control" placeholder="1" aria-label="KGUnits" aria-describedby="basic-addon2">
+                            <input type="number" id="KGUnits" class="form-control" min="1" max="100" placeholder="1" aria-label="KGUnits" aria-describedby="basic-addon2" required>
                             <div class="input-group-append">
                                 <span class="input-group-text" id="basic-addon2"> kgs</span>
                             </div>
@@ -67,7 +68,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-primary">Add to Cart</button>
+                        <button type="button" id="addToCart1" class="btn btn-secondary">Add to Cart</button>
                     </div>
                 </div>
             </div>
@@ -79,12 +80,30 @@
 
 
 
-    <script>
-        function showPopup(prodId, name, price) {
-            document.getElementById("Modal-Producer").innerText = "Seller Name: " + name;
-            document.getElementById("Modal-Price").innerText = "Price per 1kg: " + price;
-}
+
+    <script type="text/javascript">
+    var producerID = "";
+    var productID = "";
+    var unitPrice = "";
+    var quantity = "";
+    function showPopup(producerId, producerName, price, productId,productName) {
+        document.getElementById("Modal-Producer").innerText = "Product Name: " + productName;
+        document.getElementById("Modal-Producer").innerText = "Seller Name: " + producerName;
+
+
+        document.getElementById("Modal-Price").innerText = "Price per 1kg: " + price;
+        productID = productId;
+        producerID = producerId;
+        unitPrice = price;
+
+    }
+
+    (function () {
+        document.getElementById("addToCart1").onclick = function () {
+            quantity = document.getElementById("KGUnits").value
+          
+            location.href = '@Url.Action("AddToBasket", "Categories")?producerId=' + producerID + '&productId=' + productID + '&quantity=' + quantity + '&unitPrice=' + unitPrice;
+
+        };
+    })();
     </script>
-
-
-

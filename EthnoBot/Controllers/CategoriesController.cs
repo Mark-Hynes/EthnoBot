@@ -8,6 +8,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using EthnoBot.Models;
+using Microsoft.AspNet.Identity;
 
 namespace EthnoBot.Controllers
 {
@@ -18,6 +19,7 @@ namespace EthnoBot.Controllers
         // GET: Categories
         public ActionResult Index()
         {
+            countCartItems();
             return View(db.Categories.ToList());
         }
      
@@ -47,10 +49,7 @@ namespace EthnoBot.Controllers
             ViewData["CategoryName"] = db.Categories.Where(x => x.CategoryId == id).ToList().First().Name;
             return View(Products);
         }
-        public ActionResult CSSTest()
-        {
-            return View();
-        }
+    
         public ActionResult ProductAndListings(int id)
         {
 
@@ -94,6 +93,60 @@ namespace EthnoBot.Controllers
             return View(pm);
         }
 
+        [Authorize]
+        public ActionResult AddToBasket(string producerId,string productId, string quantity, int unitPrice)
+        {
+            int producer = Int32.Parse(producerId);
+            int product = Int32.Parse(productId);
+             int quantit = Int32.Parse(quantity);
+            CartItem c = new CartItem();
+            c.producer = db.Producers.Where(x => x.ProducerId == producer).FirstOrDefault();
+            c.product = db.Products.Where(x => x.ProductId == product).FirstOrDefault();
+            c.quantityKg = quantit;
+            c.unitPrice = unitPrice;
+
+            string userId = User.Identity.GetUserId();
+            Guid userID = Guid.Parse(User.Identity.GetUserId());
+            Cart cart = db.Carts.Where(x => x.UserID == userId).FirstOrDefault();
+            cart.CartItems += "|ProducerId=" + producerId + "," + "ProductId=" + productId + "," + "UnitPrice=" + unitPrice + "," + "Quantity=" + quantity + "|";
+          
+            db.SaveChanges();
+            countCartItems();
+
+
+              return Redirect(Request.UrlReferrer.ToString());
+        }
+
+        public void countCartItems()
+        {
+            try
+            {
+                string userID = User.Identity.GetUserId();
+                if (userID == null || userID.Equals(""))
+                {
+                    Session["CartItemCount"] = 0;
+                }
+                else
+                {
+                    Cart c = db.Carts.Where(x => x.UserID == userID).FirstOrDefault();
+                    string[] cartCount = c.CartItems.Split('|');
+                    int realCount = 0;
+                    for (int i = 0; i < cartCount.Length; i++)
+                    {
+                        if (!cartCount[i].Equals(""))
+                        { realCount++; }
+                    }
+                    Session["CartItemCount"] = realCount;
+                }
+            }
+            catch (Exception e)
+            {
+                Exception ex = e;
+
+            }
+        }
+
+
         public ActionResult ProducerAndListings(int id)
         {
             Producer producer = db.Producers.FirstOrDefault(acc => acc.ProducerId == id);
@@ -134,6 +187,8 @@ namespace EthnoBot.Controllers
            
             return View(pm);
         }
+
+
 
         public ActionResult ProducerList()
         {

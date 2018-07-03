@@ -1,4 +1,6 @@
-﻿using System;
+﻿using EthnoBot.Models;
+using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,9 +10,10 @@ namespace EthnoBot.Controllers
 {
     public class HomeController : Controller
     {
-
+        private EthnoBotEntities db = new EthnoBotEntities();
         public ActionResult Index()
         {
+            countCartItems();
             if (
                User.IsInRole("Admin")
             ) return RedirectToAction("AdminIndex");
@@ -20,6 +23,36 @@ namespace EthnoBot.Controllers
                 return View();
             }
         }
+
+        public void countCartItems()
+        {
+            try
+            {
+                string userID = User.Identity.GetUserId();
+                if (userID == null || userID.Equals(""))
+                {
+                    Session["CartItemCount"] = 0;
+                }
+                else
+                {
+                    Cart c = db.Carts.Where(x => x.UserID == userID).FirstOrDefault();
+                    string[] cartCount = c.CartItems.Split('|');
+                    int realCount = 0;
+                    for (int i = 0; i < cartCount.Length; i++)
+                    {
+                        if (!cartCount[i].Equals(""))
+                        { realCount++; }
+                    }
+                    Session["CartItemCount"] = realCount;
+                }
+            }
+            catch (Exception e)
+            {
+                Exception ex = e;
+
+            }
+        }
+
         [Authorize(Roles = "Admin")]
         public ActionResult About()
         {

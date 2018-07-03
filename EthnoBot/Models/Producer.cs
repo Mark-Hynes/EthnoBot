@@ -44,5 +44,8 @@ namespace EthnoBot.Models
         [DisplayName("Image Path")]
 
         public string ImagePath { get; set; }
+        public string ASPUserId{ get; set; }
+        public string Verified { get; set; }
+        
     }
 }

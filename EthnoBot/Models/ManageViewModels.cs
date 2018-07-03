@@ -14,6 +14,39 @@ namespace EthnoBot.Models
         public bool BrowserRemembered { get; set; }
     }
 
+    public class UserIndexViewModel
+    {
+        public bool HasPassword { get; set; }
+        public IList<UserLoginInfo> Logins { get; set; }
+        public string PhoneNumber { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
+        public string Mobile { get; set; }
+        public string AddressLine1 { get; set; }
+        public string AddressLine2 { get; set; }
+        public string AddressLine3 { get; set; }
+        public string Country { get; set; }
+        public bool TwoFactor { get; set; }
+        public bool BrowserRemembered { get; set; }
+    }
+    public class ProducerIndexViewModel
+    {
+        public bool HasPassword { get; set; }
+        public IList<UserLoginInfo> Logins { get; set; }
+        public string Name { get; set; }
+
+        public string About { get; set; }
+        public string Description { get; set; }
+        public string Address{ get; set; }
+        public string Mobile { get; set; }
+        public string Telephone { get; set; }
+        public string CompanyEmail { get; set; }
+        public string CustomerServiceEmail { get; set; }
+        public bool TwoFactor { get; set; }
+        public bool BrowserRemembered { get; set; }
+    }
+
     public class ManageLoginsViewModel
     {
         public IList<UserLoginInfo> CurrentLogins { get; set; }

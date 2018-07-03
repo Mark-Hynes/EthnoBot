@@ -9,6 +9,11 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using EthnoBot.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System.Data.Entity.Validation;
+using System.Net;
+using System.Net.Mail;
+using EthnoBot.Utils;
 
 namespace EthnoBot.Controllers
 {
@@ -17,9 +22,37 @@ namespace EthnoBot.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private EthnoBotEntities db = new EthnoBotEntities();
 
         public AccountController()
         {
+        }
+        public void sendVerifyCompanyEmail(Producer p)
+        {
+            GMailer.GmailUsername = "mrkhynes1@gmail.com";
+            GMailer.GmailPassword = "bkrytjdxkhxzpueh";
+
+            GMailer mailer = new GMailer();
+            mailer.ToEmail = "martinoneill360@gmail.com";
+            mailer.Subject = "ADMINISTRATOR INPUT REQUIRED";
+           
+            mailer.Body = "Hello Admin"+ Environment.NewLine + Environment.NewLine + "A new Company has registered to be a partner with EthnoBotanicalsIreland" + Environment.NewLine+ Environment.NewLine+
+                "Please navigate to 'Manage Producers' tab to verify the legitimacy of the company's details." + Environment.NewLine+
+                "Once you change the company's value 'Verified' to 'True', the company will be listed on the website as a Producer." + Environment.NewLine+
+                Environment.NewLine+"The company has entered the following details:" + Environment.NewLine+
+
+                Environment.NewLine+ Environment.NewLine+"Company Name: " + p.Name+ Environment.NewLine +
+                "Company About: "+ p.About+ Environment.NewLine +
+                "Company Description: "+ p.Description+ Environment.NewLine +
+                "Company Address: " + p.Address+ Environment.NewLine +
+                "Company Email: "  +p.CompanyEmail+ Environment.NewLine +
+                "Customer Support Email: "+ p.CustomerServiceEmail+ Environment.NewLine +
+                "Company Telephone: "+ p.Telephone+ Environment.NewLine +
+                "Company Mobile: "+ p.Mobile+ Environment.NewLine;
+            mailer.IsHtml =false;
+            mailer.Send();
+
+        
         }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
@@ -142,6 +175,12 @@ namespace EthnoBot.Controllers
             return View();
         }
 
+        [AllowAnonymous]
+        public ActionResult RegisterProducer()
+        {
+            return View();
+        }
+
         //
         // POST: /Account/Register
         [HttpPost]
@@ -149,29 +188,119 @@ namespace EthnoBot.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
-            if (ModelState.IsValid)
+            using (var context = new ApplicationDbContext())
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await UserManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
+                if (ModelState.IsValid)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
-                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                    var user = new ApplicationUser() { UserName = model.Email, Email=model.Email, FirstName = model.FirstName, LastName = model.LastName };
+                    var result = await UserManager.CreateAsync(user, model.Password);
 
-                    return RedirectToAction("Index", "Home");
+                    var roleStore = new RoleStore<IdentityRole>(context);
+                    var roleManager = new RoleManager<IdentityRole>(roleStore);
+
+                    var userStore = new UserStore<ApplicationUser>(context);
+                    var userManager = new UserManager<ApplicationUser>(userStore);
+                    userManager.AddToRole(user.Id, "User");
+                    createCart(user.Id);
+                    if (result.Succeeded)
+                    {
+                        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        AddErrors(result);
+                    }
                 }
-                AddErrors(result);
+                // If we got this far, something failed, redisplay form
+                return View(model);
             }
-
-            // If we got this far, something failed, redisplay form
-            return View(model);
         }
 
+        private void createCart(string id)
+        {
+            Cart userCart = new Cart(); 
+            Guid cartID = Guid.NewGuid();
+            userCart.CartID = cartID.ToString();
+            userCart.UserID = id;
+            userCart.CartItems = "";
+        
+                
+              
+       
+            db.Carts.Add(userCart);
+            db.SaveChanges();
+
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> RegisterProducer(RegisterProducerViewModel model)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                if (ModelState.IsValid)
+                {
+                    var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
+                    var result = await UserManager.CreateAsync(user, model.Password);
+                    string id = user.Id;
+                    var roleStore = new RoleStore<IdentityRole>(context);
+                    var roleManager = new RoleManager<IdentityRole>(roleStore);
+
+                    var userStore = new UserStore<ApplicationUser>(context);
+                    var userManager = new UserManager<ApplicationUser>(userStore);
+
+                    userManager.AddToRole(id,"Producer");
+                   
+
+
+                    if (result.Succeeded)
+                    {
+                        Producer producer = new Producer { Telephone=model.Telephone, Name = model.Name, About = model.About, Address = model.Address, CompanyEmail = model.Email, CustomerServiceEmail = model.CustomerServiceEmail, Description = model.Description, Mobile = model.Mobile, ASPUserId = user.Id, Verified = "False", ImagePath = "~/Images/Producers/DefaultProducer.jpg" };
+                        AddProducerToDatabase(producer);
+                        sendVerifyCompanyEmail(producer);
+                        createCart(producer.ASPUserId);
+                        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        AddErrors(result);
+                    }
+                }
+                // If we got this far, something failed, redisplay form
+                return View(model);
+            }
+        }
+        public void AddProducerToDatabase(Producer p)
+        {
+            try {
+                if (ModelState.IsValid)
+                {
+                    db.Producers.Add(p);
+                    db.SaveChanges();
+                }
+            }
+            catch (DbEntityValidationException e)
+            {
+                Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!HEY FUCK YOU OVER HERE!!!!!!!!!!!!!!!!!!");
+                foreach (var eve in e.EntityValidationErrors)
+                {
+                    Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                        eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                    foreach (var ve in eve.ValidationErrors)
+                    {
+                        Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+                            ve.PropertyName, ve.ErrorMessage);
+                    }
+                }
+                
+            }
+        }
+        
+
+       
         //
         // GET: /Account/ConfirmEmail
         [AllowAnonymous]
@@ -463,19 +592,19 @@ namespace EthnoBot.Controllers
             {
                 LoginProvider = provider;
                 RedirectUri = redirectUri;
-                UserId = userId;
+                Id = userId;
             }
 
             public string LoginProvider { get; set; }
             public string RedirectUri { get; set; }
-            public string UserId { get; set; }
+            public string Id { get; set; }
 
             public override void ExecuteResult(ControllerContext context)
             {
                 var properties = new AuthenticationProperties { RedirectUri = RedirectUri };
-                if (UserId != null)
+                if (Id != null)
                 {
-                    properties.Dictionary[XsrfKey] = UserId;
+                    properties.Dictionary[XsrfKey] = Id;
                 }
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
             }

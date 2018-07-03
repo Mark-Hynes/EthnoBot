@@ -13,11 +13,28 @@ namespace EthnoBot.Controllers
     [Authorize]
     public class ManageController : Controller
     {
+        private EthnoBotEntities db = new EthnoBotEntities();
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-
+    
+        public ActionResult EditProducerProfile(Producer p)
+        {
+            string userId = User.Identity.GetUserId();
+            if (userId== p.ASPUserId && UserManager.IsInRole(userId, "Producer"))
+            { 
+                return View(p);
+            }
+            return RedirectToAction("Index","Home",null);
+        }
         public ManageController()
         {
+
+        }
+        public ActionResult ProducerIndex()
+        {
+            string userId = User.Identity.GetUserId();
+            Producer p = db.Producers.Where(x => x.ASPUserId == userId).FirstOrDefault();
+            return View(p);
         }
 
         public ManageController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
@@ -54,27 +71,64 @@ namespace EthnoBot.Controllers
         // GET: /Manage/Index
         public async Task<ActionResult> Index(ManageMessageId? message)
         {
-            ViewBag.StatusMessage =
-                message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
-                : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
-                : message == ManageMessageId.SetTwoFactorSuccess ? "Your two-factor authentication provider has been set."
-                : message == ManageMessageId.Error ? "An error has occurred."
-                : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
-                : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
-                : "";
+            if (UserManager.IsInRole(User.Identity.GetUserId(), "User"))
+            {
+                return RedirectToAction("UserIndex", "Manage");
+            }
+            else if (UserManager.IsInRole(User.Identity.GetUserId(), "Producer"))
+            {
+                return RedirectToAction("ProducerIndex", "Manage");
+            }
+            else
+            {
+                ViewBag.StatusMessage =
+              message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
+              : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
+              : message == ManageMessageId.SetTwoFactorSuccess ? "Your two-factor authentication provider has been set."
+              : message == ManageMessageId.Error ? "An error has occurred."
+              : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
+              : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
+              : "";
 
-            var userId = User.Identity.GetUserId();
-            var model = new IndexViewModel
+                var userId = User.Identity.GetUserId();
+                var model = new IndexViewModel
+                {
+                    HasPassword = HasPassword(),
+                    PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
+                    TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
+                    Logins = await UserManager.GetLoginsAsync(userId),
+                    BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
+                };
+                return View(model);
+            }
+          
+        }
+        public async Task<ActionResult> UserIndex(ManageMessageId? message)
+        {
+            ViewBag.StatusMessage =
+              message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
+              : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
+              : message == ManageMessageId.SetTwoFactorSuccess ? "Your two-factor authentication provider has been set."
+              : message == ManageMessageId.Error ? "An error has occurred."
+              : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
+              : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
+              : "";
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            
+            var model = new UserIndexViewModel
             {
                 HasPassword = HasPassword(),
-                PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
-                TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
-                Logins = await UserManager.GetLoginsAsync(userId),
-                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
+                PhoneNumber = await UserManager.GetPhoneNumberAsync(user.Id),
+                TwoFactor = await UserManager.GetTwoFactorEnabledAsync(user.Id),
+                Logins = await UserManager.GetLoginsAsync(user.Id),
+                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(user.Id),
+                Mobile = await UserManager.GetPhoneNumberAsync(user.Id),
+                AddressLine1 = user.AddressLine1, AddressLine2 = user.AddressLine2, AddressLine3 = user.AddressLine3,
+                FirstName = user.FirstName, LastName = user.LastName, Country = user.Country
+          
             };
             return View(model);
         }
-
         //
         // POST: /Manage/RemoveLogin
         [HttpPost]

@@ -12,5 +12,6 @@ namespace EthnoBot.Models
         public DbSet<Category> Categories { get; set; }
         public DbSet<Producer> Producers { get; set; }
         public DbSet<ProducerProduct> ProducerProducts { get; set; }
+        public DbSet<Cart> Carts { get; set; }
     }
 }

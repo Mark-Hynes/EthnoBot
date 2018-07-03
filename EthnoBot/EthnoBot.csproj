@@ -204,6 +204,7 @@
     <Compile Include="Controllers\AdminProducerProductsController.cs" />
     <Compile Include="Controllers\AdminProducersController.cs" />
     <Compile Include="Controllers\AdminProductsController.cs" />
+    <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\CategoriesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -212,7 +213,15 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Migrations\201807021843081_DefaultConnectio.cs" />
+    <Compile Include="Migrations\201807021843081_DefaultConnectio.Designer.cs">
+      <DependentUpon>201807021843081_DefaultConnectio.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Cart.cs" />
+    <Compile Include="Models\CartItem.cs" />
+    <Compile Include="Models\CartViewModel.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ListingInfo.cs" />
@@ -227,6 +236,7 @@
     <Compile Include="Models\EthnoBotEntities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Utils\Gmailer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-grid.css" />
@@ -277,13 +287,13 @@
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <None Include="Scripts\jquery-3.0.0-vsdoc.js" />
-    <Content Include="Scripts\jquery-3.0.0.js" />
-    <Content Include="Scripts\jquery-3.0.0.min.js" />
-    <Content Include="Scripts\jquery-3.0.0.slim.js" />
-    <Content Include="Scripts\jquery-3.0.0.slim.min.js" />
-    <Content Include="Scripts\jquery-3.0.0.slim.min.map" />
-    <Content Include="Scripts\jquery-3.0.0.min.map" />
+    <None Include="Scripts\jquery-3.3.1.intellisense.js" />
+    <Content Include="Scripts\jquery-3.3.1.js" />
+    <Content Include="Scripts\jquery-3.3.1.min.js" />
+    <Content Include="Scripts\jquery-3.3.1.slim.js" />
+    <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
+    <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
+    <Content Include="Scripts\jquery-3.3.1.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.Jcrop.js" />
     <Content Include="Scripts\jquery.Jcrop.min.js" />
@@ -381,6 +391,11 @@
     <Content Include="Views\Categories\ProductAndListings.cshtml" />
     <Content Include="Views\Categories\ProducerAndListings.cshtml" />
     <Content Include="Views\Categories\ProducerList.cshtml" />
+    <Content Include="Views\Account\RegisterProducer.cshtml" />
+    <Content Include="Views\Manage\UserIndex.cshtml" />
+    <Content Include="Views\Manage\ProducerIndex.cshtml" />
+    <Content Include="Views\Manage\EditProducerProfile.cshtml" />
+    <Content Include="Views\Cart\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -395,6 +410,11 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201807021843081_DefaultConnectio.resx">
+      <DependentUpon>201807021843081_DefaultConnectio.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

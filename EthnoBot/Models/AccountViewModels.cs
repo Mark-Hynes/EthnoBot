@@ -68,6 +68,12 @@ namespace EthnoBot.Models
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
+        [Required]
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; }
+        [Required]
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
@@ -80,6 +86,48 @@ namespace EthnoBot.Models
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
     }
+    public class RegisterProducerViewModel
+    {
+        
+        [Required]
+        [Display(Name = "Company Name")]
+        public string Name { get; set; }
+        [Required]
+        [Display(Name = "Company Description")]
+        public string Description { get; set; }
+        [Required]
+        [Display(Name = "About Company")]
+        public string About { get; set; }
+        [Required]
+        [Display(Name = "Company Address")]
+        public string Address { get; set; }
+        [Required]
+        [Display(Name = "Mobile")]
+        public string Mobile { get; set; }
+        [Required]
+        [Display(Name = "Telephone")]
+        public string Telephone { get; set; }
+        [Required]
+        [EmailAddress]
+        [Display(Name = "Company Email")]
+        public string Email { get; set; }
+        [Required]
+        [EmailAddress]
+        [Display(Name = "Customer Service Email")]
+        public string CustomerServiceEmail { get; set; }
+
+        [Required]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [DataType(DataType.Password)]
+        [Display(Name = "Password")]
+        public string Password { get; set; }
+
+        [DataType(DataType.Password)]
+        [Display(Name = "Confirm password")]
+        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        public string ConfirmPassword { get; set; }
+    }
+
 
     public class ResetPasswordViewModel
     {

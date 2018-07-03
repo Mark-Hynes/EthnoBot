@@ -15,17 +15,17 @@
         <p class="text-success">
             Need to find and obtain a product listed on this site? Create an account and browse our Products and Partners
         </p>
-        <p>@Html.ActionLink("Sign Up", "Index", "Home", new { @class = "btn btn-success btn-lg", @role = "button" })</p>
-    </div>
+        <p>@Html.ActionLink("Sign Up", "Register", "Account", routeValues: null, htmlAttributes: new { @class = "btn btn-success btn-lg", @role = "button" })</p>
+</div>
     <div class="col-md-4 border-info">
         <h3 class="text-info">Become a Partner</h3>
         <p class="text-info">Looking to sign up as a trusted partner? Once your details and Products have been verified, you can start selling your products on our site. It's easy, just fill out this form</p>
-        <p class="text-info">@Html.ActionLink("Join", "Index", "Home", new { @class = "btn btn-info btn-lg", @role = "button" })</p>
+        <p class="text-info">@Html.ActionLink("Sign Up", "RegisterProducer", "Account", routeValues: null, htmlAttributes: new { @class = "btn btn-info btn-lg", @role = "button" })</p>
     </div>
     <div class="col-md-4 border-success">
         <h2 class="text-success">Contact Us</h2>
         <p class="text-success">Have any questions for us? Visit our contact page for extra details about EthnoBotanicals. All feedback is appreciated.</p>
-        <p class="text-success">@Html.ActionLink("Contact Us", "Index", "Home", new { @class = "btn btn-success btn-lg", @role = "button" })</p>
+        <p class="text-success">@Html.ActionLink("Contact Us", "Account/Index", "Account", new { @class = "btn btn-success btn-lg", @role = "button" })</p>
     </div>
 </div>
 
