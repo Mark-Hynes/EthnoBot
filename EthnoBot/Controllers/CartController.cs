@@ -81,6 +81,42 @@ namespace EthnoBot.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize]
+        public ActionResult EditItem(string producerId, string productId, string oldQuantity,string newQuantity, string unitPrice)
+        {
+            string userID = User.Identity.GetUserId();
+            Cart c = db.Carts.Where(x => x.UserID == userID).FirstOrDefault();
+
+            string[] cartItemsAsString = c.CartItems.Split('|');
+
+            for (int i = 0; i < cartItemsAsString.Length; i++)
+            {
+                if (cartItemsAsString[i].Equals(""))
+                { continue; }
+
+                CartItem item = new CartItem();
+                string[] individualCartItemString = cartItemsAsString[i].Split(',');
+
+                string producerid1 = individualCartItemString[0].Replace("ProducerId=", "");
+                string productid1 = individualCartItemString[1].Replace("ProductId=", "");
+
+
+
+                string unitPrice1 = individualCartItemString[2].Replace("UnitPrice=", "");
+                string quantityKg = individualCartItemString[3].Replace("Quantity=", "");
+
+
+                if (producerId.Equals(producerid1) && productId.Equals(productid1) && unitPrice.Equals(unitPrice1) && oldQuantity.Equals(quantityKg))
+                {
+                    modifyItem(c, cartItemsAsString[i],oldQuantity,newQuantity);
+                    continue;
+                }
+
+            }
+            countCartItems();
+            return RedirectToAction("Index");
+        }
+
         public void countCartItems()
         {
             try
@@ -125,6 +161,25 @@ namespace EthnoBot.Controllers
             c.CartItems = newCartItems;
             Debug.WriteLine("Item's updated text: " + c.CartItems);
 
+            db.SaveChanges();
+        }
+
+        private void modifyItem(Cart c, string v, string oldQuantity,string newQuantity)
+        {
+
+            Debug.WriteLine("Item's current text: " + c.CartItems);
+
+
+
+            string oldString = "|" + v + "|";
+            string newString = oldString.Replace("Quantity=" + oldQuantity, "Quantity=" + newQuantity);
+          
+
+
+            string newCartItem = c.CartItems.Replace(oldString,newString);
+            c.CartItems = newCartItem;
+           
+            countCartItems();
             db.SaveChanges();
         }
     }

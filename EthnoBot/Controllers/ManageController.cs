@@ -7,6 +7,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using EthnoBot.Models;
+using System.Collections.Generic;
 
 namespace EthnoBot.Controllers
 {
@@ -16,7 +17,76 @@ namespace EthnoBot.Controllers
         private EthnoBotEntities db = new EthnoBotEntities();
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-    
+
+
+
+
+        [Authorize]
+        public ActionResult DeleteListing(string producerId, string productId, string quantity, string unitPrice)
+        {
+            string userID = User.Identity.GetUserId();
+            Producer pr = db.Producers.Where(x => x.ASPUserId == userID).FirstOrDefault();
+            if (pr.ProducerId.ToString() == producerId)
+            {
+                ProducerProduct p = db.ProducerProducts.Where(x => x.ProducerId.ToString() == producerId && x.ProductId.ToString() == productId && x.Units.ToString() == quantity && x.UnitPrice.ToString() == unitPrice).FirstOrDefault();
+                db.ProducerProducts.Remove(p);
+                db.SaveChanges();
+            }
+           
+
+           
+            return RedirectToAction("ProducerIndex");
+        }
+
+        [Authorize]
+        public ActionResult EditListing(string producerId, string productId, string oldQuantity, string newQuantity, string unitPrice)
+        {
+            string userID = User.Identity.GetUserId();
+            Producer pr = db.Producers.Where(x => x.ASPUserId == userID).FirstOrDefault();
+            if (pr.ProducerId.ToString() == producerId)
+            {
+                ProducerProduct p = db.ProducerProducts.Where(x => x.ProducerId.ToString() == producerId && x.ProductId.ToString() == productId && x.Units.ToString() == oldQuantity && x.UnitPrice.ToString() == unitPrice).FirstOrDefault();
+                p.UnitPrice = Int32.Parse(unitPrice);
+                p.Units = Int32.Parse(newQuantity);
+                db.SaveChanges();
+            }
+           return RedirectToAction("ProducerIndex");
+        }
+        
+            [Authorize]
+        public ActionResult AddListing()
+        {
+            string userID = User.Identity.GetUserId();
+            Producer pr = db.Producers.Where(x => x.ASPUserId == userID).FirstOrDefault();
+            var products = db.Products;
+            Session["ProducerId"] = pr.ProducerId;
+            return View(products);
+                               
+        }
+        [Authorize]
+        public ActionResult CompleteListing(string producerId, string productId, string quantity, string unitPrice)
+        {
+
+            ProducerProduct p = new ProducerProduct
+            {
+                ProducerId = Int32.Parse(producerId),
+                ProductId = Int32.Parse(productId),
+                Units = Int32.Parse(quantity),
+                UnitPrice = Int32.Parse(unitPrice)
+            };
+            db.ProducerProducts.Add(p);
+            db.SaveChanges();
+            return RedirectToAction("ProducerIndex");
+        }
+
+
+
+
+
+
+
+
+
         public ActionResult EditProducerProfile(Producer p)
         {
             string userId = User.Identity.GetUserId();
@@ -33,8 +103,45 @@ namespace EthnoBot.Controllers
         public ActionResult ProducerIndex()
         {
             string userId = User.Identity.GetUserId();
-            Producer p = db.Producers.Where(x => x.ASPUserId == userId).FirstOrDefault();
-            return View(p);
+            Producer producer = db.Producers.Where(x => x.ASPUserId == userId).FirstOrDefault();
+           
+            List<ProducerProduct> Listings = db.ProducerProducts.Where(x => x.ProducerId == producer.ProducerId).ToList();
+
+
+
+
+            List<ListingInfo> listings = new List<ListingInfo>();
+
+
+
+            for (int i = 0; i < Listings.Count; i++)
+            {
+                ListingInfo lo = new ListingInfo();
+                int prodID = Listings.ElementAt(i).ProductId;
+
+                var prods = db.Products.Where(x => x.ProductId == prodID).ToList();
+                for (int j = 0; j < prods.Count; j++)
+                {
+                    Product prod = prods.ElementAt(j);
+
+                    lo.Product = prod;
+
+
+                }
+
+                lo.Price = Listings.ElementAt(i).UnitPrice.ToString();
+                lo.Producer = producer;
+                lo.Units = Listings.ElementAt(i).Units;
+                listings.Add(lo);
+
+            }
+
+
+            ManageProducerViewModel pm = new ManageProducerViewModel();
+            pm.listings = listings;
+            pm.producer = producer;
+
+            return View(pm);
         }
 
         public ManageController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)

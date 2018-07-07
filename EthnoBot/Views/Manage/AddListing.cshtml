@@ -1,0 +1,51 @@
+﻿@model IEnumerable<EthnoBot.Models.Product>
+
+    @{
+        ViewBag.Title = "AddListing";
+        string prodID = (string)Session["ProducerId"].ToString(); 
+    }
+
+    <h2>Add a Listing</h2>
+    <div class="container" id="Modal-Edit"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="form-group">
+            <select id="Modal-Product" class="form-control" style="height:auto"onchange="setProduct(this)">
+                <option value="" selected disabled hidden>--Product--</option>
+                @foreach (var item in Model)
+                {
+                    <option value="@item.ProductId" id="@item.ProductId">@item.Title</option>}
+            </select>
+                    <div class="input-group mb-3">
+                        <input type="number" id="KGUnits" class="form-control" min="1" max="100" placeholder="1" aria-label="KGUnits" aria-describedby="basic-addon2" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text" id="basic-addon2"> kgs</span>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="number" id="Modal-Price" class="form-control" min="1" max="100" placeholder="1" aria-label="KGPrice" aria-describedby="basic-addon2" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text" id="basic-addon2"> $ per 1Kg</span>
+                        </div>
+                    </div>
+                
+                <div class="container">
+                    @Html.ActionLink("Cancel","ProducerIndex", new { @type="button",@class= "btn btn-secondary" })
+                    <button type="button" id="SaveChanges" class="btn btn-secondary">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    
+
+    <script type="text/javascript">
+        var product = "";
+        function setProduct(s) {
+            product= s[s.selectedIndex].id; // get value
+         }
+    (function () {
+        document.getElementById("SaveChanges").onclick = function () {
+            var quantity = document.getElementById("KGUnits").value;
+            var price = document.getElementById("Modal-Price").value;
+            location.href = '@Url.Action("CompleteListing", "Manage")?producerId=' + @prodID + '&productId=' + product + '&quantity=' + quantity + '&unitPrice=' + price;
+
+        };
+    })();
+    </script>

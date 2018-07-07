@@ -225,6 +225,7 @@
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ListingInfo.cs" />
+    <Compile Include="Models\ManageProducerViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Producer.cs" />
     <Compile Include="Models\ProducerAndListingsModel.cs" />
@@ -394,8 +395,8 @@
     <Content Include="Views\Account\RegisterProducer.cshtml" />
     <Content Include="Views\Manage\UserIndex.cshtml" />
     <Content Include="Views\Manage\ProducerIndex.cshtml" />
-    <Content Include="Views\Manage\EditProducerProfile.cshtml" />
     <Content Include="Views\Cart\Index.cshtml" />
+    <Content Include="Views\Manage\AddListing.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

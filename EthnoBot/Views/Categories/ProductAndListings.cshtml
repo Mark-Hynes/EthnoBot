@@ -34,14 +34,14 @@
         {
 
 
-            <li class="list-group-item">
-                <h5 class=" text-info">@Html.ActionLink(item.Producer.Name, "ProducerAndListings", new { id = item.Producer.ProducerId }, new { @class = "text-info", })<span href="#" class="badge badge-pill badge-light">@Html.ActionLink("$" + @item.Price + " per 1kg", "Index", new { @class = "btn btn-outline-info", @role = "button" })</span></h5>
-                <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary" data-toggle="modal" onclick="showPopup('@item.Producer.ProducerId','@item.Producer.Name','@item.Price','@item.Product.ProductId','@item.Product.Title')" data-target="#Modal">
-                    Add to Cart
-                </button>
+        <li class="list-group-item">
+            <h5 class=" text-info">@Html.ActionLink(item.Producer.Name, "ProducerAndListings", new { id = item.Producer.ProducerId }, new { @class = "text-info", }) <span class="badge badge-primary badge-pill">$@item.Price per 1Kg</span></h5>
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-toggle="modal" onclick="showPopup('@item.Producer.ProducerId','@item.Producer.Name','@item.Price','@item.Product.ProductId','@item.Product.Title')" data-target="#Modal">
+                Add to Cart
+            </button>
 
-            </li>
+        </li>
 
         }
         <!-- Modal -->

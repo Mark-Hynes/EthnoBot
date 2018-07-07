@@ -3,6 +3,7 @@
     /**/
 
     ViewBag.Title = "Cart";
+    int total = 0;
 }
 
 <h2>Cart</h2>
@@ -11,25 +12,27 @@
 <ul class="list-group">
     @foreach (var item in Model)
     {
-
+        total += (int)item.total;
     <li class="list-group-item d-flex justify-content-between align-items-center">
         <span class=" text-info">@Html.ActionLink(item.product.Title, "ProductAndListings", "Categories", new { id = item.product.ProductId }, new { @class = "text-info", })</span>
 
         <span class=" text-info">@Html.ActionLink(item.producer.Name, "ProducerAndListings", "Categories", new { id = item.producer.ProducerId }, new { @class = "text-info", })</span>
-        <span class="badge badge-primary badge-pill">@item.quantityKg Kg</span>
-        <span class=" text-info">Price per Kg: $ @item.unitPrice </span>
+
+        <span class="badge badge-primary badge-pill">$@item.unitPrice per Kg unit</span>
+        <span class=" text-info"> @item.quantityKg Units</span>
+
         <span class=" text-info">Total: $ @item.total</span>
-        <button type="button" class="btn btn-primary" data-toggle="modal" onclick="editItemPopup('@item.producer.ProducerId','@item.producer.Name','@item.unitPrice','@item.product.ProductId','@item.product.Title')" data-target="#Modal">
+        <button type="button" class="btn btn-primary" data-toggle="modal" onclick="editItemPopup('@item.producer.ProducerId','@item.producer.Name','@item.unitPrice','@item.product.ProductId','@item.product.Title','@item.quantityKg')" data-target="#Modal">
             Edit Item
         </button>
-        <button type="button" class="btn btn-primary" data-toggle="modal" onclick="deleteItem('@item.producer.ProducerId','@item.producer.Name','@item.unitPrice','@item.product.ProductId','@item.product.Title','@item.quantityKg')" data-target="#Modal">
-           Delete
+        <button type="button" class="btn btn-primary" onclick="deleteItem('@item.producer.ProducerId','@item.producer.Name','@item.unitPrice','@item.product.ProductId','@item.product.Title','@item.quantityKg')" data-target="#Modal">
+            Delete
         </button>
 
     </li>
     }
 </ul>
-
+<h4>Subtotal: $@total</h4>
 
 <div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -73,16 +76,20 @@
     var productID = "";
     var unitPrice = "";
     var quantity = "";
-    function editItemPopup(producerId, producerName, price, productId,productName) {
+
+    function editItemPopup(producerId, producerName, price, productId, productName, oldquantity) {
+  
+        productID = productId;
+        producerID = producerId;
+        unitPrice = price;
+        quantity = oldquantity;
         document.getElementById("Modal-Producer").innerText = "Product Name: " + productName;
         document.getElementById("Modal-Producer").innerText = "Seller Name: " + producerName;
 
 
         document.getElementById("Modal-Price").innerText = "Price per 1kg: " + price;
-        productID = productId;
-        producerID = producerId;
-        unitPrice = price;
-
+        document.getElementById("KGUnits").innerText = quantit;
+       
     }
     function deleteItem(producerId, producerName, price, productId, productName, quantity) {
        location.href = '@Url.Action("RemoveFromBasket", "Cart")?producerId=' + producerId + '&productId=' + productId + '&quantity=' + quantity + '&unitPrice=' + price;
@@ -92,10 +99,9 @@
 
     (function () {
         document.getElementById("SaveChanges").onclick = function () {
-            quantity = document.getElementById("KGUnits").value
-            var cartString = "ProducerId: " + producerID + "\nProductId: " + productID + "\nQuantity:" + quantity;
-          
-            location.href = '@Url.Action("AddToBasket", "Categories")?producerId=' + producerID + '&productId=' + productID + '&quantity=' + quantity + '&unitPrice=' + unitPrice;
+          var  newQuantity = document.getElementById("KGUnits").value
+
+            location.href = '@Url.Action("EditItem", "Cart")?producerId=' + producerID + '&productId=' + productID + '&oldQuantity=' + quantity + "&newQuantity=" + newQuantity+ '&unitPrice=' + unitPrice;
 
         };
     })();

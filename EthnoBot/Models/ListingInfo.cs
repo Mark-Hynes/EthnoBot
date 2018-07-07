@@ -11,6 +11,7 @@ namespace EthnoBot.Models
 
         public Producer Producer;
         public string Price;
+        public int Units;
         public ListingInfo()
         { }
     }

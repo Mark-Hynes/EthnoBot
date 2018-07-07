@@ -15,7 +15,7 @@ namespace EthnoBot.Controllers
     public class CategoriesController : Controller
     {
         private EthnoBotEntities db = new EthnoBotEntities();
-
+        
         // GET: Categories
         public ActionResult Index()
         {
@@ -79,7 +79,7 @@ namespace EthnoBot.Controllers
                     
                 }
              
-                lo.Price = Listings.ElementAt(i).Price.ToString();
+                lo.Price = Listings.ElementAt(i).UnitPrice.ToString();
                 lo.Product = product;
                 listings.Add(lo);
                 
@@ -174,7 +174,7 @@ namespace EthnoBot.Controllers
 
                 }
 
-                lo.Price = Listings.ElementAt(i).Price.ToString();
+                lo.Price = Listings.ElementAt(i).UnitPrice.ToString();
                 lo.Producer = producer;
                 listings.Add(lo);
 

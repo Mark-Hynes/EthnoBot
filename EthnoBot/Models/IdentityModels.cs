@@ -39,5 +39,7 @@ namespace EthnoBot.Models
         }
 
         public System.Data.Entity.DbSet<EthnoBot.Models.Producer> Producers { get; set; }
+
+        public System.Data.Entity.DbSet<EthnoBot.Models.Product> Products { get; set; }
     }
 }
