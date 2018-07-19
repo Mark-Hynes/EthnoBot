@@ -257,7 +257,7 @@ namespace EthnoBot.Controllers
 
                     if (result.Succeeded)
                     {
-                        Producer producer = new Producer { Telephone=model.Telephone, Name = model.Name, About = model.About, Address = model.Address, CompanyEmail = model.Email, CustomerServiceEmail = model.CustomerServiceEmail, Description = model.Description, Mobile = model.Mobile, ASPUserId = user.Id, Verified = "False", ImagePath = "~/Images/Producers/DefaultProducer.jpg" };
+                        Producer producer = new Producer { Telephone=model.Telephone, Name = model.Name, About = model.About, Address = model.Address, CompanyEmail = model.Email, CustomerServiceEmail = model.CustomerServiceEmail, Description = model.Description, Mobile = model.Mobile, ASPUserId = user.Id, Verified = "False", ImagePath = "DefaultProducer.png" };
                         AddProducerToDatabase(producer);
                         sendVerifyCompanyEmail(producer);
                         createCart(producer.ASPUserId);

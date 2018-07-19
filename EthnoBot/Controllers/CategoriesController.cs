@@ -94,7 +94,7 @@ namespace EthnoBot.Controllers
         }
 
         [Authorize]
-        public ActionResult AddToBasket(string producerId,string productId, string quantity, int unitPrice)
+        public ActionResult AddToBasket(string producerId,string productId, string quantity, double unitPrice)
         {
             int producer = Int32.Parse(producerId);
             int product = Int32.Parse(productId);

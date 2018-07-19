@@ -29,7 +29,7 @@
 
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
-        <a class="navbar-brand" href="#">EthnoBotanicals Ireland</a>
+      @Html.ActionLink("EthnoBotanicals Ireland", "Index", "Home", new object { }, new { @class = "navbar-brand" })
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -57,7 +57,7 @@
                         </div>
 
                     }
-                    @{ 
+                    @{
                         int cartCount = 0;
                         try { cartCount = (int)Session["CartItemCount"]; }
                         catch (Exception e) { }

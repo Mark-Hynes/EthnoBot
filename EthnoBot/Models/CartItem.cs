@@ -10,8 +10,8 @@ namespace EthnoBot.Models
         public Product product;
         public Producer producer;
         public int quantityKg;
-        public int unitPrice;
-        public int total;
+        public double unitPrice;
+        public double total;
 
         
     }

@@ -16,7 +16,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.producer.Name, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.producer.Name, new { htmlAttributes = new { @style = "cursor: default !important;", @class = "form-control", @id = "nameInput" } })
+                @Html.EditorFor(model => model.producer.Name, new { htmlAttributes = new { @id = "Name", @style = "cursor: default !important;", @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.producer.Name, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -24,7 +24,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.producer.Description, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.producer.Description, new { htmlAttributes = new { @style = "cursor: default !important;", @class = "form-control", @id = "descriptionInput" } })
+                @Html.EditorFor(model => model.producer.Description, new { htmlAttributes = new { @id = "Description", @style = "cursor: default !important;", @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.producer.Description, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -32,7 +32,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.producer.About, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.producer.About, new { htmlAttributes = new { @style = "cursor: default !important;", @class = "form-control", @id = "aboutInput" } })
+                @Html.EditorFor(model => model.producer.About, new { htmlAttributes = new { @id = "About", @style = "cursor: default !important;", @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.producer.About, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -40,7 +40,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.producer.Address, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.producer.Address, new { htmlAttributes = new { @style = "cursor: default !important;", @class = "form-control", @id = "addressInput" } })
+                @Html.EditorFor(model => model.producer.Address, new { htmlAttributes = new { @id = "Address", @style = "cursor: default !important;", @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.producer.Address, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -48,7 +48,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.producer.Mobile, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.producer.Mobile, new { htmlAttributes = new { @style = "cursor: default !important;", @class = "form-control", @id = "mobileInput" } })
+                @Html.EditorFor(model => model.producer.Mobile, new { htmlAttributes = new { @id = "Mobile", @style = "cursor: default !important;", @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.producer.Mobile, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -56,7 +56,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.producer.Telephone, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.producer.Telephone, new { htmlAttributes = new { @style = "cursor: default !important;", @class = "form-control", @id = "telephoneInput" } })
+                @Html.EditorFor(model => model.producer.Telephone, new { htmlAttributes = new { @id = "Telephone", @style = "cursor: default !important;", @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.producer.Telephone, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -64,7 +64,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.producer.CompanyEmail, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.producer.CompanyEmail, new { htmlAttributes = new { @style = "cursor: default !important;", @class = "form-control", @id = "companyEmailInput" } })
+                @Html.EditorFor(model => model.producer.CompanyEmail, new { htmlAttributes = new { @id = "CompanyEmail", @style = "cursor: default !important;", @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.producer.CompanyEmail, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -72,20 +72,15 @@
         <div class="form-group">
             @Html.LabelFor(model => model.producer.CustomerServiceEmail, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.producer.CustomerServiceEmail, new { htmlAttributes = new { @style = "cursor: default !important;", @class = "form-control", @id = "customerServiceEmailInput" } })
+                @Html.EditorFor(model => model.producer.CustomerServiceEmail, new { htmlAttributes = new { @id = "CustomerServiceEmail", @style = "cursor: default !important;", @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.producer.CustomerServiceEmail, "", new { @class = "text-danger" })
             </div>
         </div>
-        <a class="edit" id="edit" href="#">Edit</a>
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" id="Save" hidden class="btn btn-default" />
-            </div>
+                <input type="submit" value="Save Changes" id="Save" onclick="saveProfileChanges" class="btn btn-default" />     
+     
         </div>
-    </div>
 }
     <div>
-
         <h2>Listings</h2>
 
 
@@ -112,7 +107,7 @@
         @Html.ActionLink("Add new Listing", "AddListing",  new { @class = "btn btn-success btn-lg", @role = "button" })
    </div>
 
-    <div class="modal fade" id="Modal-Edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -173,10 +168,26 @@
         
 
 
-        document.getElementById("Modal-Price").innerText = price;
-        document.getElementById("KGUnits").innerText = oldquantity;
+        document.getElementById("Modal-Price").value = price;
+        document.getElementById("KGUnits").value = oldquantity;
 
-    }
+        }
+        function saveProfileChanges() {
+
+           var Description = document.getElementById("Description").value;
+                 var About = document.getElementById("About").value;
+                 var CompanyEmail = document.getElementById("CompanyEmail").value;
+                 var Mobile = document.getElementById("Mobile").value;
+                 var Telephone = document.getElementById("Telephone").value;
+                 var CustomerServiceEmail = document.getElementById("CustomerServiceEmail").value;
+                 var Address = document.getElementById("Address").value;
+                 var Name = document.getElementById("Name").value;
+                
+               
+                 location.href = '@Url.Action("DeleteListing", "Manage")?Name=' + Name + '&About=' + About + '&Description=' + Description + '&CompanyEmail=' + CompanyEmail + '&Mobile=' + Mobile + '&Telephone=' + Telephone + '&CustomerServiceEmail=' + CustomerServiceEmail + '&Address=' + Address;
+                 
+
+        }
     function deleteItem(producerId, producerName, price, productId, productName, quantity) {
        location.href = '@Url.Action("DeleteListing", "Manage")?producerId=' + producerId + '&productId=' + productId + '&quantity=' + quantity + '&unitPrice=' + price;
 
@@ -185,12 +196,31 @@
 
     (function () {
         document.getElementById("SaveChanges").onclick = function () {
-          var  newQuantity = document.getElementById("KGUnits").value
-
-            location.href = '@Url.Action("EditListing", "Manage")?producerId=' + producerID + '&productId=' + productID + '&oldQuantity=' + quantity + "&newQuantity=" + newQuantity+ '&unitPrice=' + unitPrice;
+            var newQuantity = document.getElementById("KGUnits").value;
+            var newUnitPrice = document.getElementById("Modal-Price").value;
+            location.href = '@Url.Action("EditListing", "Manage")?producerId=' + producerID + '&productId=' + productID + '&oldQuantity=' + quantity + "&newQuantity=" + newQuantity+ '&unitPrice=' + newUnitPrice;
 
         };
-    })();
+
+        document.getElementById("Save").onclick = function () {
+     
+                 var Description = document.getElementById("Description").value;
+                 var About = document.getElementById("About").value;
+                 var CompanyEmail = document.getElementById("CompanyEmail").value;
+                 var Mobile = document.getElementById("Mobile").value;
+                 var Telephone = document.getElementById("Telephone").value;
+                 var CustomerServiceEmail = document.getElementById("CustomerServiceEmail").value;
+                 var Address = document.getElementById("Address").value;
+                 var Name = document.getElementById("Name").value;
+            alert(Name);
+               
+
+            location.href = '@Url.Action("DeleteListing", "Manage")?Name=' + Name;
+                 
+        };
+
+
+        })();
     </script>
 
 

@@ -18,8 +18,34 @@ namespace EthnoBot.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
+        [HttpPost]
+        public ActionResult ProducerIndex(Producer producer)
+        {
+            string userID = User.Identity.GetUserId();
+            Producer p = db.Producers.Where(x => x.ASPUserId == userID).FirstOrDefault();
+             p.Name = producer.Name;
+             p.About = producer.About;
+             p.Description = producer.Description;
+             p.CompanyEmail = producer.CompanyEmail;
+             p.CustomerServiceEmail = producer.CustomerServiceEmail;
+             p.Address = producer.Address;
+             p.Mobile = producer.Mobile;
+             p.Telephone = producer.Telephone;
+            db.SaveChanges();
+            return RedirectToAction("ProducerIndex");
+        }
 
-
+        [Authorize]
+        public ActionResult SaveProducerChanges(string name)
+        {
+            string userID = User.Identity.GetUserId();
+            Producer p = db.Producers.Where(x => x.ASPUserId == userID).FirstOrDefault();
+            p.Name = name;
+            
+            
+            db.SaveChanges();
+            return RedirectToAction("ProducerIndex");
+        }
 
         [Authorize]
         public ActionResult DeleteListing(string producerId, string productId, string quantity, string unitPrice)
@@ -45,8 +71,8 @@ namespace EthnoBot.Controllers
             Producer pr = db.Producers.Where(x => x.ASPUserId == userID).FirstOrDefault();
             if (pr.ProducerId.ToString() == producerId)
             {
-                ProducerProduct p = db.ProducerProducts.Where(x => x.ProducerId.ToString() == producerId && x.ProductId.ToString() == productId && x.Units.ToString() == oldQuantity && x.UnitPrice.ToString() == unitPrice).FirstOrDefault();
-                p.UnitPrice = Int32.Parse(unitPrice);
+                ProducerProduct p = db.ProducerProducts.Where(x => x.ProducerId.ToString() == producerId && x.ProductId.ToString() == productId && x.Units.ToString() == oldQuantity).FirstOrDefault();
+                p.UnitPrice =Convert.ToDouble(unitPrice);
                 p.Units = Int32.Parse(newQuantity);
                 db.SaveChanges();
             }
@@ -72,7 +98,7 @@ namespace EthnoBot.Controllers
                 ProducerId = Int32.Parse(producerId),
                 ProductId = Int32.Parse(productId),
                 Units = Int32.Parse(quantity),
-                UnitPrice = Int32.Parse(unitPrice)
+                UnitPrice = Convert.ToDouble(unitPrice)
             };
             db.ProducerProducts.Add(p);
             db.SaveChanges();
@@ -84,8 +110,7 @@ namespace EthnoBot.Controllers
 
 
 
-
-
+       
 
         public ActionResult EditProducerProfile(Producer p)
         {
@@ -173,6 +198,7 @@ namespace EthnoBot.Controllers
                 _userManager = value;
             }
         }
+
 
         //
         // GET: /Manage/Index
