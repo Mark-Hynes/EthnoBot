@@ -18,6 +18,26 @@ namespace EthnoBot.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
+
+
+        [HttpPost]
+        public ActionResult Index(ApplicationUser user)
+        {
+            string userID = User.Identity.GetUserId();
+            ApplicationUser u = UserManager.Users.Where(x => x.Id == userID).FirstOrDefault();
+            u.FirstName = user.FirstName;
+            u.LastName = user.LastName;
+            u.Email = user.Email;
+            u.AddressLine1 = user.AddressLine1;
+            u.AddressLine2 = user.AddressLine2;
+            u.AddressLine3 = user.AddressLine3;
+            
+           
+            UserManager.Update(u);
+            return RedirectToAction("UserIndex");
+        }
+
+
         [HttpPost]
         public ActionResult ProducerIndex(Producer producer)
         {
@@ -257,7 +277,7 @@ namespace EthnoBot.Controllers
                 BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(user.Id),
                 Mobile = await UserManager.GetPhoneNumberAsync(user.Id),
                 AddressLine1 = user.AddressLine1, AddressLine2 = user.AddressLine2, AddressLine3 = user.AddressLine3,
-                FirstName = user.FirstName, LastName = user.LastName, Country = user.Country
+                FirstName = user.FirstName, LastName = user.LastName, Country = user.Country , Email=user.Email
           
             };
             return View(model);

@@ -6,57 +6,84 @@
 
 
 
+
+
+<div class="container" style="height:187px;width:1177px;">
+    <div class="row justify-content-center" style="height:180px;">
+        <div class="col-xl-3 offset-0 offset-xl-0"><img src="@Url.Content("~/Images/Producers/" + Model.producer.ImagePath)" class="rounded img-fluid d-table-row d-flex justify-content-center align-items-center align-content-center align-self-center flex-wrap" style="width:300px;height:180px;margin:0px;padding:0px;" /></div>
+    </div>
+</div>
+<div class="container">
+    <section></section>
+</div>
 <div class="container">
     <div class="row">
-        <div class="col-6 col-md-4">
-            <img class="card-img-top img-fluid" src="@Url.Content("~/Images/Producers/" + Model.producer.ImagePath)" alt="Card image cap" style="width:300px;height:180px">
+        <div class="col">
+            <h2 class="text-info">Name</h2>
+            <p class="text-muted"><strong>@Model.producer.Name</strong></p>
         </div>
-        <div class="col-6 col-md-4">
-            <h2 class="text-info">@Model.producer.Name</h2>
-
-
-            <h3 class="text-info ">Address: @Model.producer.Address</h3>
-
+        <div class="col">
+            <h2 class="text-info">Address</h2>
+            <p class="text-muted">@Model.producer.Address<br /></p>
         </div>
     </div>
 </div>
 <div class="container">
-
-    <h4 class="text-info">About: @Model.producer.About</h4>
-    <h4 class="text-info">@Model.producer.Description</h4>
-    <br />
-
+    <div class="row">
+        <div class="col">
+            <h3 class="text-info">Email</h3>
+            <p class="text-muted">Customer Service:  <b>@Model.producer.CustomerServiceEmail</b></p>
+        </div>
+        <div class="col">
+            <h3 class="text-info">Telephone</h3>
+            <p class="text-muted">Telephone: <b>@Model.producer.Telephone</b></p>
+            <p class="text-muted">Mobile: <b>@Model.producer.Mobile</b></p>
+        </div>
+    </div>
 </div>
 <div class="container">
-    <h3 class="text-info">Contact:</h3>
-    <a class="text-info">Email: @Model.producer.CustomerServiceEmail</a>
-    <p class="text-info">Mobile: @Model.producer.Mobile</p>
+    <div class="row">
+        <div class="col">
+            <h2 class="text-info">About</h2>
+            <p class="text-muted">@Model.producer.About</p>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h2 class="text-info">Description</h2>
+            <p class="text-muted">@Model.producer.Description</p>
+        </div>
+    </div>
 </div>
 
-
-
-
-
-
 <div class="container">
-    <h3 class="text-info">Products that @Model.producer.Name sells: </h3>
-
+    <div class="row">
+        <div class="col">
+            <h3 class="text-center text-muted"><strong>Products that this Producer sells:</strong></h3>
+        </div>
+    </div>
+</div>
+<br />
+<div class="container">
     <div class="list-group text-info">
         @foreach (var item in Model.listings)
-        {
-
-
-            <li class="list-group-item">
-                <h5 class=" text-info">@Html.ActionLink(item.Product.Title, "ProductAndListings", new { id = item.Product.ProductId }, new { @class = "text-info", }) <span class="badge badge-primary badge-pill">$@item.Price per 1Kg</span></h5>
-                <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary" data-toggle="modal" onclick="showPopup('@item.Producer.ProducerId','@item.Producer.Name','@item.Price','@item.Product.ProductId','@item.Product.Title')" data-target="#Modal">
-                    Add to Cart
-                </button>
-
+        {<li class="list-group-item">
+                <div class="row  border-secondary">
+                    <div class="col d-table-row order-1">@Html.ActionLink(item.Product.Title, "ProductAndListings", new { id = item.Product.ProductId }, new { @class = "text-info", })</div>
+                    <div class="col d-table-row order-2">
+                        <p class="text-muted">€@item.Price per 1Kg</p>
+                    </div>
+                    <div class="col d-table-row order-3 float-right"><button class="btn btn-info" data-toggle="modal" onclick="showPopup('@item.Producer.ProducerId','@item.Producer.Name','@item.Price','@item.Product.ProductId','@item.Product.Title')" data-target="#Modal">Add To Cart</button></div>
+                </div>
             </li>
 
         }
     </div>
+</div>
+
+
     <!-- Modal -->
     <div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -115,9 +142,9 @@
         document.getElementById("addToCart1").onclick = function () {
             quantity = document.getElementById("KGUnits").value
             var cartString = "ProducerId: " + producerID + "\nProductId: " + productID + "\nQuantity:" + quantity;
-            
+
             location.href = '@Url.Action("AddToBasket", "Categories")?producerId=' + producerID + '&productId=' + productID + '&quantity=' + quantity + '&unitPrice=' + unitPrice;
-           
+
         };
     })();
 </script>

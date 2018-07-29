@@ -1,111 +1,189 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - EthnoBotanicals Ireland</title>
+    <title>Home - EthnoBotanicals Ireland</title>
+    <link rel="icon" href="@Url.Content("~/favicon.ico")" />
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
     <!-- Our Custom CSS -->
     <link rel="stylesheet" href="style.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-122649599-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-122649599-2');
+    </script>
 
     <!-- Font Awesome JS -->
+    <link href=”//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css” rel=”stylesheet”>
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
     <style>
+        .team-boxed .item img {
+            max-width: 160px;
+        }
+        .team-boxed .item .box {
+            text-align: center;
+            padding: 30px;
+            background-color: #fff;
+            margin-bottom: 30px;
+        }
+        .team-boxed {
+            color: #313437;
+            background-color: #eef4f7;
+        }
+
+
+        .team-boxed .item {
+            text-align: center;
+        }
+
+
+
+        .rounded-circle {
+            border-radius: 50% !important;
+        }
+
+        img {
+            vertical-align: middle;
+            border-style: none;
+        }
+
+
         .control-label .text-info {
             display: inline-block;
         }
+        .shadow-textarea textarea.form-control::placeholder {
+            font-weight: 300;
+        }
+
+        .shadow-textarea textarea.form-control {
+            padding-left: 0.8rem;
+        }
+
         .default {
             cursor: default;
         }
+        body {
+            margin: 0;
+            margin-top: 0;
+            margin-bottom: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+        #header h1 {
+            margin: 0px;
+        }
+        .navbar {
+            margin-top: 0;
+            padding-top: 0;
+        }
+        #wrapper {
+            max-width: 940px;
+            margin: 0 auto;
+            padding: 0 5%;
+            clear: both;
+        }
     </style>
 </head>
-<body style="padding-top:unset; padding-bottom:unset" class="default">
+<body>
 
-
-
-
-    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
-      @Html.ActionLink("EthnoBotanicals Ireland", "Index", "Home", new object { }, new { @class = "navbar-brand" })
+    <nav class="navbar fixed-top navbar-expand-md navbar-light bg-light" style="margin-top: 0;padding-top: 0;">
+        @Html.ActionLink("EthnoBotanicals Ireland", "Index", "Home", new object { }, new { @class = "navbar-brand" })
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto nav-fill">
+            <ul class="navbar-nav nav-fill">
                 <li class="nav-item">
-                    @Html.ActionLink("Home", "Index", "Home", new object { }, new { @class = "nav-link text-success" })
+                    @Html.ActionLink("Home", "Index", "Home", null, new { @class = "nav-link text-secondary" })
                 </li>
                 <li class="nav-item">
-                    @Html.ActionLink("Products", "Index", "Categories", new object { }, new { @class = "nav-link text-success" })
+                    @Html.ActionLink("Products", "Index", "Categories", null, new { @class = "nav-link text-success" })
                 </li>
 
                 <li class="nav-item">
-                    @Html.ActionLink("Producers", "ProducerList", "Categories", new object { }, new { @class = "nav-link text-info" })
+                    @Html.ActionLink("Producers", "ProducerList", "Categories", null, new { @class = "nav-link text-info" })
                 </li>
-                <li class="nav-item">
+
+                @{
+                    int cartCount = 0;
+                    try { cartCount = (int)Session["CartItemCount"]; }
+                    catch (Exception) { }
+                }
+                <li class="nav-item align-self-center form-inline">
                     @using (Html.BeginForm("Search", "Categories", new { @class = "form-inline" }))
                     {
-                        <div class="form-inline">
-                            <div class="form-group mx-sm-3 mb-2">
-                                <input class="form-control " type="text" name="searchString" placeholder="Find Products">
-                                <button type="submit" class="btn btn-success mb-2">Search</button>
-                            </div>
-                        </div>
+
+                        <input class="form-control " type="text" name="searchString" placeholder="Find Products ">
+                        <button type="submit" class="btn btn-success">Search</button>
 
                     }
-                    @{
-                        int cartCount = 0;
-                        try { cartCount = (int)Session["CartItemCount"]; }
-                        catch (Exception e) { }
-                    }
+                </li>
+
+
 
             </ul>
+
             @Html.Partial("_LoginPartial")
 
         </div>
 
+        
     </nav>
 
-
-
+    
 
 
 
     <div class="container body-content">
 
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - EthnoBotanicals Ireland</p>
-        </footer>
+
+
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @RenderSection("scripts", required: false)
+
+        <!-- jQuery CDN - Slim version (=without AJAX) -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <!-- Popper.JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+        <!-- Bootstrap JS -->
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+        <script>
+            var jumboHeight = $('.jumbotron').outerHeight();
+            function parallax() {
+                var scrolled = $(window).scrollTop();
+                $('.bg').css('height', (jumboHeight - scrolled) + 'px');
+            }
+
+            $(window).scroll(function (e) {
+                parallax();
+            });
+        </script>
+        <script type="text/javascript" src="https://cdn.ywxi.net/js/1.js" async></script>
+        <script type="text/javascript" src="https://cdn.ywxi.net/js/1.js" async></script>
+        <script>
+            $(function () {
+
+                // jQuery methods go here...
+                $('#loginModal').appendTo("body");
+            });
+
+        </script>
     </div>
-
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
-
-    <!-- jQuery CDN - Slim version (=without AJAX) -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <!-- Popper.JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
-    <!-- Bootstrap JS -->
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-    <script>
-    var jumboHeight = $('.jumbotron').outerHeight();
-    function parallax(){
-    var scrolled = $(window).scrollTop();
-    $('.bg').css('height', (jumboHeight-scrolled) + 'px');
-    }
-
-    $(window).scroll(function(e){
-    parallax();
-    });
-    </script>
 </body>
+    
 </html>

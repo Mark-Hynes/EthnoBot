@@ -18,35 +18,43 @@ namespace EthnoBot.Controllers
         [Authorize]
         public ActionResult Index()
         {
-           List<CartItem> items = new List<CartItem>();
-            string userID = User.Identity.GetUserId();
-            Cart c = db.Carts.Where(x => x.UserID == userID).FirstOrDefault();
-
-            string[] cartItemsAsString = c.CartItems.Split('|');
-
-            for (int i = 0; i < cartItemsAsString.Length; i++)
+            try
             {
-                if (cartItemsAsString[i].Equals(""))
-                { continue; }
+                List<CartItem> items = new List<CartItem>();
+                string userID = User.Identity.GetUserId();
+                Cart c = db.Carts.Where(x => x.UserID == userID).FirstOrDefault();
+                if (c == null)
+                {
+                    AccountController.createCart(userID);
+                    c = db.Carts.Where(x => x.UserID == userID).FirstOrDefault();
+                }
+                string[] cartItemsAsString = c.CartItems.Split('|');
 
-                CartItem item = new CartItem();
-               string[] individualCartItemString = cartItemsAsString[i].Split(',');
-               
-                int producerid = Int32.Parse(individualCartItemString[0].Replace("ProducerId=",""));
-                int productid = Int32.Parse(individualCartItemString[1].Replace("ProductId=", ""));
+                for (int i = 0; i < cartItemsAsString.Length; i++)
+                {
+                    if (cartItemsAsString[i].Equals(""))
+                    { continue; }
 
-                item.producer = db.Producers.Where(x => x.ProducerId == producerid ).FirstOrDefault();
-                item.product = db.Products.Where(x => x.ProductId == productid).FirstOrDefault();
-                ProducerProduct pp = db.ProducerProducts.Where(x => x.ProductId == item.product.ProductId && x.ProducerId == item.producer.ProducerId).First();
+                    CartItem item = new CartItem();
+                    string[] individualCartItemString = cartItemsAsString[i].Split(',');
+
+                    int producerid = Int32.Parse(individualCartItemString[0].Replace("ProducerId=", ""));
+                    int productid = Int32.Parse(individualCartItemString[1].Replace("ProductId=", ""));
+
+                    item.producer = db.Producers.Where(x => x.ProducerId == producerid).FirstOrDefault();
+                    item.product = db.Products.Where(x => x.ProductId == productid).FirstOrDefault();
+                    ProducerProduct pp = db.ProducerProducts.Where(x => x.ProductId == item.product.ProductId && x.ProducerId == item.producer.ProducerId).First();
 
 
-                item.unitPrice = pp.UnitPrice;
-                item.quantityKg = Int32.Parse(individualCartItemString[3].Replace("Quantity=",""));
-                item.total = item.unitPrice * item.quantityKg;
-                items.Add(item);
+                    item.unitPrice = pp.UnitPrice;
+                    item.quantityKg = Int32.Parse(individualCartItemString[3].Replace("Quantity=", ""));
+                    item.total = item.unitPrice * item.quantityKg;
+                    items.Add(item);
+                }
+                countCartItems();
+                return View(items);
             }
-            countCartItems();
-            return View(items);
+            catch (Exception) { return View("Error"); }
         }
 
         public ActionResult Checkout()
@@ -198,10 +206,13 @@ namespace EthnoBot.Controllers
                 PaypalLogger.Log("Error: " + ex.Message);
                 return View("Failure");
             }
-
+            createOrder();
             return View("Success");
         }
+        protected void createOrder()
+        {
 
+        }
         [Authorize]
         public ActionResult RemoveFromBasket(string producerId, string productId, string quantity, string unitPrice)
         {

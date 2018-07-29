@@ -3,109 +3,126 @@
     ViewBag.Title = "Company Information";
 }
 
-<h2>Company Information</h2>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h2 class="text-muted text-center">Company Dashboard</h2>
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-
-    <div class="form-horizontal" id="containingDiv">
-        <h4>Producer</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.producer.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.producer.Name, new { htmlAttributes = new { @id = "Name", @style = "cursor: default !important;", @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.producer.Name, "", new { @class = "text-danger" })
-            </div>
         </div>
+    </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.producer.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.producer.Description, new { htmlAttributes = new { @id = "Description", @style = "cursor: default !important;", @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.producer.Description, "", new { @class = "text-danger" })
-            </div>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+        <div class="col-md-6">
+            <br />
+            <section>
+                <div class="form-group">
+                    <label class="text-info" for="nameInput">Company Name</label>
+                    @Html.EditorFor(model => model.producer.Name, new { htmlAttributes = new { @id = "Name", @style = "cursor: default !important;", @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.producer.Name, "", new { @class = "text-danger" })
+                </div>
+
+
+                <div class="form-group">
+                    <label class="text-info" for="aboutInput">About</label><br />
+                    @Html.TextAreaFor(model => model.producer.About, new { htmlAttributes = new { @class = "form-control text-default md-textarea" }, @id = "aboutInput", @rows = "3" })
+                    @Html.ValidationMessageFor(model => model.producer.About, "", new { @class = "text-danger" })
+
+                </div>
+
+
+                <div class="form-group">
+                    <label class="text-info" for="descriptionInput">Description</label><br />
+                    @Html.TextAreaFor(model => model.producer.Description, new { htmlAttributes = new { @class = "form-control text-default md-textarea" }, @id = "descriptionInput", @rows = "3" })
+                    @Html.ValidationMessageFor(model => model.producer.Description, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    <label class="text-info" for="addressInput">Address</label><br />
+                    @Html.TextAreaFor(model => model.producer.Address, new { htmlAttributes = new { @class = "form-control text-default md-textarea" }, @id = "addressInput", @rows = "3" })
+                    @Html.ValidationMessageFor(model => model.producer.Address, "", new { @class = "text-danger" })
+                </div>
+            </section>
         </div>
+        <div class="col-md-6">
+            <br />
+            <section>
+                <div class="form-group">
+                    <label class="text-info" for="mobileInput">Company Mobile</label>
+                    @Html.EditorFor(model => model.producer.Mobile, new { htmlAttributes = new { @class = "form-control text-default" }, @id = "mobileInput" })
+                    @Html.ValidationMessageFor(model => model.producer.Mobile, "", new { @class = "text-danger" })
+                </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.producer.About, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.producer.About, new { htmlAttributes = new { @id = "About", @style = "cursor: default !important;", @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.producer.About, "", new { @class = "text-danger" })
-            </div>
+                <div class="form-group">
+                    <label class="text-info" for="telephoneInput">Company Telephone</label>
+                    @Html.EditorFor(model => model.producer.Telephone, new { htmlAttributes = new { @class = "form-control text-default" }, @id = "telephoneInput" })
+                    @Html.ValidationMessageFor(model => model.producer.Telephone, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    <label class="text-info" for="emailInput">Company Email</label>
+                    @Html.EditorFor(model => model.producer.CompanyEmail, new { htmlAttributes = new { @class = "form-control text-default" }, @id = "emailInput" })
+                    @Html.ValidationMessageFor(model => model.producer.CompanyEmail, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    <label class="text-info" for="customerServiceEmailInput">Customer Service Email</label>
+                    @Html.EditorFor(model => model.producer.CustomerServiceEmail, new { htmlAttributes = new { @class = "form-control text-default" }, @id = "customerServiceEmailInput" })
+                    @Html.ValidationMessageFor(model => model.producer.CustomerServiceEmail, "", new { @class = "text-danger" })
+                    <br />
+                    <input type="submit" value="Save Changes" id="Save" onclick="saveProfileChanges" class="btn btn-info float-left" />
+                </div>
+
+            </section>
         </div>
+    }
+    <hr />
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.producer.Address, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.producer.Address, new { htmlAttributes = new { @id = "Address", @style = "cursor: default !important;", @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.producer.Address, "", new { @class = "text-danger" })
-            </div>
+</div>
+<hr />
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h2 class="text-muted text-center">Product Listings</h2>
+
         </div>
+    </div>
+    <br />
+    <ul class="list-group">
+        @foreach (var item in Model.listings)
+        {
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.producer.Mobile, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.producer.Mobile, new { htmlAttributes = new { @id = "Mobile", @style = "cursor: default !important;", @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.producer.Mobile, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.producer.Telephone, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.producer.Telephone, new { htmlAttributes = new { @id = "Telephone", @style = "cursor: default !important;", @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.producer.Telephone, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.producer.CompanyEmail, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.producer.CompanyEmail, new { htmlAttributes = new { @id = "CompanyEmail", @style = "cursor: default !important;", @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.producer.CompanyEmail, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.producer.CustomerServiceEmail, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.producer.CustomerServiceEmail, new { htmlAttributes = new { @id = "CustomerServiceEmail", @style = "cursor: default !important;", @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.producer.CustomerServiceEmail, "", new { @class = "text-danger" })
-            </div>
-        </div>
-                <input type="submit" value="Save Changes" id="Save" onclick="saveProfileChanges" class="btn btn-default" />     
-     
-        </div>
-}
-    <div>
-        <h2>Listings</h2>
+            <li class="list-group-item">
+                
+                <div class="row">
+                    <div class="col-xl-3">@Html.ActionLink(item.Product.Title, "ProductAndListings", "Categories", new { id = item.Product.ProductId }, new { @class = "text-info", })</div>
+                    <div class="col-xl-3">
+                        <p class="text-muted">€@item.Price per 1 kg Unit</p>
+                    </div>
+                    <div class="col-xl-3">
+                        <p class="text-muted">@item.Units Kg Units</p>
+                    </div>
+                    <div class="col-xl-1 offset-xl-0"><button class="btn btn-info float-right" type="button"data-toggle="modal" onclick="editItemPopup('@item.Producer.ProducerId','@item.Producer.Name','@item.Price','@item.Product.ProductId','@item.Product.Title','@item.Units')" data-target="#Modal">Edit</button></div>
+                    <div class="col-xl-1"><button class="btn btn-info" type="button" onclick="deleteItem('@item.Producer.ProducerId','@item.Producer.Name','@item.Price','@item.Product.ProductId','@item.Product.Title','@item.Units')" data-target="#Modal-Edit">Delete</button></div>
+                </div>
+                           </li>
+        }
+    </ul>
 
 
-        <ul class="list-group">
-            @foreach (var item in Model.listings)
-            {
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <span class=" text-info">@Html.ActionLink(item.Product.Title, "ProductAndListings", "Categories", new { id = item.Product.ProductId }, new { @class = "text-info", })</span>
+    @Html.ActionLink("Add new Listing", "AddListing", new { @class = "btn btn-info btn-lg", @role = "button" })
+</div>
 
 
-                    <span class="badge badge-primary badge-pill">$@item.Price per Kg unit</span>
-                    <span class=" text-info"> @item.Units Units</span>
 
-                    <button type="button" class="btn btn-primary" data-toggle="modal" onclick="editItemPopup('@item.Producer.ProducerId','@item.Producer.Name','@item.Price','@item.Product.ProductId','@item.Product.Title','@item.Units')" data-target="#Modal">
-                        Edit Item
-                    </button>
-                    <button type="button" class="btn btn-primary" onclick="deleteItem('@item.Producer.ProducerId','@item.Producer.Name','@item.Price','@item.Product.ProductId','@item.Product.Title','@item.Units')" data-target="#Modal-Edit">
-                        Delete
-                    </button>
 
-                </li>
-            }
-        </ul>
-        @Html.ActionLink("Add new Listing", "AddListing",  new { @class = "btn btn-success btn-lg", @role = "button" })
-   </div>
+
+
+
+
+
 
     <div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -122,7 +139,7 @@
                     <p id="Modal-ProductID"></p>
                     <p id="Modal-Product"></p>
                     <p id="Modal-Producer"></p>
-                  
+
                     <div class="input-group mb-3">
                         <input type="number" id="KGUnits" class="form-control" min="1" max="100" placeholder="1" aria-label="KGUnits" aria-describedby="basic-addon2" required>
                         <div class="input-group-append">
@@ -146,12 +163,6 @@
     </div>
 
 
-
-
-
-
-
-
     <script type="text/javascript">
     var producerID = "";
     var productID = "";
@@ -165,7 +176,7 @@
         unitPrice = price;
         quantity = oldquantity;
         document.getElementById("Modal-Product").innerText = "Product Name: " + productName;
-        
+
 
 
         document.getElementById("Modal-Price").value = price;
@@ -182,10 +193,10 @@
                  var CustomerServiceEmail = document.getElementById("CustomerServiceEmail").value;
                  var Address = document.getElementById("Address").value;
                  var Name = document.getElementById("Name").value;
-                
-               
+
+
                  location.href = '@Url.Action("DeleteListing", "Manage")?Name=' + Name + '&About=' + About + '&Description=' + Description + '&CompanyEmail=' + CompanyEmail + '&Mobile=' + Mobile + '&Telephone=' + Telephone + '&CustomerServiceEmail=' + CustomerServiceEmail + '&Address=' + Address;
-                 
+
 
         }
     function deleteItem(producerId, producerName, price, productId, productName, quantity) {
@@ -203,7 +214,7 @@
         };
 
         document.getElementById("Save").onclick = function () {
-     
+
                  var Description = document.getElementById("Description").value;
                  var About = document.getElementById("About").value;
                  var CompanyEmail = document.getElementById("CompanyEmail").value;
@@ -213,10 +224,10 @@
                  var Address = document.getElementById("Address").value;
                  var Name = document.getElementById("Name").value;
             alert(Name);
-               
+
 
             location.href = '@Url.Action("DeleteListing", "Manage")?Name=' + Name;
-                 
+
         };
 
 

@@ -47,8 +47,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Amazon.Lambda.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=885c28607f98e604, processorArchitecture=MSIL">
+      <HintPath>..\packages\Amazon.Lambda.Core.1.0.0\lib\netstandard1.3\Amazon.Lambda.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="AWSSDK.Core, Version=3.3.0.0, Culture=neutral, PublicKeyToken=885c28607f98e604, processorArchitecture=MSIL">
+      <HintPath>..\packages\AWSSDK.Core.3.3.24.3\lib\net45\AWSSDK.Core.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
@@ -127,6 +133,10 @@
       <HintPath>..\packages\PayPal.1.9.1\lib\net451\PayPal.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Console, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Console.4.0.0\lib\net46\System.Console.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.4.0\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
@@ -216,6 +226,7 @@
     <Compile Include="Models\CartItem.cs" />
     <Compile Include="Models\CartViewModel.cs" />
     <Compile Include="Models\Category.cs" />
+    <Compile Include="Models\Helpers.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ListingInfo.cs" />
     <Compile Include="Models\ManageProducerViewModel.cs" />
@@ -228,6 +239,7 @@
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\ProductAndListingsModel.cs" />
     <Compile Include="Models\ProductPageModel.cs" />
+    <Compile Include="Models\RDSContext.cs" />
     <Compile Include="Models\SearchResultsViewModel.cs" />
     <Compile Include="Models\EthnoBotEntities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -235,26 +247,52 @@
     <Compile Include="Utils\Gmailer.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\DefaultConnection.mdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="App_Data\DefaultConnection_log.ldf">
+      <DependentUpon>DefaultConnection.mdf</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="App_Data\EthnoBotEntities.mdf" />
+    <Content Include="App_Data\EthnoBotEntities_log.ldf">
+      <DependentUpon>EthnoBotEntities.mdf</DependentUpon>
+    </Content>
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-reboot.css" />
     <Content Include="Content\bootstrap-reboot.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\images\favicon.ico" />
     <Content Include="Content\images\Jcrop.gif" />
     <Content Include="Content\jquery.Jcrop.css" />
     <Content Include="Content\jquery.Jcrop.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\About\Christian.jpg" />
+    <Content Include="Images\About\Martin.jpg" />
+    <Content Include="Images\About\Martin.png" />
     <Content Include="Images\Categories\CategoryDefault.png" />
     <Content Include="Images\Categories\CardDefault.png" />
-    <Content Include="Images\Producers\DefaultProducer.jpg" />
-    <Content Include="Images\Products\DefaultProduct.jpg" />
+    <Content Include="Images\Categories\DreamHerbs.png" />
+    <Content Include="Images\Categories\IncenseHerbs.png" />
+    <Content Include="Images\Categories\LoveHerbs.png" />
+    <Content Include="Images\Categories\SacredPlants.png" />
+    <Content Include="Images\Categories\ShamanicPlants.png" />
+    <Content Include="Images\Home.png" />
+    <Content Include="Images\linkedin.png" />
+    <Content Include="Images\Producers\DefaultProducer.png" />
+    <Content Include="Images\Producers\EthnoBotanicalIreland.png" />
     <Content Include="Images\Products\Beets.jpg" />
+    <Content Include="Images\Products\DefaultProduct.png" />
     <Content Include="Images\Products\EnglishTree.jpg" />
     <Content Include="Images\Products\GermanGrass.jpg" />
     <Content Include="Images\Products\IrishGrass.jpg" />
+    <Content Include="Images\Products\MexicanTarragon.png" />
+    <Content Include="Images\Products\Sinicuichi.png" />
+    <Content Include="Images\Products\WinterCherry.png" />
     <Content Include="Images\Three.jpg" />
     <Content Include="Images\Four.png" />
     <Content Include="Scripts\bootstrap.bundle.js" />
@@ -282,6 +320,15 @@
     <Content Include="Scripts\esm\popper.js.map" />
     <Content Include="Scripts\esm\popper-utils.min.js.map" />
     <Content Include="Scripts\esm\popper-utils.js.map" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
@@ -314,13 +361,6 @@
     <Content Include="Scripts\_references.js" />
     <Content Include="Images\One.PNG" />
     <Content Include="Images\Two.png" />
-    <Content Include="Web.config" />
-    <Content Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
-    <Content Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
@@ -400,7 +440,6 @@
     <Content Include="Views\Cart\Failure.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Logs\" />
     <Folder Include="Views\Producer\" />
   </ItemGroup>

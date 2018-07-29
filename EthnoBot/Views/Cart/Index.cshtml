@@ -6,36 +6,69 @@
     int total = 0;
 }
 
-<h2>Cart</h2>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h3 class="text-center text-muted"><strong>View your Cart items:</strong></h3>
+        </div>
+    </div>
+</div>
+<br />
+<hr />
 
 
-<ul class="list-group">
+<ul class="list-group text-info">
+    <li class="list-group-item">
+        <div class="row">
+            <div class="col-xl-2 border border-bottom-0 border-top-0 border-left-0"><p class="text-dark"><strong>Product Name</strong></p></div>
+            <div class="col-xl-2 border border-bottom-0 border-top-0 border-left-0"><p class="text-dark"><strong>Producer</strong></p></div>
+            <div class="col-xl-2 border border-bottom-0 border-top-0 border-left-0">
+                <p class="text-dark"><strong>Price per 1 kg</strong></p>
+            </div>
+            <div class="col-xl-1 border border-bottom-0 border-top-0 border-left-0">
+                <p class="text-dark"><strong>No.  of Kg Units</strong></p>
+            </div>
+            <div class="col border border-bottom-0 border-top-0 border-left-0">
+                <p class="text-dark"><strong>Total</strong></p>
+            </div>
+            <div class="col-xl-2 offset-xl-0 border border-bottom-0 border-top-0 border-left-0">
+                <p></p>
+            </div>
+            <div class="col">
+                <p></p>
+            </div>
+        </div>
+    </li>
     @foreach (var item in Model)
     {
         total += (int)item.total;
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-            <span class=" text-info">@Html.ActionLink(item.product.Title, "ProductAndListings", "Categories", new { id = item.product.ProductId }, new { @class = "text-info", })</span>
+        <li class="list-group-item">
 
-            <span class=" text-info">@Html.ActionLink(item.producer.Name, "ProducerAndListings", "Categories", new { id = item.producer.ProducerId }, new { @class = "text-info", })</span>
 
-            <span class="badge badge-primary badge-pill">$@item.unitPrice per Kg unit</span>
-            <span class=" text-info"> @item.quantityKg Units</span>
-
-            <span class=" text-info">Total: $ @item.total</span>
-            <button type="button" class="btn btn-primary" data-toggle="modal" onclick="editItemPopup('@item.producer.ProducerId','@item.producer.Name','@item.unitPrice','@item.product.ProductId','@item.product.Title','@item.quantityKg')" data-target="#Modal">
-                Edit Item
-            </button>
-            <button type="button" class="btn btn-primary" onclick="deleteItem('@item.producer.ProducerId','@item.producer.Name','@item.unitPrice','@item.product.ProductId','@item.product.Title','@item.quantityKg')" data-target="#Modal">
-                Delete
-            </button>
+            <div class="row">
+                <div class="col-xl-2 border border-bottom-0 border-top-0 border-left-0">@Html.ActionLink(item.product.Title, "ProductAndListings", "Categories", new { id = item.product.ProductId }, new { @class = "text-info", })</div>
+                <div class="col-xl-2 border border-bottom-0 border-top-0 border-left-0">@Html.ActionLink(item.producer.Name, "ProducerAndListings", "Categories", new { id = item.producer.ProducerId }, new { @class = "text-info", })</div>
+                <div class="col-xl-2 border border-bottom-0 border-top-0 border-left-0">
+                    <p class="text-muted">€@item.unitPrice per 1 kg</p>
+                </div>
+                <div class="col-xl-1 border border-bottom-0 border-top-0 border-left-0">
+                    <p class="text-muted">@item.quantityKg Kg Units</p>
+                </div>
+                <div class="col border border-bottom-0 border-top-0 border-left-0">
+                    <p>€@item.total<br /></p>
+                </div>
+                <div class="col-xl-2 offset-xl-0 border border-bottom-0 border-top-0 border-left-0 align-self-center"><button class="btn btn-info" type="button" data-toggle="modal" onclick="editItemPopup('@item.producer.ProducerId','@item.producer.Name','@item.unitPrice','@item.product.ProductId','@item.product.Title','@item.quantityKg')" data-target="#Modal">Edit Item</button></div>
+                <div class="col"><button class="btn btn-info align-self-center" type="button" onclick="deleteItem('@item.producer.ProducerId','@item.producer.Name','@item.unitPrice','@item.product.ProductId','@item.product.Title','@item.quantityKg')" data-target="#Modal">Delete</button></div>
+            </div>
 
         </li>
     }
 </ul>
-<h4>Subtotal: $@total</h4>
+<hr />
+<h4 class="text-right text-muted">Subtotal: <b>€@total</b></h4>
 
 
-    @Html.ActionLink("Checkout", "PaymentWithPaypal","Cart",null,new { type="button",@class="btn btn-primary"})
+@Html.ActionLink("Checkout", "PaymentWithPaypal", "Cart", null, new { type = "button", @class = "btn btn-info" })
 
 
 <div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -53,7 +86,7 @@
                 <p id="Modal-Producer"></p>
                 <p id="Modal-Price"></p>
                 <div class="input-group mb-3">
-                    <input type="number" id="KGUnits" class="form-control" min="1" max="100"  aria-label="KGUnits" aria-describedby="basic-addon2" required>
+                    <input type="number" id="KGUnits" class="form-control" min="1" max="100" aria-label="KGUnits" aria-describedby="basic-addon2" required>
                     <div class="input-group-append">
                         <span class="input-group-text" id="basic-addon2"> kgs</span>
                     </div>

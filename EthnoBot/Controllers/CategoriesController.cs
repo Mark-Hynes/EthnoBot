@@ -149,43 +149,47 @@ namespace EthnoBot.Controllers
 
         public ActionResult ProducerAndListings(int id)
         {
-            Producer producer = db.Producers.FirstOrDefault(acc => acc.ProducerId == id);
-            List<ProducerProduct> Listings = db.ProducerProducts.Where(x => x.ProducerId == id).ToList();
-  
-
-
-
-            List<ListingInfo> listings = new List<ListingInfo>();
-
-
-
-            for (int i = 0; i < Listings.Count; i++)
+            try
             {
-                ListingInfo lo = new ListingInfo();
-                int prodID = Listings.ElementAt(i).ProductId;
+                Producer producer = db.Producers.FirstOrDefault(acc => acc.ProducerId == id);
+                List<ProducerProduct> Listings = db.ProducerProducts.Where(x => x.ProducerId == id).ToList();
 
-                var prods = db.Products.Where(x => x.ProductId == prodID).ToList();
-                for (int j = 0; j < prods.Count; j++)
+
+
+
+                List<ListingInfo> listings = new List<ListingInfo>();
+
+
+
+                for (int i = 0; i < Listings.Count; i++)
                 {
-                    Product prod = prods.ElementAt(j);
+                    ListingInfo lo = new ListingInfo();
+                    int prodID = Listings.ElementAt(i).ProductId;
 
-                    lo.Product = prod;
+                    var prods = db.Products.Where(x => x.ProductId == prodID).ToList();
+                    for (int j = 0; j < prods.Count; j++)
+                    {
+                        Product prod = prods.ElementAt(j);
 
+                        lo.Product = prod;
+
+
+                    }
+
+                    lo.Price = Listings.ElementAt(i).UnitPrice.ToString();
+                    lo.Producer = producer;
+                    listings.Add(lo);
 
                 }
 
-                lo.Price = Listings.ElementAt(i).UnitPrice.ToString();
-                lo.Producer = producer;
-                listings.Add(lo);
 
+                ProducerAndListingsModel pm = new ProducerAndListingsModel();
+                pm.listings = listings;
+                pm.producer = producer;
+
+                return View(pm);
             }
-
-
-            ProducerAndListingsModel pm = new ProducerAndListingsModel();
-            pm.listings = listings;
-            pm.producer = producer;
-           
-            return View(pm);
+            catch (Exception) { return View("Error"); }
         }
 
 

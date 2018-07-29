@@ -22,7 +22,7 @@ namespace EthnoBot.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-        private EthnoBotEntities db = new EthnoBotEntities();
+        private static EthnoBotEntities db = new EthnoBotEntities();
 
         public AccountController()
         {
@@ -191,25 +191,45 @@ namespace EthnoBot.Controllers
             using (var context = new ApplicationDbContext())
             {
                 if (ModelState.IsValid)
-                {
-                    var user = new ApplicationUser() { UserName = model.Email, Email=model.Email, FirstName = model.FirstName, LastName = model.LastName };
-                    var result = await UserManager.CreateAsync(user, model.Password);
-
-                    var roleStore = new RoleStore<IdentityRole>(context);
-                    var roleManager = new RoleManager<IdentityRole>(roleStore);
-
-                    var userStore = new UserStore<ApplicationUser>(context);
-                    var userManager = new UserManager<ApplicationUser>(userStore);
-                    userManager.AddToRole(user.Id, "User");
-                    createCart(user.Id);
-                    if (result.Succeeded)
+                { 
+                    bool p = checkIfEmailExists(model.Email);
+                    if (p == false)
                     {
-                        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                        return RedirectToAction("Index", "Home");
+                        var user = new ApplicationUser() { UserName = model.Email, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName };
+                        var result = await UserManager.CreateAsync(user, model.Password);
+
+                        var roleStore = new RoleStore<IdentityRole>(context);
+                        var roleManager = new RoleManager<IdentityRole>(roleStore);
+
+                        var userStore = new UserStore<ApplicationUser>(context);
+                        var userManager = new UserManager<ApplicationUser>(userStore);
+                        try
+                        {
+                            userManager.AddToRole(user.Id, "User");
+                            createCart(user.Id);
+                            if (result.Succeeded)
+                            {
+                                await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                                ViewData["LoginErrorMessage"] = null;
+                                return RedirectToAction("Index", "Home");
+                            }
+                            else
+                            {
+                                ViewData["LoginErrorMessage"] = result.Errors.ToString();
+                                return RedirectToAction("Register", "Account");
+                            }
+                            //AddErrors(result);
+
+                        }
+                        catch (Exception e)
+                        {
+                            ViewData["LoginErrorMessage"] = e.ToString();
+                            return RedirectToAction("Register", "Account");
+                        }
                     }
-                    else
-                    {
-                        AddErrors(result);
+                    else {
+                        ViewData["LoginErrorMessage"] = "Email is already registered with an existing account.";
+                        return View(model);
                     }
                 }
                 // If we got this far, something failed, redisplay form
@@ -217,7 +237,15 @@ namespace EthnoBot.Controllers
             }
         }
 
-        private void createCart(string id)
+        private bool checkIfEmailExists(string email)
+        {
+           if (UserManager.Users.Any(u => u.Email == email))
+                return true;
+            else
+                return false;
+        }
+
+        public  static void createCart(string id)
         {
             Cart userCart = new Cart(); 
             Guid cartID = Guid.NewGuid();

@@ -1,7 +1,41 @@
 ﻿@{
     ViewBag.Title = "About";
 }
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
-
-<p>Use this area to provide additional information.</p>
+<body>
+    <div class="team-boxed">
+        <div class="container">
+            <div class="intro">
+                <h2 class="text-center text-dark"><b>The Team</b></h2>
+<hr />             
+            </div>
+            <div class="row people">
+                <div class="col-md-6 col-lg-4 offset-lg-2 item">
+                    <div class="box">
+                        <img src="@Url.Content("~/Images/About/Christian.jpg")" class="rounded-circle" />
+                        <h3 class="name"><strong>Christian Kayembe</strong><br /></h3>
+                        <p class="title text-muted">MANAGING DIRECTOR</p>
+                        <p class="description">
+                            <br />Experienced and motivate certified Quality Engineer with a demonstrated history of working in the Pharmaceutical, Healtcare and engineering industry. Multidisciplinary engineer with a MSc in Pharmaceutical Manufacturing and
+                            Process Technology skilled in Operations Management, Engineering, Business Process Improvement, Statistical Process Control (SPC), Validation and Quality Management. Strong quality assurance professional with expertise in Lean
+                            and Six-Sigma tools.<br />
+                        </p>
+                        <div class="social"><a href="https://www.linkedin.com/in/christian-kayembe-158649b0/"><img src="~/Images/linkedin.png" /></a></div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 offset-lg-0 item">
+                    <div class="box">
+                        <img src="@Url.Content("~/Images/About/Martin.jpg")" class="rounded-circle" />
+                        <h3 class="name"><strong>Martin O Neill</strong><br /></h3>
+                        <p class="title text-muted">DIRECTOR</p>
+                        <p class="description">
+                            Aenean tortor est, vulputate quis leo in, vehicula rhoncus lacus. Praesent aliquam in tellus eu gravida. Aliquam varius finibus est, et interdum justo suscipit id. Etiam dictum feugiat tellus, a semper massa.<br />Aenean tortor
+                            est, vulputate quis leo in, vehicula rhoncus lacus. Praesent aliquam in tellus eu gravida. Aliquam varius finibus est, et interdum justo suscipit id. Etiam dictum feugiat tellus, a semper massa.<br /><br />arius finibus est,
+                            et interdum justo suscipit id. Etiam dictum feugiat tellus, a semper massa.<br /><br />
+                        </p>
+                        <div class="social"><a href="https://www.linkedin.com/in/martin-o-neill-56a81715b"><img src="~/Images/linkedin.png" /></a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

@@ -14,7 +14,7 @@ namespace EthnoBot.Models
             try {
              //   StreamWriter strw = new StreamWriter( "Logs/PaypalError.log",true);
            //     strw.WriteLine("{0}--->{1}",DateTime.Now.ToString("MM/dd//yyyy HH:mm:ss") + "-->" +Messages);
-            } catch(Exception e) { throw; }
+            } catch(Exception ) { throw; }
 
         }
     }
