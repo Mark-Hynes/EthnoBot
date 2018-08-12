@@ -49,12 +49,22 @@
                         <div class="row">
                             <div class="col">
                                 <div class="form-group">
+                                    <label class="text-info" for="emailInput">Email</label>
+                                    @Html.EditorFor(model => model.Seller.Email, new { htmlAttributes = new { @class = "form-control text-default" }, @id = "emailInput" })
+                                    @Html.ValidationMessageFor(model => model.Seller.Email, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
                                     <label class="text-info" for="mobileInput">Mobile</label>
                                     @Html.EditorFor(model => model.Seller.Mobile, new { htmlAttributes = new { @class = "form-control text-default" }, @id = "mobileInput" })
                                     @Html.ValidationMessageFor(model => model.Seller.Mobile, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
 
@@ -144,8 +154,8 @@
                     <div class="col-xl-3">
                         <p class="text-muted">@item.UnitsKG Kg Units</p>
                     </div>
-                    <div class="col-xl-1 offset-xl-0"><button class="btn btn-info float-right" type="button"data-toggle="modal" onclick="editItemPopup('@item.Seller.SellerId','@item.Seller.FirstName+ @item.Seller.LastName','@item.UnitPriceKG','@item.Product.ProductId','@item.Product.Title','@item.UnitsKG')" data-target="#Modal">Edit</button></div>
-                    <div class="col-xl-1"><button class="btn btn-info" type="button" onclick="deleteItem('@item.Seller.SellerId','@item.Seller.FirstName+ @item.Seller.LastName','@item.UnitPriceKG','@item.Product.ProductId','@item.Product.Title','@item.UnitsKG')" data-target="#Modal-Edit">Delete</button></div>
+                    <div class="col-xl-1 offset-xl-0"><button class="btn btn-info float-right" type="button"data-toggle="modal" onclick="editItemPopup('@item.Listing.ListingId','@item.Seller.SellerId','@item.Seller.FirstName+ @item.Seller.LastName','@item.UnitPriceKG','@item.Product.ProductId','@item.Product.Title','@item.UnitsKG')" data-target="#Modal">Edit</button></div>
+                    <div class="col-xl-1"><button class="btn btn-info" type="button" onclick="deleteItem('@item.Listing.ListingId')">Delete</button></div>
                 </div>
                            </li>
         }
@@ -207,7 +217,8 @@
     var SellerID = "";
     var productID = "";
     var unitPrice = "";
-    var quantity = "";
+        var quantity = "";
+        var ListingId = "";
 
         function changePicture()
         {
@@ -217,8 +228,8 @@
 
 
 
-    function editItemPopup(SellerId, SellerName, price, productId, productName, oldquantity) {
-
+        function editItemPopup(ListingID, SellerId, SellerName, price, productId, productName, oldquantity) {
+            ListingId = ListingID;
         productID = productId;
         SellerID = SellerId;
         unitPrice = price;
@@ -247,8 +258,8 @@
 
 
         }
-    function deleteItem(SellerId, SellerName, price, productId, productName, quantity) {
-       location.href = '@Url.Action("DeleteListing", "Manage")?SellerId=' + SellerId + '&productId=' + productId + '&quantity=' + quantity + '&unitPrice=' + price;
+    function deleteItem(listingId) {
+       location.href = '@Url.Action("DeleteListing", "Manage")?listingId=' + listingId ;
 
     }
 
@@ -257,7 +268,7 @@
         document.getElementById("SaveChanges").onclick = function () {
             var newQuantity = document.getElementById("KGUnits").value;
             var newUnitPrice = document.getElementById("Modal-Price").value;
-            location.href = '@Url.Action("EditListing", "Manage")?SellerId=' + SellerID + '&productId=' + productID + '&oldQuantity=' + quantity + "&newQuantity=" + newQuantity+ '&unitPrice=' + newUnitPrice;
+            location.href = '@Url.Action("EditListing", "Manage")?ListingId=' + ListingId + "&newQuantity=" + newQuantity + '&unitPrice=' + newUnitPrice;
 
         };
 

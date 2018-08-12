@@ -13,18 +13,22 @@
         <div class="col-xl-3 offset-0 offset-xl-0"><img src="@Model.Seller.ImagePath" class="img-circle img-fluid d-table-row d-flex justify-content-center align-items-center align-content-center align-self-center flex-wrap" style="width:200px;height:200px;margin:0px;padding:0px;" /></div>
     </div>
 </div>
+<br />
+<hr />
 <div class="container">
     <section></section>
 </div>
 <div class="container">
     <div class="row">
         <div class="col">
-            <h2 class="text-info">Name</h2>
-            <p class="text-muted"><strong>@Model.Seller.FirstName</strong></p>
+            <h3 class="text-info">Name</h3>
+            <p class="text-muted"><strong>@Model.Seller.FirstName @Model.Seller.LastName</strong></p>
         </div>
         <div class="col">
-            <h2 class="text-info">Address</h2>
+            <h3 class="text-info">Address</h3>
             <p class="text-muted">@Model.Seller.AddressLine1<br /></p>
+            <p class="text-muted">@Model.Seller.AddressLine2<br /></p>
+            <p class="text-muted">@Model.Seller.AddressLine3<br /></p>
         </div>
     </div>
 </div>
@@ -32,19 +36,18 @@
     <div class="row">
         <div class="col">
             <h3 class="text-info">Email</h3>
-            <p class="text-muted">Customer Service:  <b>@Model.Seller.Email</b></p>
+            <p class="text-muted"><b>@Model.Seller.Email</b></p>
         </div>
         <div class="col">
             <h3 class="text-info">Telephone</h3>
-            <p class="text-muted">Telephone: <b>@Model.Seller.Mobile</b></p>
-            <p class="text-muted">Mobile: <b>@Model.Seller.Mobile</b></p>
+            <p class="text-muted"> <b>@Model.Seller.Mobile</b></p>
         </div>
     </div>
 </div>
 <div class="container">
     <div class="row">
         <div class="col">
-            <h2 class="text-info">About</h2>
+            <h3 class="text-info">About</h3>
             <p class="text-muted">@Model.Seller.About</p>
         </div>
     </div>
@@ -52,7 +55,7 @@
 <div class="container">
     <div class="row">
         <div class="col">
-            <h2 class="text-info">Description</h2>
+            <h3 class="text-info">Description</h3>
             <p class="text-muted">@Model.Seller.Description</p>
         </div>
     </div>

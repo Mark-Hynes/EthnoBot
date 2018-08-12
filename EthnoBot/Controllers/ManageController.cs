@@ -124,7 +124,7 @@ namespace EthnoBot.Controllers
             p.City = Seller.City;
             p.Country = Seller.Country;
              p.Mobile = Seller.Mobile;
-            p.ImagePath = Seller.ImagePath;
+           
             p.IsVerified = Seller.IsVerified;
            
             db.SaveChanges();
@@ -158,14 +158,14 @@ namespace EthnoBot.Controllers
         }
 
         [Authorize]
-        public ActionResult EditListing(string listingId ,string newQuantity, string unitPrice)
+        public ActionResult EditListing(string ListingId ,string newQuantity, string unitPrice)
         {
             string userID = User.Identity.GetUserId();
-            Seller seller = db.Sellers.Where(x => x.ASPUserId == userID).First();
+           
             
-                Listing l = db.Listings.Where(x => x.SellerId.ToString() == seller.SellerId && x.ListingId==listingId).FirstOrDefault();
-                l.UnitPriceKG =float.Parse(unitPrice);
-                l.UnitsKG = float.Parse(newQuantity);
+                Listing l = db.Listings.Where(x => x.ListingId == ListingId).First();
+                l.UnitPriceKG =Convert.ToDecimal(unitPrice);
+                l.UnitsKG = Convert.ToDecimal(newQuantity);
                 db.SaveChanges();
             
            return RedirectToAction("SellerIndex");
@@ -174,8 +174,9 @@ namespace EthnoBot.Controllers
             [Authorize]
         public ActionResult AddListing()
         {
+            Guid guid = Guid.NewGuid();
             string userID = User.Identity.GetUserId();
-            Seller pr = db.Sellers.Where(x => x.ASPUserId == userID).FirstOrDefault();
+            Seller pr = db.Sellers.Where(x => x.ASPUserId == userID).First();
             var products = db.Products;
             Session["SellerId"] = pr.SellerId;
             return View(products);
@@ -184,13 +185,13 @@ namespace EthnoBot.Controllers
         [Authorize]
         public ActionResult CompleteListing(string SellerId, string productId, string quantity, string unitPrice)
         {
-
+            Guid guid = Guid.NewGuid();
             Listing l = new Listing
-            {
+            { ListingId = guid.ToString(),
                 SellerId = SellerId,
                 ProductId =productId,
-                UnitsKG = float.Parse(quantity),
-                UnitPriceKG = float.Parse(unitPrice)
+                UnitsKG = Convert.ToDecimal(quantity),
+                UnitPriceKG =Convert.ToDecimal(unitPrice)
             };
             db.Listings.Add(l);
             db.SaveChanges();

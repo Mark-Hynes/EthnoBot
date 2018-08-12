@@ -21,6 +21,7 @@ namespace EthnoBot.Controllers
             try
             {
                 List<CartItem> items = new List<CartItem>();
+                List<CartItemViewModel> cartItemViewModels = new List<CartItemViewModel>();
                 string userID = User.Identity.GetUserId();
                 Cart c = db.Carts.Where(x => x.UserId == userID).FirstOrDefault();
                 if (c == null)
@@ -37,16 +38,22 @@ namespace EthnoBot.Controllers
                     CartItem item = items.ElementAt(i);
 
 
-                    string SellerId = item.SellerId;
-                    string ProductId = item.ProductId;
+                    string listingId = item.ListingId;
+                    string cartId = item.CartId;
+                    Listing l = db.Listings.Where(x => x.ListingId == listingId).First();
 
-                    Seller s = db.Sellers.Where(x => x.SellerId == SellerId).First();
-                    Product p = db.Products.Where(x => x.ProductId == ProductId).First();
-                    Listing l = db.Listings.Where(x => x.ProductId == p.ProductId && x.SellerId == s.SellerId).First();
-                    item.UnitPriceKG = l.UnitPriceKG;        
+                    Seller s = db.Sellers.Where(x => x.SellerId == l.SellerId).First();
+                    Product p = db.Products.Where(x => x.ProductId == l.ProductId).First();
+                    CartItemViewModel m = new CartItemViewModel();
+                    m.CartItem = item;
+                    m.Listing = l;
+                    m.Product = p;
+                    m.Seller = s;
+                    m.Subtotal = Convert.ToDecimal(m.Listing.UnitPriceKG * m.Listing.UnitsKG);
+                    cartItemViewModels.Add(m);
                 }
                 countCartItems();
-                return View(items);
+                return View(cartItemViewModels);
             }
             catch (Exception) { return View("Error"); }
         }
@@ -79,17 +86,17 @@ namespace EthnoBot.Controllers
 
 
                 CartItem item = items.ElementAt(i);
+
+                Listing l = db.Listings.Where(x => x.ListingId == item.ListingId).First();
+
+                Seller seller = db.Sellers.Where(x => x.SellerId == l.SellerId).First();
+                Product product = db.Products.Where(x => x.ProductId == l.ProductId).FirstOrDefault();
+
+                 
+
                   
-
-                   Seller seller= db.Sellers.Where(x => x.SellerId == item.SellerId).First();
-                   Product product = db.Products.Where(x => x.ProductId == item.ProductId).FirstOrDefault();
-
-                   Listing l = db.Listings.Where(x => x.ProductId == product.ProductId && x.SellerId == seller.SellerId).First();
-
-
-                    item.UnitPriceKG = l.UnitPriceKG;
                    
-                    float total = item.UnitPriceKG * item.UnitsKG;
+                    decimal total = Convert.ToDecimal(l.UnitPriceKG * item.UnitsKG);
                     listItems.items.Add(new Item()
                     {
                         name = product.Title + " x " + item.UnitsKG,
@@ -109,10 +116,10 @@ namespace EthnoBot.Controllers
                         return_url = redirectUrl
                     };
 
-                    details.tax = (Convert.ToDouble(details.tax)+Convert.ToDouble("1")).ToString();
-                    details.shipping =  (Convert.ToDouble(details.shipping)+Convert.ToDouble("10")).ToString();
-                    details.subtotal = (Convert.ToDouble(details.subtotal)+ Convert.ToDouble(l.UnitPriceKG) * Convert.ToDouble(item.UnitsKG)).ToString();
-                    amount.total = (Convert.ToDouble(details.tax)+ Convert.ToDouble(details.shipping)+Convert.ToDouble(details.subtotal)).ToString();
+                    details.tax = (Convert.ToDecimal(details.tax)+Convert.ToDecimal("1")).ToString();
+                    details.shipping =  (Convert.ToDecimal(details.shipping)+Convert.ToDecimal("10")).ToString();
+                    details.subtotal = (Convert.ToDecimal(details.subtotal)+ l.UnitPriceKG * item.UnitsKG).ToString();
+                    amount.total = (Convert.ToDecimal(details.tax)+ Convert.ToDecimal(details.shipping)+Convert.ToDecimal(details.subtotal)).ToString();
                     
                     amount.details = details;
 
@@ -203,18 +210,16 @@ namespace EthnoBot.Controllers
 
         }
         [Authorize]
-        public ActionResult RemoveFromBasket(string cartItemId)
+        public ActionResult RemoveFromBasket(string CartItemId)
         {
             string userID = User.Identity.GetUserId();
             Cart c = db.Carts.Where(x => x.UserId == userID).FirstOrDefault();
 
-            List<CartItem> items = db.CartItems.Where(x => x.CartId == c.CartId && x.CartItemId==cartItemId).ToList();
+            CartItem item = db.CartItems.Where(x=>x.CartItemId==CartItemId).First();
 
-            for (int i = 0; i < items.Count; i++)
-            {
-                CartItem item = items.ElementAt(i);
-
-                items.Remove(item); 
+                        {
+                 db.CartItems.Remove(item);
+                db.SaveChanges();
          }
             countCartItems();
             return RedirectToAction("Index");
@@ -230,7 +235,7 @@ namespace EthnoBot.Controllers
 
             if (item != null)
             {
-                item.UnitsKG = float.Parse(newQuantity);
+                item.UnitsKG = Convert.ToDecimal(newQuantity);
                 db.SaveChanges();
             }
             countCartItems();
@@ -252,7 +257,8 @@ namespace EthnoBot.Controllers
                     if (c == null)
                     {
                         AccountController.createCart(userID);
-                        c = db.Carts.Where(x => x.UserId == userID).FirstOrDefault();
+                        c = db.Carts.Where(x => x.UserId == userID).First();
+
                     }
                     int count = db.CartItems.Where(x=>x.CartId==c.CartId).ToList().Count; 
                     
@@ -279,7 +285,7 @@ namespace EthnoBot.Controllers
             CartItem item = db.CartItems.Where(x => x.CartItemId == cartItemId).First();
             if (item != null)
             {
-                item.UnitsKG = float.Parse(newQuantity);
+                item.UnitsKG = Convert.ToDecimal(newQuantity);
                 db.SaveChanges();
             }
 

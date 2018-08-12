@@ -519,7 +519,7 @@
     <Compile Include="Models\PayPalConfiguration.cs" />
     <Compile Include="Models\PaypalLogger.cs" />
     <Compile Include="Models\Seller.cs" />
-    <Compile Include="Models\ProducerAndListingsModel.cs" />
+    <Compile Include="Models\SellerAndListingsModel.cs" />
     <Compile Include="Models\Listing.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\ProductAndListingsModel.cs" />

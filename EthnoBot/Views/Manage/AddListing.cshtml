@@ -5,31 +5,40 @@
         string prodID = (string)Session["SellerId"].ToString(); 
     }
 
-    <h2>Add a Listing</h2>
-    <div class="container" id="Modal-Edit"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <h3 class="text-muted text-center">Add a Listing</h3>
+    <hr />    
+<div class="container">
         <div class="form-group">
-            <select id="Modal-Product" class="form-control" style="height:auto"onchange="setProduct(this)">
+            <div class="row">
+                
+            <select id="productSelect" class="form-control productInput" style="height:auto">
                 <option value="" selected disabled hidden>--Product--</option>
                 @foreach (var item in Model)
                 {
-                    <option value="@item.ProductId" id="@item.ProductId">@item.Title</option>}
+                    <option value="@item.ProductId" id="@item.ProductId">@item.Title</option>
+                }
             </select>
-                    <div class="input-group mb-3">
-                        <input type="number" id="KGUnits" class="form-control" min="1" max="100" placeholder="1" aria-label="KGUnits" aria-describedby="basic-addon2" required>
-                        <div class="input-group-append">
-                            <span class="input-group-text" id="basic-addon2"> kgs</span>
-                        </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="input-group mb-3">
+                    <input type="number" id="KGUnits" class="form-control" min="1" max="100" placeholder="1" aria-label="KGUnits" aria-describedby="basic-addon1" required>
+                    <div class="input-group-append">
+                        <span class="input-group-text" id="basic-addon1" style="height:34px"> KG Units</span>
                     </div>
-                    <div class="input-group mb-3">
-                        <input type="number" id="Modal-Price" class="form-control" min="1" max="100" placeholder="1" aria-label="KGPrice" aria-describedby="basic-addon2" required>
-                        <div class="input-group-append">
-                            <span class="input-group-text" id="basic-addon2"> $ per 1Kg</span>
-                        </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-group mb-3">
+                    <input type="number" id="Modal-Price" class="form-control" min="1" max="100" placeholder="1" aria-label="KGPrice" aria-describedby="basic-addon2" required>
+                    <div class="input-group-append">
+                        <span class="input-group-text" id="basic-addon2" style="height:34px"> € per 1KG Unit</span>
                     </div>
-                
+                </div>
+            </div>
                 <div class="container">
-                    @Html.ActionLink("Cancel","SellerIndex", new { @type="button",@class= "btn btn-secondary" })
-                    <button type="button" id="SaveChanges" class="btn btn-secondary">Save Changes</button>
+                    @Html.ActionLink("Cancel","SellerIndex", new {@class= "btn btn-outline-info" })
+                    <button type="button" id="SaveChanges" class="btn btn-info">Create Listing</button>
                 </div>
             </div>
         </div>
@@ -37,14 +46,13 @@
 
     <script type="text/javascript">
         var product = "";
-        function setProduct(s) {
-            product= s[s.selectedIndex].id; // get value
-         }
+
     (function () {
         document.getElementById("SaveChanges").onclick = function () {
+            product = $('.productInput option:selected').val();
             var quantity = document.getElementById("KGUnits").value;
             var price = document.getElementById("Modal-Price").value;
-            location.href = '@Url.Action("CompleteListing", "Manage")?SellerId=' + @prodID + '&productId=' + product + '&quantity=' + quantity + '&unitPrice=' + price;
+            location.href = '@Url.Action("CompleteListing", "Manage")?SellerId=' + '@prodID' + '&productId=' + product + '&quantity=' + quantity + '&unitPrice=' + price;
 
         };
     })();

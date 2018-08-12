@@ -10,8 +10,8 @@ namespace EthnoBot.Models
         public Listing Listing;
         public Product Product;
         public Seller Seller;
-        public float UnitPriceKG;
-        public float UnitsKG;
+        public decimal UnitPriceKG;
+        public decimal UnitsKG;
         public ListingViewModel()
         { }
     }

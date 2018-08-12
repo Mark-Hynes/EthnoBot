@@ -1,4 +1,4 @@
-﻿@model IEnumerable<EthnoBot.Models.CartItem>
+﻿@model IEnumerable<EthnoBot.Models.CartItemViewModel>
 @{
     /**/
 
@@ -41,31 +41,32 @@
     </li>
     @foreach (var item in Model)
     {
-        total += (int)item.total;
+        total += (int)item.Subtotal;
+        decimal itemsubtotal = Convert.ToDecimal(item.CartItem.UnitsKG*item.Listing.UnitPriceKG);
         <li class="list-group-item">
 
 
             <div class="row">
-                <div class="col-xl-2 border border-bottom-0 border-top-0 border-left-0">@Html.ActionLink(item.product.Title, "ProductAndListings", "Categories", new { id = item.product.ProductId }, new { @class = "text-info", })</div>
-                <div class="col-xl-2 border border-bottom-0 border-top-0 border-left-0">@Html.ActionLink(item.Seller.Name, "SellerAndListings", "Categories", new { id = item.Seller.SellerId }, new { @class = "text-info", })</div>
+                <div class="col-xl-2 border border-bottom-0 border-top-0 border-left-0">@Html.ActionLink(item.Product.Title, "ProductAndListings", "Categories", new { productId = item.Product.ProductId }, new { @class = "text-info", })</div>
+                <div class="col-xl-2 border border-bottom-0 border-top-0 border-left-0">@Html.ActionLink(item.Seller.FirstName+ " " + item.Seller.LastName, "SellerAndListings", "Categories", new { sellerId = item.Seller.SellerId }, new { @class = "text-info", })</div>
                 <div class="col-xl-2 border border-bottom-0 border-top-0 border-left-0">
-                    <p class="text-muted">€@item.unitPrice per 1 kg</p>
+                    <p class="text-muted">€@item.Listing.UnitPriceKG per 1KG Unit</p>
                 </div>
                 <div class="col-xl-1 border border-bottom-0 border-top-0 border-left-0">
-                    <p class="text-muted">@item.quantityKg Kg Units</p>
+                    <p class="text-muted">@item.CartItem.UnitsKG Kg Units</p>
                 </div>
                 <div class="col border border-bottom-0 border-top-0 border-left-0">
-                    <p>€@item.total<br /></p>
+                    <p>€@itemsubtotal<br /></p>
                 </div>
-                <div class="col-xl-2 offset-xl-0 border border-bottom-0 border-top-0 border-left-0 align-self-center"><button class="btn btn-info" type="button" data-toggle="modal" onclick="editItemPopup('@item.Seller.SellerId','@item.Seller.Name','@item.unitPrice','@item.product.ProductId','@item.product.Title','@item.quantityKg')" data-target="#Modal">Edit Item</button></div>
-                <div class="col"><button class="btn btn-info align-self-center" type="button" onclick="deleteItem('@item.Seller.SellerId','@item.Seller.Name','@item.unitPrice','@item.product.ProductId','@item.product.Title','@item.quantityKg')" data-target="#Modal">Delete</button></div>
+                <div class="col-xl-2 offset-xl-0 border border-bottom-0 border-top-0 border-left-0 align-self-center"><button class="btn btn-info" type="button" data-toggle="modal" onclick="editItemPopup('@item.Seller.SellerId','@item.Seller.FirstName @item.Seller.LastName','@item.Listing.UnitPriceKG','@item.Product.ProductId','@item.Product.Title','@item.CartItem.UnitsKG')" data-target="#Modal">Edit Item</button></div>
+                <div class="col"><button class="btn btn-info align-self-center" type="button" onclick="deleteItem('@item.CartItem.CartItemId')" data-target="#Modal">Delete</button></div>
             </div>
 
         </li>
     }
 </ul>
 <hr />
-<h4 class="text-right text-muted">Subtotal: <b>€@total</b></h4>
+<h4 class="text-right text-muted">Total: <b>€@total</b></h4>
 
 
 @Html.ActionLink("Checkout", "PaymentWithPaypal", "Cart", null, new { type = "button", @class = "btn btn-info" })
@@ -128,8 +129,8 @@
         document.getElementById("KGUnits").setAttribute("placeholder",oldquantity);
 
     }
-    function deleteItem(SellerId, SellerName, price, productId, productName, quantity) {
-       location.href = '@Url.Action("RemoveFromBasket", "Cart")?SellerId=' + SellerId + '&productId=' + productId + '&quantity=' + quantity;
+    function deleteItem(CartItemId) {
+       location.href = '@Url.Action("RemoveFromBasket", "Cart")?CartItemId=' +CartItemId;
 
     }
 

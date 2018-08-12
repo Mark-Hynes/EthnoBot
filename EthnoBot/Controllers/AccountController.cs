@@ -31,7 +31,7 @@ namespace EthnoBot.Controllers
         public void sendVerifyCompanyEmail(Seller p)
         {
             GMailer.GmailUsername = "mrkhynes1@gmail.com";
-            GMailer.GmailPassword = "bkrytjdxkhxzpueh";
+            GMailer.GmailPassword = "";
 
             GMailer mailer = new GMailer();
             mailer.ToEmail = "martinoneill360@gmail.com";

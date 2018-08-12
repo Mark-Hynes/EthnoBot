@@ -93,28 +93,36 @@ namespace EthnoBot.Controllers
         }
 
         [Authorize]
-        public ActionResult AddToBasket(string SellerId, string productId, string quantity, double unitPrice)
+        public ActionResult AddToBasket(string listingId, string quantity)
         {
 
             string userId = User.Identity.GetUserId();
-            Guid userID = Guid.Parse(User.Identity.GetUserId());
+            Guid cartitemId = Guid.Parse(User.Identity.GetUserId());
+            Listing l = db.Listings.Where(x => x.ListingId == listingId).First();
             Cart cart = db.Carts.Where(x => x.UserId == userId).FirstOrDefault();
-            CartItem  c = db.CartItems.Where(x => x.SellerId == SellerId && x.ProductId == productId).First();
-            if (c == null)
+
+            CartItem c;
+            try
+            {
+                 c = db.CartItems.Where(x => x.ListingId == l.ListingId).First();
+                c.UnitsKG += Convert.ToDecimal(quantity);
+                db.SaveChanges();
+                countCartItems();
+                return Redirect(Request.UrlReferrer.ToString());
+
+            } catch (Exception e)
             {
                 c = new CartItem();
-                c.SellerId = SellerId;
-                c.ProductId = productId;
-                c.UnitsKG = float.Parse(quantity);
-                c.UnitPriceKG = float.Parse(unitPrice.ToString());
-            }
-            else { c.UnitsKG += float.Parse(quantity);c.UnitPriceKG = float.Parse(unitPrice.ToString()); }
-        
-            db.SaveChanges();
-            countCartItems();
-
-
-              return Redirect(Request.UrlReferrer.ToString());
+                c.CartItemId = cartitemId.ToString();
+                c.CartId = cart.CartId;
+                c.ListingId = l.ListingId;
+                c.UnitsKG = Convert.ToDecimal(quantity);
+                db.CartItems.Add(c);
+                db.SaveChanges();
+                countCartItems();
+                return Redirect(Request.UrlReferrer.ToString());
+            }          
+            
         }
 
         public void countCartItems()
@@ -141,12 +149,12 @@ namespace EthnoBot.Controllers
         }
 
 
-        public ActionResult SellerAndListings(string sellerid)
+        public ActionResult SellerAndListings(string sellerId)
         {
             try
             {
-                Seller seller = db.Sellers.Where(x => x.SellerId == sellerid).First();
-                List<Listing> listings = db.Listings.Where(x => x.SellerId == sellerid).ToList();
+                Seller seller = db.Sellers.Where(x => x.SellerId == sellerId).First();
+                List<Listing> listings = db.Listings.Where(x => x.SellerId == sellerId).ToList();
 
 
 
@@ -179,7 +187,9 @@ namespace EthnoBot.Controllers
 
                 return View(pm);
             }
-            catch (Exception) { return View("Error"); }
+            catch (Exception err) {
+                string error = err.InnerException.ToString();
+                return View("Error"); }
         }
 
 

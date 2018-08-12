@@ -11,6 +11,6 @@ namespace EthnoBot.Models
         public Seller Seller { get; set; }
         public Product Product { get; set; }
         public Listing Listing { get; set; }
-        public float Subtotal { get; set; }
+        public decimal Subtotal { get; set; }
     }
 }

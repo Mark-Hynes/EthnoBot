@@ -69,11 +69,11 @@
         @foreach (var item in listings)
         {<li class="list-group-item">
                 <div class="row  border-secondary">
-                    <div class="col d-table-row order-1">@Html.ActionLink(item.Seller.FirstName+" "+item.Seller.LastName, "SellerAndListings", new { id = item.Seller.SellerId }, new { @class = "text-info", })</div>
+                    <div class="col d-table-row order-1">@Html.ActionLink(item.Seller.FirstName+" "+item.Seller.LastName, "SellerAndListings", new { sellerId = item.Seller.SellerId }, new { @class = "text-info", })</div>
                     <div class="col d-table-row order-2">
                         <p class="text-muted">€@item.UnitPriceKG per 1Kg</p>
                     </div>
-                    <div class="col d-table-row order-3 float-right"><button class="btn btn-info" type="button" data-toggle="modal" onclick="showPopup('@item.Seller.SellerId','@item.Seller.FirstName','@item.UnitPriceKG','@item.Product.ProductId','@item.Product.Title')" data-target="#Modal">Add To Cart</button></div>
+                    <div class="col d-table-row order-3 float-right"><button class="btn btn-info" type="button" data-toggle="modal" onclick="showPopup('@item.Listing.ListingId','@item.Seller.SellerId','@item.Seller.FirstName','@item.UnitPriceKG','@item.Product.ProductId','@item.Product.Title')" data-target="#Modal">Add To Cart</button></div>
                 </div>
         </li>
             
@@ -121,11 +121,12 @@
     var SellerID = "";
     var productID = "";
     var unitPrice = "";
-    var quantity = "";
-    function showPopup(SellerId, SellerName, price, productId,productName) {
+        var quantity = "";
+        var listingId = "";
+    function showPopup(ListingId, SellerId, SellerName, price, productId,productName) {
         document.getElementById("Modal-Seller").innerText = "Product Name: " + productName;
         document.getElementById("Modal-Seller").innerText = "Seller Name: " + SellerName;
-
+        listingId = ListingId;
 
         document.getElementById("Modal-Price").innerText = "Price per 1kg: " + price;
         productID = productId;
@@ -138,7 +139,7 @@
         document.getElementById("addToCart1").onclick = function () {
             quantity = document.getElementById("KGUnits").value
 
-            location.href = '@Url.Action("AddToBasket", "Categories")?SellerId=' + SellerID + '&productId=' + productID + '&quantity=' + quantity + '&unitPrice=' + unitPrice;
+            location.href = '@Url.Action("AddToBasket", "Categories")?listingId=' + listingId +'&quantity=' + quantity;
 
         };
     })();
