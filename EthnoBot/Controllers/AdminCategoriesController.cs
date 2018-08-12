@@ -23,13 +23,13 @@ namespace EthnoBot.Controllers
         }
 
         // GET: AdminCategories/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Category category = db.Categories.Find(id);
+            Category category = db.Categories.Where(x=>x.CategoryId==id).First();
             if (category == null)
             {
                 return HttpNotFound();
@@ -50,6 +50,8 @@ namespace EthnoBot.Controllers
         {
             if (ModelState.IsValid)
             {
+                Guid guid = Guid.NewGuid();
+                category.CategoryId = guid.ToString();
                 db.Categories.Add(category);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -59,13 +61,13 @@ namespace EthnoBot.Controllers
         }
 
         // GET: AdminCategories/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Category category = db.Categories.Find(id);
+            Category category = db.Categories.Where(x => x.CategoryId == id).First();
             if (category == null)
             {
                 return HttpNotFound();
@@ -80,6 +82,8 @@ namespace EthnoBot.Controllers
         {
             if (ModelState.IsValid)
             {
+               
+         
                 db.Entry(category).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -88,13 +92,13 @@ namespace EthnoBot.Controllers
         }
 
         // GET: AdminCategories/Delete/5
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Category category = db.Categories.Find(id);
+            Category category = db.Categories.Where(x=>x.CategoryId==id).First();
             if (category == null)
             {
                 return HttpNotFound();
@@ -105,9 +109,9 @@ namespace EthnoBot.Controllers
         // POST: AdminCategories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(string id)
         {
-            Category category = db.Categories.Find(id);
+            Category category = db.Categories.Where(x=>x.CategoryId==id).First();
             db.Categories.Remove(category);
             db.SaveChanges();
             return RedirectToAction("Index");

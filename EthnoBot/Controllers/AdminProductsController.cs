@@ -41,34 +41,39 @@ namespace EthnoBot.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
-            return View();
+            ModifyProductViewModel m = new ModifyProductViewModel();
+            m.Categories = db.Categories.ToList();
+           
+            return View(m);
         }
 
         // POST: AdminProducts/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public ActionResult Create(Product product)
+        public ActionResult Create(ModifyProductViewModel productViewModel)
         {
             if (ModelState.IsValid)
             {
-                db.Products.Add(product);
+                Guid guid = Guid.NewGuid();
+                productViewModel.Product.ProductId = guid.ToString();
+                db.Products.Add(productViewModel.Product);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(product);
+            return View(productViewModel);
         }
 
         // GET: AdminProducts/Edit/5
         [Authorize(Roles = "Admin")]
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Product product = db.Products.Find(id);
+            Product product = db.Products.Where(x => x.ProductId == id).First();
             if (product == null)
             {
                 return HttpNotFound();
@@ -80,15 +85,16 @@ namespace EthnoBot.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public ActionResult Edit(Product product)
+        public ActionResult Edit(ModifyProductViewModel m)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(product).State = EntityState.Modified;
+                m.Product.CategoryId = m.selectedCategoryId;
+                db.Entry(m.Product).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(product);
+            return View(m.Product);
         }
 
         // GET: AdminProducts/Delete/5

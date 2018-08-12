@@ -9,10 +9,10 @@ namespace EthnoBot.Models
     public class Cart
     {
         [Key]
-        public string CartID { get; set; }
+        public string CartId { get; set; }
 
-        public string UserID { get; set; }
+        public string UserId { get; set; }
 
-        public string CartItems { get; set; }
+
     }
 }

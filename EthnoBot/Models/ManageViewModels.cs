@@ -30,7 +30,7 @@ namespace EthnoBot.Models
         public bool TwoFactor { get; set; }
         public bool BrowserRemembered { get; set; }
     }
-    public class ProducerIndexViewModel
+    public class SellerIndexViewModel
     {
         public bool HasPassword { get; set; }
         public IList<UserLoginInfo> Logins { get; set; }

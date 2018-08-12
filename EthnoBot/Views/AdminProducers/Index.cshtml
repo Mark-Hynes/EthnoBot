@@ -1,4 +1,4 @@
-﻿@model IEnumerable<EthnoBot.Models.Producer>
+﻿@model IEnumerable<EthnoBot.Models.Seller>
 
 @{
     ViewBag.Title = "Index";
@@ -79,9 +79,9 @@
             @Html.DisplayFor(modelItem => item.ImagePath)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ProducerId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ProducerId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ProducerId })
+            @Html.ActionLink("Edit", "Edit", new { id=item.SellerId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.SellerId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.SellerId })
         </td>
     </tr>
 }

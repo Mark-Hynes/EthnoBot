@@ -21,7 +21,7 @@
     <li class="list-group-item">
         <div class="row">
             <div class="col-xl-2 border border-bottom-0 border-top-0 border-left-0"><p class="text-dark"><strong>Product Name</strong></p></div>
-            <div class="col-xl-2 border border-bottom-0 border-top-0 border-left-0"><p class="text-dark"><strong>Producer</strong></p></div>
+            <div class="col-xl-2 border border-bottom-0 border-top-0 border-left-0"><p class="text-dark"><strong>Seller</strong></p></div>
             <div class="col-xl-2 border border-bottom-0 border-top-0 border-left-0">
                 <p class="text-dark"><strong>Price per 1 kg</strong></p>
             </div>
@@ -47,7 +47,7 @@
 
             <div class="row">
                 <div class="col-xl-2 border border-bottom-0 border-top-0 border-left-0">@Html.ActionLink(item.product.Title, "ProductAndListings", "Categories", new { id = item.product.ProductId }, new { @class = "text-info", })</div>
-                <div class="col-xl-2 border border-bottom-0 border-top-0 border-left-0">@Html.ActionLink(item.producer.Name, "ProducerAndListings", "Categories", new { id = item.producer.ProducerId }, new { @class = "text-info", })</div>
+                <div class="col-xl-2 border border-bottom-0 border-top-0 border-left-0">@Html.ActionLink(item.Seller.Name, "SellerAndListings", "Categories", new { id = item.Seller.SellerId }, new { @class = "text-info", })</div>
                 <div class="col-xl-2 border border-bottom-0 border-top-0 border-left-0">
                     <p class="text-muted">€@item.unitPrice per 1 kg</p>
                 </div>
@@ -57,8 +57,8 @@
                 <div class="col border border-bottom-0 border-top-0 border-left-0">
                     <p>€@item.total<br /></p>
                 </div>
-                <div class="col-xl-2 offset-xl-0 border border-bottom-0 border-top-0 border-left-0 align-self-center"><button class="btn btn-info" type="button" data-toggle="modal" onclick="editItemPopup('@item.producer.ProducerId','@item.producer.Name','@item.unitPrice','@item.product.ProductId','@item.product.Title','@item.quantityKg')" data-target="#Modal">Edit Item</button></div>
-                <div class="col"><button class="btn btn-info align-self-center" type="button" onclick="deleteItem('@item.producer.ProducerId','@item.producer.Name','@item.unitPrice','@item.product.ProductId','@item.product.Title','@item.quantityKg')" data-target="#Modal">Delete</button></div>
+                <div class="col-xl-2 offset-xl-0 border border-bottom-0 border-top-0 border-left-0 align-self-center"><button class="btn btn-info" type="button" data-toggle="modal" onclick="editItemPopup('@item.Seller.SellerId','@item.Seller.Name','@item.unitPrice','@item.product.ProductId','@item.product.Title','@item.quantityKg')" data-target="#Modal">Edit Item</button></div>
+                <div class="col"><button class="btn btn-info align-self-center" type="button" onclick="deleteItem('@item.Seller.SellerId','@item.Seller.Name','@item.unitPrice','@item.product.ProductId','@item.product.Title','@item.quantityKg')" data-target="#Modal">Delete</button></div>
             </div>
 
         </li>
@@ -83,7 +83,7 @@
             <div class="modal-body">
                 <p id="Modal-ProductID"></p>
                 <p id="Modal-Product"></p>
-                <p id="Modal-Producer"></p>
+                <p id="Modal-Seller"></p>
                 <p id="Modal-Price"></p>
                 <div class="input-group mb-3">
                     <input type="number" id="KGUnits" class="form-control" min="1" max="100" aria-label="KGUnits" aria-describedby="basic-addon2" required>
@@ -109,27 +109,27 @@
 
 
 <script type="text/javascript">
-    var producerID = "";
+    var SellerID = "";
     var productID = "";
     var unitPrice = "";
     var quantity = "";
 
-    function editItemPopup(producerId, producerName, price, productId, productName, oldquantity) {
+    function editItemPopup(SellerId, SellerName, price, productId, productName, oldquantity) {
 
         productID = productId;
-        producerID = producerId;
+        SellerID = SellerId;
         unitPrice = price;
         quantity = oldquantity;
-        document.getElementById("Modal-Producer").innerText = "Product Name: " + productName;
-        document.getElementById("Modal-Producer").innerText = "Seller Name: " + producerName;
+        document.getElementById("Modal-Seller").innerText = "Product Name: " + productName;
+        document.getElementById("Modal-Seller").innerText = "Seller Name: " + SellerName;
 
 
         document.getElementById("Modal-Price").innerText = "Price per 1kg: " + price;
         document.getElementById("KGUnits").setAttribute("placeholder",oldquantity);
 
     }
-    function deleteItem(producerId, producerName, price, productId, productName, quantity) {
-       location.href = '@Url.Action("RemoveFromBasket", "Cart")?producerId=' + producerId + '&productId=' + productId + '&quantity=' + quantity;
+    function deleteItem(SellerId, SellerName, price, productId, productName, quantity) {
+       location.href = '@Url.Action("RemoveFromBasket", "Cart")?SellerId=' + SellerId + '&productId=' + productId + '&quantity=' + quantity;
 
     }
 
@@ -138,7 +138,7 @@
         document.getElementById("SaveChanges").onclick = function () {
           var  newQuantity = document.getElementById("KGUnits").value
 
-            location.href = '@Url.Action("EditItem", "Cart")?producerId=' + producerID + '&productId=' + productID + '&oldQuantity=' + quantity + "&newQuantity=" + newQuantity;
+            location.href = '@Url.Action("EditItem", "Cart")?SellerId=' + SellerID + '&productId=' + productID + '&oldQuantity=' + quantity + "&newQuantity=" + newQuantity;
 
         };
     })();

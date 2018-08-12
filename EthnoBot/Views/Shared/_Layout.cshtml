@@ -11,7 +11,7 @@
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
     <!-- Our Custom CSS -->
-    <link rel="stylesheet" href="style.css">
+   
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-122649599-2"></script>
     <script>
@@ -105,16 +105,11 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav nav-fill">
                 <li class="nav-item">
-                    @Html.ActionLink("Home", "Index", "Home", null, new { @class = "nav-link text-secondary" })
+                    @Html.ActionLink("Home", "Index", "Home", null, new { @class = "nav-link text-success" })
                 </li>
                 <li class="nav-item">
-                    @Html.ActionLink("Products", "Index", "Categories", null, new { @class = "nav-link text-success" })
+                    @Html.ActionLink("Products", "Index", "Categories", null, new { @class = "nav-link text-info             " })
                 </li>
-
-                <li class="nav-item">
-                    @Html.ActionLink("Producers", "ProducerList", "Categories", null, new { @class = "nav-link text-info" })
-                </li>
-
                 @{
                     int cartCount = 0;
                     try { cartCount = (int)Session["CartItemCount"]; }

@@ -15,6 +15,7 @@ namespace EthnoBot.Models
         public string AddressLine1 { get; set; }
         public string AddressLine2 { get; set; }
         public string AddressLine3 { get; set; }
+        public int isSeller { get; set; }
         
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
@@ -38,7 +39,7 @@ namespace EthnoBot.Models
             return new ApplicationDbContext();
         }
 
-        public System.Data.Entity.DbSet<EthnoBot.Models.Producer> Producers { get; set; }
+        public System.Data.Entity.DbSet<EthnoBot.Models.Seller> Sellers { get; set; }
 
         public System.Data.Entity.DbSet<EthnoBot.Models.Product> Products { get; set; }
     }

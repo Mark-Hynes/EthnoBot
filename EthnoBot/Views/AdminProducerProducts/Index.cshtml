@@ -1,4 +1,4 @@
-﻿@model IEnumerable<EthnoBot.Models.ProducerProduct>
+﻿@model IEnumerable<EthnoBot.Models.Listing>
 
 @{
     ViewBag.Title = "Index";
@@ -12,7 +12,7 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.ProducerId)
+            @Html.DisplayNameFor(model => model.SellerId)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.ProductId)
@@ -26,7 +26,7 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.ProducerId)
+            @Html.DisplayFor(modelItem => item.SellerId)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.ProductId)
@@ -35,9 +35,9 @@
             @Html.DisplayFor(modelItem => item.Price)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ProducerProductId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ProducerProductId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ProducerProductId })
+            @Html.ActionLink("Edit", "Edit", new { id=item.ListingId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ListingId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ListingId })
         </td>
     </tr>
 }

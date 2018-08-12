@@ -71,12 +71,14 @@ namespace EthnoBot.Models
         [Required]
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
+        [Display(Name = "IsSeller")]
+        public bool IsSeller { get; set; }
         [Required]
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 8)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
@@ -85,47 +87,40 @@ namespace EthnoBot.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+
     }
-    public class RegisterProducerViewModel
+    public class RegisterSellerViewModel
     {
         
-        [Required]
-        [Display(Name = "Company Name")]
-        public string Name { get; set; }
-        [Required]
-        [Display(Name = "Company Description")]
+        
+        [Display(Name = "Description")]
         public string Description { get; set; }
-        [Required]
-        [Display(Name = "About Company")]
+       
+        [Display(Name = "About")]
         public string About { get; set; }
         [Required]
-        [Display(Name = "Company Address")]
-        public string Address { get; set; }
+        [Display(Name = "Address Line 1")]
+        public string AddressLine1 { get; set; }
         [Required]
+        [Display(Name = "Address Line 2")]
+        public string AddressLine2 { get; set; }
+        [Required]
+        [Display(Name = "Address Line 3")]
+        public string AddressLine3 { get; set; }
+        [Required]
+        [Display(Name = "Post Code")]
+        public string PostCode { get; set; }
+        [Required]
+        [Display(Name = "City")]
+        public string City { get; set; }
+        [Required]
+        [Display(Name = "Country")]
+        public string Country { get; set; }
+
         [Display(Name = "Mobile")]
         public string Mobile { get; set; }
-        [Required]
-        [Display(Name = "Telephone")]
-        public string Telephone { get; set; }
-        [Required]
-        [EmailAddress]
-        [Display(Name = "Company Email")]
-        public string Email { get; set; }
-        [Required]
-        [EmailAddress]
-        [Display(Name = "Customer Service Email")]
-        public string CustomerServiceEmail { get; set; }
-
-        [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
-        [DataType(DataType.Password)]
-        [Display(Name = "Password")]
-        public string Password { get; set; }
-
-        [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-        public string ConfirmPassword { get; set; }
+        
     }
 
 

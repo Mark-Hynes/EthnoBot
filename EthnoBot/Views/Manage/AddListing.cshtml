@@ -2,7 +2,7 @@
 
     @{
         ViewBag.Title = "AddListing";
-        string prodID = (string)Session["ProducerId"].ToString(); 
+        string prodID = (string)Session["SellerId"].ToString(); 
     }
 
     <h2>Add a Listing</h2>
@@ -28,7 +28,7 @@
                     </div>
                 
                 <div class="container">
-                    @Html.ActionLink("Cancel","ProducerIndex", new { @type="button",@class= "btn btn-secondary" })
+                    @Html.ActionLink("Cancel","SellerIndex", new { @type="button",@class= "btn btn-secondary" })
                     <button type="button" id="SaveChanges" class="btn btn-secondary">Save Changes</button>
                 </div>
             </div>
@@ -44,7 +44,7 @@
         document.getElementById("SaveChanges").onclick = function () {
             var quantity = document.getElementById("KGUnits").value;
             var price = document.getElementById("Modal-Price").value;
-            location.href = '@Url.Action("CompleteListing", "Manage")?producerId=' + @prodID + '&productId=' + product + '&quantity=' + quantity + '&unitPrice=' + price;
+            location.href = '@Url.Action("CompleteListing", "Manage")?SellerId=' + @prodID + '&productId=' + product + '&quantity=' + quantity + '&unitPrice=' + price;
 
         };
     })();

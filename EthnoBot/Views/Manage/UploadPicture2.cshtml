@@ -1,0 +1,98 @@
+﻿<html>
+<head>
+
+    <title>API Demo | Jcrop Demo</title>
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript" src="http://cdn.rawgit.com/tapmodo/Jcrop/master/js/jquery.Jcrop.min.js"></script>
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/jquery.Jcrop.js"></script>
+    <style>
+        .previews {
+            width: 550px;
+        }
+
+        .source {
+            float: left;
+            overflow: hidden;
+        }
+
+        .img {
+            max-width: 300px;
+            height: 180px;
+        }
+    </style>
+    <script type="text/javascript">
+        var imageLoader = document.getElementById('image_loader');
+        imageLoader.addEventListener('change', handleImage, false);
+
+        function handleImage(e) {
+
+            var reader = new FileReader();
+
+            reader.onload = function (event) {
+
+                var image = new Image();
+                var imageW = 300;
+                var imageH = 180
+
+                image.onload = function () {
+
+                    var canvas = document.createElement('canvas');
+
+                    canvas.width = image.width;
+                    canvas.height = image.height;
+
+                    var ctx = canvas.getContext('2d');
+                    ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+                    $('#image_input').html(['<img src="', canvas.toDataURL(), '"/>'].join(''));
+                    var img = $('#image_input img')[0];
+
+                    var canvas = document.createElement('canvas');
+
+                    $('#image_input img').Jcrop({
+                        boxWidth: 300,
+                        boxHeight: 180,
+                        bgColor: 'black',
+                        bgOpacity: .6,
+                        setSelect: [0, 0, 300, 180],
+                        aspectRatio: .5,
+                        onChange: imgSelect
+                    });
+
+                    function imgSelect(selection) {
+                        canvas.width = 300;
+                        canvas.height = 180;
+
+                        var ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, selection.x, selection.y, selection.w, selection.h, 0, 0, canvas.width, canvas.height);
+
+                        $('#image_output').attr('src', canvas.toDataURL());
+                        //$('#image_source').text(canvas.toDataURL());
+                    }
+                }
+                image.src = event.target.result;
+            }
+            reader.readAsDataURL(e.target.files[0]);
+            return reader;
+        }
+    </script>
+</head>
+<body>
+    <div>
+        <label>Image File:</label>
+        <input type="file" id="image_loader" name="image_loader" />
+    </div>
+    <div class="previews">
+        <div class="source">
+            <h3>Source image</h3>
+            <div id="image_input"></div>
+        </div>
+        <div class="crop">
+            <h3>Crop preview</h3>
+            <img id="image_output" />
+            <div>
+                <div>
+</body>
+</html>

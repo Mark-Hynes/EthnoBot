@@ -10,103 +10,103 @@ using EthnoBot.Models;
 
 namespace EthnoBot.Controllers
 {
-    public class AdminProducersController : Controller
+    public class AdminSellersController : Controller
     {
         private EthnoBotEntities db = new EthnoBotEntities();
 
-        // GET: AdminProducers
+        // GET: AdminSellers
         public ActionResult Index()
         {
-            return View(db.Producers.ToList());
+            return View(db.Sellers.ToList());
         }
 
-        // GET: AdminProducers/Details/5
+        // GET: AdminSellers/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Producer producer = db.Producers.Find(id);
-            if (producer == null)
+            Seller Seller = db.Sellers.Find(id);
+            if (Seller == null)
             {
                 return HttpNotFound();
             }
-            return View(producer);
+            return View(Seller);
         }
 
-        // GET: AdminProducers/Create
+        // GET: AdminSellers/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: AdminProducers/Create
+        // POST: AdminSellers/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Producer producer)
+        public ActionResult Create(Seller Seller)
         {
             if (ModelState.IsValid)
             {
-                db.Producers.Add(producer);
+                db.Sellers.Add(Seller);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(producer);
+            return View(Seller);
         }
 
-        // GET: AdminProducers/Edit/5
+        // GET: AdminSellers/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Producer producer = db.Producers.Find(id);
-            if (producer == null)
+            Seller Seller = db.Sellers.Find(id);
+            if (Seller == null)
             {
                 return HttpNotFound();
             }
-            return View(producer);
+            return View(Seller);
         }
 
-        // POST: AdminProducers/Edit/5
+        // POST: AdminSellers/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Producer producer)
+        public ActionResult Edit(Seller Seller)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(producer).State = EntityState.Modified;
+                db.Entry(Seller).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(producer);
+            return View(Seller);
         }
 
-        // GET: AdminProducers/Delete/5
+        // GET: AdminSellers/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Producer producer = db.Producers.Find(id);
-            if (producer == null)
+            Seller Seller = db.Sellers.Find(id);
+            if (Seller == null)
             {
                 return HttpNotFound();
             }
-            return View(producer);
+            return View(Seller);
         }
 
-        // POST: AdminProducers/Delete/5
+        // POST: AdminSellers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Producer producer = db.Producers.Find(id);
-            db.Producers.Remove(producer);
+            Seller Seller = db.Sellers.Find(id);
+            db.Sellers.Remove(Seller);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

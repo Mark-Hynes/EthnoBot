@@ -9,12 +9,11 @@ using System.Web.Mvc;
 
 namespace EthnoBot.Models
 {
-    [Bind(Exclude = "CategoryId")]
     [Table("Categories")]
     public class Category
     {
         [Key]
-        public int CategoryId { get; set; }
+        public string CategoryId { get; set; }
         [DisplayName("Category Name")]
         [Required(ErrorMessage = "Category Name is required.")]
         public string Name { get; set; }
@@ -25,6 +24,6 @@ namespace EthnoBot.Models
         [DisplayName("Image Path")]
         public string ImagePath { get; set; }
 
-        public List<Product> Products { get; set; }
+      
     }
 }

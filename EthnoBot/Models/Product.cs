@@ -15,10 +15,10 @@ namespace EthnoBot.Models
     {
         [Key]
         [ScaffoldColumn(false)]
-        public int ProductId { get; set; }
+        public string ProductId { get; set; }
         [DisplayName("Product Category")]
         [Required(ErrorMessage = "Category is required.")]
-        public int CategoryId { get; set; }
+        public string CategoryId { get; set; }
         [DisplayName("Product Name")]
         [Required(ErrorMessage = "Product Name is required.")]
         public string Title { get; set; }

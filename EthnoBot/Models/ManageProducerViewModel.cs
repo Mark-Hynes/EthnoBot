@@ -5,9 +5,9 @@ using System.Web;
 
 namespace EthnoBot.Models
 {
-    public class ManageProducerViewModel
+    public class ManageSellerViewModel
     {
-        public Producer producer { get; set; }
-        public List<ListingInfo> listings { get; set; }
+        public Seller Seller { get; set; }
+        public List<ListingViewModel> listingViewModels { get; set; }
     }
 }

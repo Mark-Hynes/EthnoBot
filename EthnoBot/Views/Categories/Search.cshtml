@@ -7,7 +7,7 @@
 <br/>
 <a class="text-info text-center align-self-center" href="#Products">Go to Products</a><br />
 <a class="text-success text-center align-self-center" href="#Categories">Go to Categories</a><br/>
-<a class="text-info text-center align-self-center" href="#Producers">Go to Producers</a><br />
+<a class="text-info text-center align-self-center" href="#Sellers">Go to Sellers</a><br />
 
 <div class="container">
     <a name="Products"></a>
@@ -81,21 +81,21 @@
 
 </div>
 <div class="container">
-    <a name="Producers"></a>
+    <a name="Sellers"></a>
     <div class="jumbotron-fluid">
-        <br />  <h4 name="Producers" class="text-center text-info">Results in<b> Producers</b></h4><br /><br />
+        <br />  <h4 name="Sellers" class="text-center text-info">Results in<b> Sellers</b></h4><br /><br />
     </div>
 
     <div class="container">
 
 
         <div class="card-deck">
-            @foreach (var item in Model.producers)
+            @foreach (var item in Model.Sellers)
             {
                 <row>
                     <div class="card border-info mb-4">
                         <span class="border border-info">
-                            <img class="card-img-top img-fluid" src="@Url.Content("~/Images/Producers/" + @item.ImagePath)" alt="@item.Name" style="width:300px;height:180px">
+                            <img class="card-img-top img-fluid" src="@Url.Content("~/Images/Sellers/" + @item.ImagePath)" alt="@item.Name" style="width:300px;height:180px">
                         </span>
                         <div class="card-body ">
                             <h5 class="card-title text-info"><b>@item.Name</b></h5>
@@ -103,7 +103,7 @@
                         </div>
 
                         <div class="card-body">
-                            @Html.ActionLink("View Producer", "ProducerAndListings", new { id = item.ProducerId }, new { @class = "btn btn-info btn-lg", @role = "button" })
+                            @Html.ActionLink("View Seller", "SellerAndListings", new { id = item.SellerId }, new { @class = "btn btn-info btn-lg", @role = "button" })
                         </div>
 
                     </div>

@@ -1,13 +1,13 @@
-﻿@model IEnumerable<EthnoBot.Models.Producer>
+﻿@model IEnumerable<EthnoBot.Models.Seller>
 
 @{
-    ViewBag.Title = "Producers";
+    ViewBag.Title = "Sellers";
 }
 
 
 <div class="container">
     <div class="jumbotron-fluid">
-      <br />  <h2 class="text-center text-info"><b>Producers</b></h2><br /><br />
+      <br />  <h2 class="text-center text-info"><b>Sellers</b></h2><br /><br />
     </div>
     <div class="container">
 
@@ -21,7 +21,7 @@
                 <row>
                     <div class="card border-info mb-4">
                         <span class="border border-info">
-                            <img class="card-img-top img-fluid" src="@Url.Content("~/Images/Producers/" + @item.ImagePath)" alt="@item.Name" style="width:300px;height:180px">
+                            <img class="card-img-top img-fluid" src="" alt="@item.Name" style="width:300px;height:180px">
                             </span>
                         <div class="card-body ">
                             <h5 class="card-title text-info"><b>@item.Name</b></h5>
@@ -37,7 +37,7 @@
                         </div>
 
                             <div class="card-body">
-                                @Html.ActionLink("View Producer", "ProducerAndListings", new { id = item.ProducerId }, new { @class = "btn btn-info btn-lg", @role = "button" })
+                                @Html.ActionLink("View Seller", "SellerAndListings", new { id = item.SellerId }, new { @class = "btn btn-info btn-lg", @role = "button" })
                             </div>
 
                     </div>

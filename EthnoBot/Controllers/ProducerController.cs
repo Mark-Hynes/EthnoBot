@@ -6,9 +6,9 @@ using System.Web.Mvc;
 
 namespace EthnoBot.Controllers
 {
-    public class ProducerController : Controller
+    public class SellerController : Controller
     {
-        // GET:         Producer
+        // GET:         Seller
         public  ActionResult Index()
         {
             return View();

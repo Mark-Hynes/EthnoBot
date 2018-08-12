@@ -8,6 +8,8 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using EthnoBot.Models;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
 
 namespace EthnoBot.Controllers
 {
@@ -19,12 +21,79 @@ namespace EthnoBot.Controllers
         private ApplicationUserManager _userManager;
 
 
+        public ActionResult Profilepic()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Index(HttpPostedFileBase postedFile)
+        {
+            byte[] bytes;
+            using (BinaryReader br = new BinaryReader(postedFile.InputStream))
+            {
+                bytes = br.ReadBytes(postedFile.ContentLength);
+            }
+          
+            db.Images.Add(new ImageModel
+            {
+                Name = Path.GetFileName(postedFile.FileName),
+                ContentType = postedFile.ContentType,
+                Data = bytes
+            });
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+
+        [HttpPost]
+        public ActionResult Profilepic(string base64image)
+        { //  string base64image = image.
+           
+            
+            string userID = User.Identity.GetUserId();
+            Seller p = db.Sellers.Where(x => x.ASPUserId == userID).First();
+            // string pic = System.IO.Path.GetFileName(file.FileName);
+            p.ImagePath = base64image;
+            db.SaveChanges();
+            TempData["Success"] = "Image uploaded successfully";
+            return RedirectToAction("SellerIndex");
+        }
+
+    
+
+
+      /*  public ActionResult FileUpload(HttpPostedFileBase file)
+        {
+            if (file != null)
+            { string userID = User.Identity.GetUserId();
+                Seller p = db.Sellers.Where(x => x.ASPUserId == userID).First();
+                // string pic = System.IO.Path.GetFileName(file.FileName);
+                string pic = p.Name;
+                string path = System.IO.Path.Combine(
+                                       Server.MapPath("~/Images/Sellers/"), pic + ".png");
+                // file is uploaded
+                file.SaveAs(path);
+
+                // save the image path path to the database or you can send image 
+                // directly to database
+                // in-case if you want to store byte[] ie. for DB
+               // using (MemoryStream ms = new MemoryStream())
+               // {
+               //     file.InputStream.CopyTo(ms);
+               //     byte[] array = ms.GetBuffer();
+               // }
+
+            }
+            // after successfully uploading redirect the user
+            return RedirectToAction("SellerIndex", "Manage");
+        }
+        */
 
         [HttpPost]
         public ActionResult Index(ApplicationUser user)
         {
             string userID = User.Identity.GetUserId();
-            ApplicationUser u = UserManager.Users.Where(x => x.Id == userID).FirstOrDefault();
+            ApplicationUser u = UserManager.Users.Where(x => x.Id == userID).First();
             u.FirstName = user.FirstName;
             u.LastName = user.LastName;
             u.Email = user.Email;
@@ -39,90 +108,93 @@ namespace EthnoBot.Controllers
 
 
         [HttpPost]
-        public ActionResult ProducerIndex(Producer producer)
+        public ActionResult SellerIndex(Seller Seller)
         {
             string userID = User.Identity.GetUserId();
-            Producer p = db.Producers.Where(x => x.ASPUserId == userID).FirstOrDefault();
-             p.Name = producer.Name;
-             p.About = producer.About;
-             p.Description = producer.Description;
-             p.CompanyEmail = producer.CompanyEmail;
-             p.CustomerServiceEmail = producer.CustomerServiceEmail;
-             p.Address = producer.Address;
-             p.Mobile = producer.Mobile;
-             p.Telephone = producer.Telephone;
+            Seller p = db.Sellers.Where(x => x.ASPUserId == userID).FirstOrDefault();
+             p.FirstName = Seller.FirstName;
+             p.LastName = Seller.LastName;
+             p.About = Seller.About;
+             p.Description = Seller.Description;
+             p.Email = Seller.Email;
+             p.AddressLine1 = Seller.AddressLine1;
+             p.AddressLine2 = Seller.AddressLine2;
+             p.AddressLine3 = Seller.AddressLine3;
+            p.PostCode = Seller.PostCode;
+            p.City = Seller.City;
+            p.Country = Seller.Country;
+             p.Mobile = Seller.Mobile;
+            p.ImagePath = Seller.ImagePath;
+            p.IsVerified = Seller.IsVerified;
+           
             db.SaveChanges();
-            return RedirectToAction("ProducerIndex");
+            return RedirectToAction("SellerIndex");
         }
 
         [Authorize]
-        public ActionResult SaveProducerChanges(string name)
+        public ActionResult SaveSellerChanges(string name)
         {
             string userID = User.Identity.GetUserId();
-            Producer p = db.Producers.Where(x => x.ASPUserId == userID).FirstOrDefault();
-            p.Name = name;
+            Seller p = db.Sellers.Where(x => x.ASPUserId == userID).First();
+            p.FirstName = name;
             
             
             db.SaveChanges();
-            return RedirectToAction("ProducerIndex");
+            return RedirectToAction("SellerIndex");
         }
 
         [Authorize]
-        public ActionResult DeleteListing(string producerId, string productId, string quantity, string unitPrice)
+        public ActionResult DeleteListing(string listingId)
         {
             string userID = User.Identity.GetUserId();
-            Producer pr = db.Producers.Where(x => x.ASPUserId == userID).FirstOrDefault();
-            if (pr.ProducerId.ToString() == producerId)
-            {
-                ProducerProduct p = db.ProducerProducts.Where(x => x.ProducerId.ToString() == producerId && x.ProductId.ToString() == productId && x.Units.ToString() == quantity && x.UnitPrice.ToString() == unitPrice).FirstOrDefault();
-                db.ProducerProducts.Remove(p);
-                db.SaveChanges();
-            }
-           
+            Seller seller = db.Sellers.Where(x => x.ASPUserId == userID).FirstOrDefault();
+          
+                Listing l = db.Listings.Where(x => x.ListingId == listingId && x.SellerId==seller.SellerId).First();
+            if(l!=null)
+            db.Listings.Remove(l);
 
-           
-            return RedirectToAction("ProducerIndex");
+                db.SaveChanges();
+            return RedirectToAction("SellerIndex");
         }
 
         [Authorize]
-        public ActionResult EditListing(string producerId, string productId, string oldQuantity, string newQuantity, string unitPrice)
+        public ActionResult EditListing(string listingId ,string newQuantity, string unitPrice)
         {
             string userID = User.Identity.GetUserId();
-            Producer pr = db.Producers.Where(x => x.ASPUserId == userID).FirstOrDefault();
-            if (pr.ProducerId.ToString() == producerId)
-            {
-                ProducerProduct p = db.ProducerProducts.Where(x => x.ProducerId.ToString() == producerId && x.ProductId.ToString() == productId && x.Units.ToString() == oldQuantity).FirstOrDefault();
-                p.UnitPrice =Convert.ToDouble(unitPrice);
-                p.Units = Int32.Parse(newQuantity);
+            Seller seller = db.Sellers.Where(x => x.ASPUserId == userID).First();
+            
+                Listing l = db.Listings.Where(x => x.SellerId.ToString() == seller.SellerId && x.ListingId==listingId).FirstOrDefault();
+                l.UnitPriceKG =float.Parse(unitPrice);
+                l.UnitsKG = float.Parse(newQuantity);
                 db.SaveChanges();
-            }
-           return RedirectToAction("ProducerIndex");
+            
+           return RedirectToAction("SellerIndex");
         }
         
             [Authorize]
         public ActionResult AddListing()
         {
             string userID = User.Identity.GetUserId();
-            Producer pr = db.Producers.Where(x => x.ASPUserId == userID).FirstOrDefault();
+            Seller pr = db.Sellers.Where(x => x.ASPUserId == userID).FirstOrDefault();
             var products = db.Products;
-            Session["ProducerId"] = pr.ProducerId;
+            Session["SellerId"] = pr.SellerId;
             return View(products);
                                
         }
         [Authorize]
-        public ActionResult CompleteListing(string producerId, string productId, string quantity, string unitPrice)
+        public ActionResult CompleteListing(string SellerId, string productId, string quantity, string unitPrice)
         {
 
-            ProducerProduct p = new ProducerProduct
+            Listing l = new Listing
             {
-                ProducerId = Int32.Parse(producerId),
-                ProductId = Int32.Parse(productId),
-                Units = Int32.Parse(quantity),
-                UnitPrice = Convert.ToDouble(unitPrice)
+                SellerId = SellerId,
+                ProductId =productId,
+                UnitsKG = float.Parse(quantity),
+                UnitPriceKG = float.Parse(unitPrice)
             };
-            db.ProducerProducts.Add(p);
+            db.Listings.Add(l);
             db.SaveChanges();
-            return RedirectToAction("ProducerIndex");
+            return RedirectToAction("SellerIndex");
         }
 
 
@@ -132,10 +204,10 @@ namespace EthnoBot.Controllers
 
        
 
-        public ActionResult EditProducerProfile(Producer p)
+        public ActionResult EditSellerProfile(Seller p)
         {
             string userId = User.Identity.GetUserId();
-            if (userId== p.ASPUserId && UserManager.IsInRole(userId, "Producer"))
+            if (userId== p.ASPUserId && UserManager.IsInRole(userId, "Seller"))
             { 
                 return View(p);
             }
@@ -145,48 +217,44 @@ namespace EthnoBot.Controllers
         {
 
         }
-        public ActionResult ProducerIndex()
+        public ActionResult SellerIndex()
         {
             string userId = User.Identity.GetUserId();
-            Producer producer = db.Producers.Where(x => x.ASPUserId == userId).FirstOrDefault();
+            Seller seller = db.Sellers.Where(x => x.ASPUserId == userId).FirstOrDefault();
            
-            List<ProducerProduct> Listings = db.ProducerProducts.Where(x => x.ProducerId == producer.ProducerId).ToList();
+            List<Listing> listings = db.Listings.Where(x => x.SellerId == seller.SellerId).ToList();
 
 
 
 
-            List<ListingInfo> listings = new List<ListingInfo>();
+            List<ListingViewModel> listingViewModels = new List<ListingViewModel>();
 
 
 
-            for (int i = 0; i < Listings.Count; i++)
+            for (int i = 0; i < listings.Count; i++)
             {
-                ListingInfo lo = new ListingInfo();
-                int prodID = Listings.ElementAt(i).ProductId;
+                ListingViewModel lo = new ListingViewModel();
+                lo.Listing = listings.ElementAt(i);
 
-                var prods = db.Products.Where(x => x.ProductId == prodID).ToList();
-                for (int j = 0; j < prods.Count; j++)
-                {
-                    Product prod = prods.ElementAt(j);
+                string productId = listings.ElementAt(i).ProductId;
 
-                    lo.Product = prod;
+                Product product = db.Products.Where(x => x.ProductId == productId).First();
 
 
-                }
-
-                lo.Price = Listings.ElementAt(i).UnitPrice.ToString();
-                lo.Producer = producer;
-                lo.Units = Listings.ElementAt(i).Units;
-                listings.Add(lo);
+                lo.UnitPriceKG = lo.Listing.UnitPriceKG;
+                lo.UnitsKG = lo.Listing.UnitsKG;
+                lo.Product = product;
+                lo.Seller = seller;
+                listingViewModels.Add(lo);
 
             }
 
 
-            ManageProducerViewModel pm = new ManageProducerViewModel();
-            pm.listings = listings;
-            pm.producer = producer;
+            ManageSellerViewModel sellerViewModel = new ManageSellerViewModel();
+            sellerViewModel.listingViewModels = listingViewModels;
+            sellerViewModel.Seller = seller;
 
-            return View(pm);
+            return View(sellerViewModel);
         }
 
         public ManageController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
@@ -228,9 +296,9 @@ namespace EthnoBot.Controllers
             {
                 return RedirectToAction("UserIndex", "Manage");
             }
-            else if (UserManager.IsInRole(User.Identity.GetUserId(), "Producer"))
+            else if (UserManager.IsInRole(User.Identity.GetUserId(), "Seller"))
             {
-                return RedirectToAction("ProducerIndex", "Manage");
+                return RedirectToAction("SellerIndex", "Manage");
             }
             else
             {

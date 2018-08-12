@@ -7,9 +7,9 @@ namespace EthnoBot.Models
 {
     public class ProductAndListingsModel
     {
-        public Product product;
-        public List<ListingInfo> listings;
-        public Category category;
+        public Product Product;
+        public List<ListingViewModel> ListingViewModels;
+        public Category Category;
 
     }
 }

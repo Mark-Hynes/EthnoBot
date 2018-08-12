@@ -22,34 +22,28 @@ namespace EthnoBot.Controllers
             {
                 List<CartItem> items = new List<CartItem>();
                 string userID = User.Identity.GetUserId();
-                Cart c = db.Carts.Where(x => x.UserID == userID).FirstOrDefault();
+                Cart c = db.Carts.Where(x => x.UserId == userID).FirstOrDefault();
                 if (c == null)
                 {
                     AccountController.createCart(userID);
-                    c = db.Carts.Where(x => x.UserID == userID).FirstOrDefault();
+                    c = db.Carts.Where(x => x.UserId == userID).FirstOrDefault();
                 }
-                string[] cartItemsAsString = c.CartItems.Split('|');
-
-                for (int i = 0; i < cartItemsAsString.Length; i++)
+                items = db.CartItems.Where(x => x.CartId == c.CartId).ToList();
+                    //find cart items where it matches current user's cart
+                for (int i = 0; i < items.Count; i++)
                 {
-                    if (cartItemsAsString[i].Equals(""))
-                    { continue; }
+                  
 
-                    CartItem item = new CartItem();
-                    string[] individualCartItemString = cartItemsAsString[i].Split(',');
-
-                    int producerid = Int32.Parse(individualCartItemString[0].Replace("ProducerId=", ""));
-                    int productid = Int32.Parse(individualCartItemString[1].Replace("ProductId=", ""));
-
-                    item.producer = db.Producers.Where(x => x.ProducerId == producerid).FirstOrDefault();
-                    item.product = db.Products.Where(x => x.ProductId == productid).FirstOrDefault();
-                    ProducerProduct pp = db.ProducerProducts.Where(x => x.ProductId == item.product.ProductId && x.ProducerId == item.producer.ProducerId).First();
+                    CartItem item = items.ElementAt(i);
 
 
-                    item.unitPrice = pp.UnitPrice;
-                    item.quantityKg = Int32.Parse(individualCartItemString[3].Replace("Quantity=", ""));
-                    item.total = item.unitPrice * item.quantityKg;
-                    items.Add(item);
+                    string SellerId = item.SellerId;
+                    string ProductId = item.ProductId;
+
+                    Seller s = db.Sellers.Where(x => x.SellerId == SellerId).First();
+                    Product p = db.Products.Where(x => x.ProductId == ProductId).First();
+                    Listing l = db.Listings.Where(x => x.ProductId == p.ProductId && x.SellerId == s.SellerId).First();
+                    item.UnitPriceKG = l.UnitPriceKG;        
                 }
                 countCartItems();
                 return View(items);
@@ -69,8 +63,8 @@ namespace EthnoBot.Controllers
         {
             var listItems = new ItemList() { items=new List<Item>()};
             string userId = User.Identity.GetUserId();
-            Cart cart = db.Carts.Where(x => x.UserID == userId).First();
-            string[] cartItemsAsString = cart.CartItems.Split('|');
+            Cart cart = db.Carts.Where(x => x.UserId == userId).First();
+           List< CartItem> items = db.CartItems.Where(x => x.CartId == cart.CartId).ToList();
             var transactionList = new List<Transaction>();
             Payer payer = null;
             RedirectUrls redirUrls = null;
@@ -80,33 +74,28 @@ namespace EthnoBot.Controllers
                 currency = "EUR",
                 total = "0"
                  }; 
-            for (int i = 0; i < cartItemsAsString.Length; i++)
+            for (int i = 0; i < items.Count; i++)
             {
-                if (!string.IsNullOrEmpty(cartItemsAsString[i]))
-                {
 
 
-                    CartItem item = new CartItem();
-                    string[] individualCartItemString = cartItemsAsString[i].Split(',');
+                CartItem item = items.ElementAt(i);
+                  
 
-                    int producerid = Int32.Parse(individualCartItemString[0].Replace("ProducerId=", ""));
-                    int productid = Int32.Parse(individualCartItemString[1].Replace("ProductId=", ""));
+                   Seller seller= db.Sellers.Where(x => x.SellerId == item.SellerId).First();
+                   Product product = db.Products.Where(x => x.ProductId == item.ProductId).FirstOrDefault();
 
-                    item.producer = db.Producers.Where(x => x.ProducerId == producerid).FirstOrDefault();
-                    item.product = db.Products.Where(x => x.ProductId == productid).FirstOrDefault();
-
-                    ProducerProduct pp = db.ProducerProducts.Where(x => x.ProductId == item.product.ProductId && x.ProducerId == item.producer.ProducerId).First();
+                   Listing l = db.Listings.Where(x => x.ProductId == product.ProductId && x.SellerId == seller.SellerId).First();
 
 
-                    item.unitPrice = pp.UnitPrice;
-                   item.quantityKg = Int32.Parse(individualCartItemString[3].Replace("Quantity=", ""));
-                    item.total = item.unitPrice * item.quantityKg;
+                    item.UnitPriceKG = l.UnitPriceKG;
+                   
+                    float total = item.UnitPriceKG * item.UnitsKG;
                     listItems.items.Add(new Item()
                     {
-                        name = item.product.Title + " x" + item.quantityKg,
+                        name = product.Title + " x " + item.UnitsKG,
                         currency = "EUR",
-                        price = item.unitPrice.ToString(),
-                        quantity = item.quantityKg.ToString(),
+                        price = l.UnitPriceKG.ToString(),
+                        quantity = item.UnitsKG.ToString(),
                         sku = "sku"
                         
                         
@@ -122,7 +111,7 @@ namespace EthnoBot.Controllers
 
                     details.tax = (Convert.ToDouble(details.tax)+Convert.ToDouble("1")).ToString();
                     details.shipping =  (Convert.ToDouble(details.shipping)+Convert.ToDouble("10")).ToString();
-                    details.subtotal = (Convert.ToDouble(details.subtotal)+ Convert.ToDouble(item.unitPrice) * Convert.ToDouble(item.quantityKg)).ToString();
+                    details.subtotal = (Convert.ToDouble(details.subtotal)+ Convert.ToDouble(l.UnitPriceKG) * Convert.ToDouble(item.UnitsKG)).ToString();
                     amount.total = (Convert.ToDouble(details.tax)+ Convert.ToDouble(details.shipping)+Convert.ToDouble(details.subtotal)).ToString();
                     
                     amount.details = details;
@@ -130,7 +119,7 @@ namespace EthnoBot.Controllers
 
                     
 
-                }
+                
                 
             }
             Debug.Print(listItems.items.ToList().ToString());
@@ -214,80 +203,35 @@ namespace EthnoBot.Controllers
 
         }
         [Authorize]
-        public ActionResult RemoveFromBasket(string producerId, string productId, string quantity, string unitPrice)
+        public ActionResult RemoveFromBasket(string cartItemId)
         {
             string userID = User.Identity.GetUserId();
-            Cart c = db.Carts.Where(x => x.UserID == userID).FirstOrDefault();
+            Cart c = db.Carts.Where(x => x.UserId == userID).FirstOrDefault();
 
-            string[] cartItemsAsString = c.CartItems.Split('|');
+            List<CartItem> items = db.CartItems.Where(x => x.CartId == c.CartId && x.CartItemId==cartItemId).ToList();
 
-            for (int i = 0; i < cartItemsAsString.Length; i++)
+            for (int i = 0; i < items.Count; i++)
             {
-                if (cartItemsAsString[i].Equals(""))
-                { continue; }
+                CartItem item = items.ElementAt(i);
 
-                CartItem item = new CartItem();
-                string[] individualCartItemString = cartItemsAsString[i].Split(',');
-
-                string producerid1 = individualCartItemString[0].Replace("ProducerId=", "");
-               string productid1 = individualCartItemString[1].Replace("ProductId=", "");
-                int producerID = Convert.ToInt32(producerid1);
-                int productID = Convert.ToInt32(productid1);
-
-                ProducerProduct pp = db.ProducerProducts.Where(x => x.ProductId == productID && x.ProducerId == producerID).First();
-
-
-                item.unitPrice = pp.UnitPrice;
-                string unitPrice1 = individualCartItemString[2].Replace("UnitPrice=", "");
-                string quantityKg = individualCartItemString[3].Replace("Quantity=", "");
-
-
-                if (producerId.Equals(producerid1) && productId.Equals(productid1)&& quantity.Equals(quantityKg))
-                {
-                    removeFromCartList(c,cartItemsAsString[i]);
-                    continue;
-                }
-
-            }
+                items.Remove(item); 
+         }
             countCartItems();
             return RedirectToAction("Index");
         }
 
         [Authorize]
-        public ActionResult EditItem(string producerId, string productId, string oldQuantity,string newQuantity)
+        public ActionResult EditItem(string cartItemId, string newQuantity)
         {
             string userID = User.Identity.GetUserId();
-            Cart c = db.Carts.Where(x => x.UserID == userID).FirstOrDefault();
+            Cart c = db.Carts.Where(x => x.UserId == userID).FirstOrDefault();
 
-            string[] cartItemsAsString = c.CartItems.Split('|');
+            CartItem item = db.CartItems.Where(x => x.CartItemId == cartItemId).First();
 
-            for (int i = 0; i < cartItemsAsString.Length; i++)
+            if (item != null)
             {
-                if (cartItemsAsString[i].Equals(""))
-                { continue; }
-
-                CartItem item = new CartItem();
-                string[] individualCartItemString = cartItemsAsString[i].Split(',');
-
-                string producerid1 = individualCartItemString[0].Replace("ProducerId=", "");
-                string productid1 = individualCartItemString[1].Replace("ProductId=", "");
-
-                int productID = Convert.ToInt32(productid1);
-                int producerID = Convert.ToInt32(producerid1);
-                ProducerProduct pp = db.ProducerProducts.Where(x => x.ProductId == productID && x.ProducerId == producerID).First();
-
-
-           
-                string unitPrice1 = pp.UnitPrice.ToString();
-                string quantityKg = individualCartItemString[3].Replace("Quantity=", "");
-
-
-                if (producerId.Equals(producerid1) && productId.Equals(productid1) && oldQuantity.Equals(quantityKg))
-                {
-                    modifyItem(c, cartItemsAsString[i],oldQuantity,newQuantity);
-                    continue;
-                }
-
+                item.UnitsKG = float.Parse(newQuantity);
+                db.SaveChanges();
             }
             countCartItems();
             return RedirectToAction("Index");
@@ -304,15 +248,16 @@ namespace EthnoBot.Controllers
                 }
                 else
                 {
-                    Cart c = db.Carts.Where(x => x.UserID == userID).FirstOrDefault();
-                    string[] cartCount = c.CartItems.Split('|');
-                    int realCount = 0;
-                    for (int i = 0; i < cartCount.Length; i++)
+                    Cart c = db.Carts.Where(x => x.UserId == userID).First();
+                    if (c == null)
                     {
-                        if (!cartCount[i].Equals(""))
-                        { realCount++; }
+                        AccountController.createCart(userID);
+                        c = db.Carts.Where(x => x.UserId == userID).FirstOrDefault();
                     }
-                    Session["CartItemCount"] = realCount;
+                    int count = db.CartItems.Where(x=>x.CartId==c.CartId).ToList().Count; 
+                    
+                   
+                    Session["CartItemCount"] = count;
                 }
             }
             catch (Exception e)
@@ -321,42 +266,25 @@ namespace EthnoBot.Controllers
 
             }
         }
-        private void removeFromCartList(Cart c, string v)
+        private void removeFromCartList(string cartItemId)
         {
-            
-           Debug.WriteLine("Item's current text: " + c.CartItems);
-            
-
-        
-            string stringToDelete = "|" + v + "|";
-
-            Debug.WriteLine("Item to delete: " +stringToDelete);
-
-          
-          string newCartItems =c.CartItems.Replace(stringToDelete,"");
-            c.CartItems = newCartItems;
-            Debug.WriteLine("Item's updated text: " + c.CartItems);
-
-            db.SaveChanges();
+                   CartItem item = db.CartItems.Where(x => x.CartItemId == cartItemId).First();
+                   db.CartItems.Remove(item);
+                   db.SaveChanges();
         }
 
-        private void modifyItem(Cart c, string v, string oldQuantity,string newQuantity)
+        private void modifyItem(string cartItemId,string newQuantity)
         {
 
-            Debug.WriteLine("Item's current text: " + c.CartItems);
+            CartItem item = db.CartItems.Where(x => x.CartItemId == cartItemId).First();
+            if (item != null)
+            {
+                item.UnitsKG = float.Parse(newQuantity);
+                db.SaveChanges();
+            }
 
-
-
-            string oldString = "|" + v + "|";
-            string newString = oldString.Replace("Quantity=" + oldQuantity, "Quantity=" + newQuantity);
-          
-
-
-            string newCartItem = c.CartItems.Replace(oldString,newString);
-            c.CartItems = newCartItem;
-           
             countCartItems();
-            db.SaveChanges();
+            
         }
     }
 }

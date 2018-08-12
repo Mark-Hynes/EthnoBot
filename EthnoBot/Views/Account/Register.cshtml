@@ -3,10 +3,10 @@
     ViewBag.Title = "Create a new account";
     string errormsg = (string)ViewData["LoginErrorMessage"];
 }
+<hr />
 
-
-<h2 class="text-info"><b>@ViewBag.Title.</b></h2>
-
+<h2 class="text-muted text-center"><b>@ViewBag.Title.</b></h2>
+<hr />
 @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
@@ -16,37 +16,72 @@
     @{
         if (errormsg != null)
         {
-            <div class="alert alert-dismissible alert-danger" role="alert">@errormsg</div>
+            <div class="alert alert-dismissible alert-danger" role="alert">Sorry, your details are not valid, please review and try again.</div>
         }
     }
-    <div class="form-group">
-        <label class="text-info" for="firstNameInput">First Name</label>
-        @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control text-default" }, @id = "firstNameInput" })
-        @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
-    </div> <div class="form-group">
-        <label class="text-info" for="lastNameInput">Last Name</label>
-        @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control text-default" }, @id = "lastNameInput" })
-        @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
-    </div> <div class="form-group">
-        <label class="text-info" for="emailInput">Email address</label>
-        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control text-default" }, @id = "emailInput" })
-        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-    </div>
-    <div class="form-group">
-        <label class="text-info" for="passwordInput">Password</label>
-        @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control text-default" }, @id = "passwordInput" })
-        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
-    </div>
-    <div class="form-group">
-        <label class="text-info" for="confirmPasswordInput">Confirm Password</label>
-        @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control text-default" }, @id = "confirmPasswordInput" })
-        @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
-    </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label class="text-info" for="firstNameInput">First Name</label>
+                            @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control text-default" }, @id = "firstNameInput" })
+                            @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label class="text-info" for="lastNameInput">Last Name</label>
+                            @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control text-default" }, @id = "lastNameInput" })
+                            @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="text-info" for="emailInput">Email address</label>
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control text-default" }, @id = "emailInput" })
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                        <label class="text-info"></label>
+                        <div class="form-check">
+                            @Html.CheckBoxFor(model => model.IsSeller, new { htmlAttributes = new { @class= "form-check-input" } })
+                            <label for="formCheck-1" class="form-check-label text-muted text-right">&emsp; I want to sell on this site.</label>
+                        </div>
+                    </div>
+                </div>
+                    </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label class="text-info" for="passwordInput">Password</label>
+                            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control text-default" }, @id = "passwordInput" })
+                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                        </div>
+                        </div>
+                            
 
-    <input type="submit" class="btn btn-info" value="Register" />
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="text-info" for="confirmPasswordInput">Confirm Password</label>
+                                @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control text-default" }, @id = "confirmPasswordInput" })
+                                @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <input type="submit" class="btn btn-info" value="Register" />
+                    </div>
+                    <div class="col-md-6"></div>
+                </div>
+                </div>
 </form>
     <br />
-    <p>@Html.ActionLink("Register as a Producer", "RegisterProducer", "Account", new { @class = "text-info"})</p>
+
 }
 
 @section Scripts {

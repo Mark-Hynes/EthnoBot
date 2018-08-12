@@ -1,16 +1,16 @@
 ﻿@model EthnoBot.Models.ProductAndListingsModel
 @using EthnoBot.Models;
 @{
-    ViewBag.Title = Model.product.Title;
+    ViewBag.Title = Model.Product.Title;
 }
 @{
-    string category = Model.category.Name;
-    var prod = Model.product;
-    var listings = Model.listings;
+    string category = Model.Category.Name;
+    var prod = Model.Product;
+    var listings = Model.ListingViewModels;
     int i = 0;
 }
 <!-- Stack the columns on mobile by making one full-width and the other half-width -->
-@Html.ActionLink("<-- Back to " + Model.category.Name, "ListProducts", new { id = Model.category.CategoryId }, new { @class = "text-info" })
+@Html.ActionLink("<-- Back to " + Model.Category.Name, "ListProducts", new { id = Model.Category.CategoryId }, new { @class = "text-info" })
 
 <hr />
 
@@ -24,7 +24,7 @@
 <br />
 <div class="container border-left-0 border-right-0 border-info" style="height:180px;width:1177px;">
     <div class="row justify-content-center" style="height:180px;">
-        <div class="col-xl-3 offset-0 offset-xl-0"><img src="@Url.Content("~/Images/Products/" + Model.product.ImagePath)" class="border border-info img-fluid d-table-row d-flex justify-content-center align-items-center align-content-center align-self-center flex-wrap" style="width:300px;height:180px;margin:0px;padding:0px;" /></div>
+        <div class="col-xl-3 offset-0 offset-xl-0"><img src="@Model.Product.ImagePath" class="border border-info img-fluid d-table-row d-flex justify-content-center align-items-center align-content-center align-self-center flex-wrap" style="width:300px;height:180px;margin:0px;padding:0px;" /></div>
     </div>
 </div>
 <hr />
@@ -35,11 +35,11 @@
     <div class="row">
         <div class="col">
             <h3 class="text-info">Name</h3>
-            <p class="text-muted">@Model.product.Title</p>
+            <p class="text-muted">@Model.Product.Title</p>
         </div>
         <div class="col">
             <h3 class="text-info">Category</h3>
-            <p class="text-muted">@Model.category.Name</p>
+            <p class="text-muted">@Model.Category.Name</p>
         </div>
     </div>
 </div>
@@ -47,11 +47,11 @@
     <div class="row">
         <div class="col">
             <h3 class="text-info">Family</h3>
-            <p class="text-muted">@Model.product.Family</p>
+            <p class="text-muted">@Model.Product.Family</p>
         </div>
         <div class="col">
             <h3 class="text-info">Latin Name</h3>
-            <p class="text-muted">@Model.product.LatinName</p>
+            <p class="text-muted">@Model.Product.LatinName</p>
         </div>
     </div>
 </div>
@@ -59,7 +59,7 @@
 <div class="container">
     <div class="row">
         <div class="col">
-            <h3 class="text-center text-muted"><strong>Producers that sell this Product:</strong></h3>
+            <h3 class="text-center text-muted"><strong>Sellers that sell this Product:</strong></h3>
         </div>
     </div>
 </div>
@@ -69,11 +69,11 @@
         @foreach (var item in listings)
         {<li class="list-group-item">
                 <div class="row  border-secondary">
-                    <div class="col d-table-row order-1">@Html.ActionLink(item.Producer.Name, "ProducerAndListings", new { id = item.Producer.ProducerId }, new { @class = "text-info", })</div>
+                    <div class="col d-table-row order-1">@Html.ActionLink(item.Seller.FirstName+" "+item.Seller.LastName, "SellerAndListings", new { id = item.Seller.SellerId }, new { @class = "text-info", })</div>
                     <div class="col d-table-row order-2">
-                        <p class="text-muted">€@item.Price per 1Kg</p>
+                        <p class="text-muted">€@item.UnitPriceKG per 1Kg</p>
                     </div>
-                    <div class="col d-table-row order-3 float-right"><button class="btn btn-info" type="button" data-toggle="modal" onclick="showPopup('@item.Producer.ProducerId','@item.Producer.Name','@item.Price','@item.Product.ProductId','@item.Product.Title')" data-target="#Modal">Add To Cart</button></div>
+                    <div class="col d-table-row order-3 float-right"><button class="btn btn-info" type="button" data-toggle="modal" onclick="showPopup('@item.Seller.SellerId','@item.Seller.FirstName','@item.UnitPriceKG','@item.Product.ProductId','@item.Product.Title')" data-target="#Modal">Add To Cart</button></div>
                 </div>
         </li>
             
@@ -93,7 +93,7 @@
                 <div class="modal-body">
                     <p id="Modal-ProductID"></p>
                     <p id="Modal-Product"></p>
-                    <p id="Modal-Producer"></p>
+                    <p id="Modal-Seller"></p>
                     <p id="Modal-Price"></p>
                     <div class="input-group mb-3">
                         <input type="number" id="KGUnits" class="form-control" min="1" max="100" placeholder="1" aria-label="KGUnits" aria-describedby="basic-addon2" required>
@@ -118,18 +118,18 @@
 
 
     <script type="text/javascript">
-    var producerID = "";
+    var SellerID = "";
     var productID = "";
     var unitPrice = "";
     var quantity = "";
-    function showPopup(producerId, producerName, price, productId,productName) {
-        document.getElementById("Modal-Producer").innerText = "Product Name: " + productName;
-        document.getElementById("Modal-Producer").innerText = "Seller Name: " + producerName;
+    function showPopup(SellerId, SellerName, price, productId,productName) {
+        document.getElementById("Modal-Seller").innerText = "Product Name: " + productName;
+        document.getElementById("Modal-Seller").innerText = "Seller Name: " + SellerName;
 
 
         document.getElementById("Modal-Price").innerText = "Price per 1kg: " + price;
         productID = productId;
-        producerID = producerId;
+        SellerID = SellerId;
         unitPrice = price;
 
     }
@@ -138,7 +138,7 @@
         document.getElementById("addToCart1").onclick = function () {
             quantity = document.getElementById("KGUnits").value
 
-            location.href = '@Url.Action("AddToBasket", "Categories")?producerId=' + producerID + '&productId=' + productID + '&quantity=' + quantity + '&unitPrice=' + unitPrice;
+            location.href = '@Url.Action("AddToBasket", "Categories")?SellerId=' + SellerID + '&productId=' + productID + '&quantity=' + quantity + '&unitPrice=' + unitPrice;
 
         };
     })();

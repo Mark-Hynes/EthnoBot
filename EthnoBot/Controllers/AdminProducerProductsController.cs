@@ -10,107 +10,107 @@ using EthnoBot.Models;
 
 namespace EthnoBot.Controllers
 {
-    public class AdminProducerProductsController : Controller
+    public class AdminListingsController : Controller
     {
         private EthnoBotEntities db = new EthnoBotEntities();
 
-        // GET: AdminProducerProducts
+        // GET: AdminListings
         public ActionResult Index()
         {
-            return View(db.ProducerProducts.ToList());
+            return View(db.Listings.ToList());
         }
 
-        // GET: AdminProducerProducts/Details/5
+        // GET: AdminListings/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ProducerProduct producerProduct = db.ProducerProducts.Find(id);
-            if (producerProduct == null)
+            Listing listing = db.Listings.Find(id);
+            if (listing == null)
             {
                 return HttpNotFound();
             }
-            return View(producerProduct);
+            return View(listing);
         }
 
-        // GET: AdminProducerProducts/Create
+        // GET: AdminListings/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: AdminProducerProducts/Create
+        // POST: AdminListings/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ProducerProductId,ProducerId,ProductId,Price")] ProducerProduct producerProduct)
+        public ActionResult Create([Bind(Include = "ListingId,SellerId,ProductId,UnitPriceKG")] Listing listing)
         {
             if (ModelState.IsValid)
             {
-                db.ProducerProducts.Add(producerProduct);
+                db.Listings.Add(listing);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(producerProduct);
+            return View(listing);
         }
 
-        // GET: AdminProducerProducts/Edit/5
+        // GET: AdminListings/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ProducerProduct producerProduct = db.ProducerProducts.Find(id);
-            if (producerProduct == null)
+           Listing listing = db.Listings.Find(id);
+            if (listing == null)
             {
                 return HttpNotFound();
             }
-            return View(producerProduct);
+            return View(listing);
         }
 
-        // POST: AdminProducerProducts/Edit/5
+        // POST: AdminListings/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ProducerProductId,ProducerId,ProductId,Price")] ProducerProduct producerProduct)
+        public ActionResult Edit([Bind(Include = "ListingId,SellerId,ProductId,UnitPriceKG")] Listing listing)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(producerProduct).State = EntityState.Modified;
+                db.Entry(listing).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(producerProduct);
+            return View(listing);
         }
 
-        // GET: AdminProducerProducts/Delete/5
+        // GET: AdminListings/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ProducerProduct producerProduct = db.ProducerProducts.Find(id);
-            if (producerProduct == null)
+            Listing listing = db.Listings.Find(id);
+            if (listing == null)
             {
                 return HttpNotFound();
             }
-            return View(producerProduct);
+            return View(listing);
         }
 
-        // POST: AdminProducerProducts/Delete/5
+        // POST: AdminListings/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            ProducerProduct producerProduct = db.ProducerProducts.Find(id);
-            db.ProducerProducts.Remove(producerProduct);
+            Listing listing = db.Listings.Find(id);
+            db.Listings.Remove(listing);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

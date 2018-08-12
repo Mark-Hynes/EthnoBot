@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Diagnostics;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -27,7 +29,7 @@ namespace EthnoBot.Controllers
         { ViewData["parameters"] = searchString;
 
             var categories = db.Categories.Where(x => x.Name.Contains(searchString)).ToList();
-            List<int> categoryIds = new List<int>();
+            List<string> categoryIds = new List<string>();
             for (int i = 0; i > categories.Count; i++)
             {
                 categoryIds.Add(categories.ElementAt(i).CategoryId);
@@ -35,81 +37,79 @@ namespace EthnoBot.Controllers
             }
            
             var products =db.Products.Where(x => x.Title.Contains(searchString) | x.Family.Contains(searchString) | categoryIds.Contains(x.CategoryId) | x.LatinName.Contains(searchString)).ToList();
-            var producers = db.Producers.Where(x => x.Name.Contains(searchString) ).ToList();
+            var Sellers = db.Sellers.Where(x => x.FirstName.Contains(searchString) ).ToList();
            
             SearchResultsViewModel model = new SearchResultsViewModel();
             model.products = (List<Product>)products;
-            model.producers = (List<Producer>)producers;
+            model.Sellers = (List<Seller>)Sellers;
             model.categories = (List<Category>)categories;
             return View(model);
         }
-        public ActionResult ListProducts(int id)
+        public ActionResult ListProducts(string id)
         {
             var Products = db.Products.Where(x => x.CategoryId == id).ToList();
             ViewData["CategoryName"] = db.Categories.Where(x => x.CategoryId == id).ToList().First().Name;
             return View(Products);
         }
-    
-        public ActionResult ProductAndListings(int id)
+        public List<ListingViewModel> listingViewModels;
+        public ActionResult ProductAndListings(string productId)
         {
 
-            Product product = db.Products.FirstOrDefault(acc=>acc.ProductId==id);
-            List<ProducerProduct> Listings = db.ProducerProducts.Where(x => x.ProductId == id).ToList();
+            Product product = db.Products.FirstOrDefault(x=>x.ProductId==productId);
+            List<Listing> listings = db.Listings.Where(x => x.ProductId == productId).ToList();
             Category category = db.Categories.FirstOrDefault(x => x.CategoryId == product.CategoryId);
             
            
 
 
-            List<ListingInfo> listings = new List<ListingInfo>();
+           listingViewModels= new List<ListingViewModel>();
               
 
               
-            for (int i = 0; i < Listings.Count; i++)
+            for (int i = 0; i < listings.Count; i++)
             {
-                ListingInfo lo = new ListingInfo();
-                int prodID =Listings.ElementAt(i).ProducerId;
-                
-                var prods = db.Producers.Where(x => x.ProducerId == prodID).ToList();
-                for (int j = 0; j < prods.Count; j++)
-                {
-                    Producer prod = prods.ElementAt(j);
-                   
-                    lo.Producer = prod ;
-                    
-                    
-                }
+                ListingViewModel lo = new ListingViewModel();
+                lo.Listing = listings.ElementAt(i);
              
-                lo.Price = Listings.ElementAt(i).UnitPrice.ToString();
+                string sellerId =listings.ElementAt(i).SellerId;
+                
+                Seller seller = db.Sellers.Where(x => x.SellerId == sellerId).First();
+              
+             
+                lo.UnitPriceKG =lo.Listing.UnitPriceKG;
+                lo.UnitsKG = lo.Listing.UnitsKG;
                 lo.Product = product;
-                listings.Add(lo);
+                lo.Seller = seller;
+                listingViewModels.Add(lo);
                 
             }
 
 
             ProductAndListingsModel pm = new ProductAndListingsModel();
-            pm.listings = listings;
-            pm.product = product;
-            pm.category = category;
+            pm.ListingViewModels = listingViewModels;
+            pm.Product = product;
+            pm.Category = category;
             return View(pm);
         }
 
         [Authorize]
-        public ActionResult AddToBasket(string producerId,string productId, string quantity, double unitPrice)
+        public ActionResult AddToBasket(string SellerId, string productId, string quantity, double unitPrice)
         {
-            int producer = Int32.Parse(producerId);
-            int product = Int32.Parse(productId);
-             int quantit = Int32.Parse(quantity);
-            CartItem c = new CartItem();
-            c.producer = db.Producers.Where(x => x.ProducerId == producer).FirstOrDefault();
-            c.product = db.Products.Where(x => x.ProductId == product).FirstOrDefault();
-            c.quantityKg = quantit;
-            c.unitPrice = unitPrice;
 
             string userId = User.Identity.GetUserId();
             Guid userID = Guid.Parse(User.Identity.GetUserId());
-            Cart cart = db.Carts.Where(x => x.UserID == userId).FirstOrDefault();
-            cart.CartItems += "|ProducerId=" + producerId + "," + "ProductId=" + productId + "," + "UnitPrice=" + unitPrice + "," + "Quantity=" + quantity + "|";
-          
+            Cart cart = db.Carts.Where(x => x.UserId == userId).FirstOrDefault();
+            CartItem  c = db.CartItems.Where(x => x.SellerId == SellerId && x.ProductId == productId).First();
+            if (c == null)
+            {
+                c = new CartItem();
+                c.SellerId = SellerId;
+                c.ProductId = productId;
+                c.UnitsKG = float.Parse(quantity);
+                c.UnitPriceKG = float.Parse(unitPrice.ToString());
+            }
+            else { c.UnitsKG += float.Parse(quantity);c.UnitPriceKG = float.Parse(unitPrice.ToString()); }
+        
             db.SaveChanges();
             countCartItems();
 
@@ -128,15 +128,9 @@ namespace EthnoBot.Controllers
                 }
                 else
                 {
-                    Cart c = db.Carts.Where(x => x.UserID == userID).FirstOrDefault();
-                    string[] cartCount = c.CartItems.Split('|');
-                    int realCount = 0;
-                    for (int i = 0; i < cartCount.Length; i++)
-                    {
-                        if (!cartCount[i].Equals(""))
-                        { realCount++; }
-                    }
-                    Session["CartItemCount"] = realCount;
+                    Cart c = db.Carts.Where(x => x.UserId == userID).FirstOrDefault();
+                    int count = db.CartItems.Where(x => x.CartId == c.CartId).ToList().Count;
+                    Session["CartItemCount"] = count;
                 }
             }
             catch (Exception e)
@@ -147,45 +141,41 @@ namespace EthnoBot.Controllers
         }
 
 
-        public ActionResult ProducerAndListings(int id)
+        public ActionResult SellerAndListings(string sellerid)
         {
             try
             {
-                Producer producer = db.Producers.FirstOrDefault(acc => acc.ProducerId == id);
-                List<ProducerProduct> Listings = db.ProducerProducts.Where(x => x.ProducerId == id).ToList();
+                Seller seller = db.Sellers.Where(x => x.SellerId == sellerid).First();
+                List<Listing> listings = db.Listings.Where(x => x.SellerId == sellerid).ToList();
 
 
 
 
-                List<ListingInfo> listings = new List<ListingInfo>();
+                List<ListingViewModel> listingViewModels = new List<ListingViewModel>();
 
 
-
-                for (int i = 0; i < Listings.Count; i++)
+                for (int i = 0; i < listings.Count; i++)
                 {
-                    ListingInfo lo = new ListingInfo();
-                    int prodID = Listings.ElementAt(i).ProductId;
+                    ListingViewModel lo = new ListingViewModel();
+                    lo.Listing = listings.ElementAt(i);
 
-                    var prods = db.Products.Where(x => x.ProductId == prodID).ToList();
-                    for (int j = 0; j < prods.Count; j++)
-                    {
-                        Product prod = prods.ElementAt(j);
+                    string productId = listings.ElementAt(i).ProductId;
 
-                        lo.Product = prod;
+                    Product product = db.Products.Where(x => x.ProductId == productId).First();
+                    
 
-
-                    }
-
-                    lo.Price = Listings.ElementAt(i).UnitPrice.ToString();
-                    lo.Producer = producer;
-                    listings.Add(lo);
+                    lo.UnitPriceKG = lo.Listing.UnitPriceKG;
+                    lo.UnitsKG = lo.Listing.UnitsKG;
+                    lo.Product = product;
+                    lo.Seller = seller;
+                    listingViewModels.Add(lo);
 
                 }
 
 
-                ProducerAndListingsModel pm = new ProducerAndListingsModel();
-                pm.listings = listings;
-                pm.producer = producer;
+                SellerAndListingsModel pm = new SellerAndListingsModel();
+                pm.listingViewModels = listingViewModels;
+                pm.Seller = seller;
 
                 return View(pm);
             }
@@ -194,11 +184,22 @@ namespace EthnoBot.Controllers
 
 
 
-        public ActionResult ProducerList()
+        public ActionResult SellerList()
         {
-
-            return View(db.Producers.ToList());
+            var Sellers = db.Sellers.ToList();
+                     
+            return View(Sellers);
         }
+        public string GetImage(string imageId)
+        {
+            ImageModel image = db.Images.Where(x => x.Name == imageId).First();
+            byte[] imageBytes = image.Data;
+            string base64String = "data:image/jpeg;base64," + Convert.ToBase64String(image.Data, 0, image.Data.Length);
+            return base64String;
+            //MemoryStream ms = new MemoryStream(imageBytes);
+            // return File(ms, "image/jpeg", imageId);
+        }
+
         // GET: Categories/Details/5
         public ActionResult Details(int? id)
         {

@@ -7,6 +7,6 @@ namespace EthnoBot.Models
 {
     public class CartViewModel
     {
-        public List<CartItem> cartItems { get; set; }
+        public List<CartItemViewModel> cartItems { get; set; }
     }
 }

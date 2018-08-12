@@ -35,15 +35,11 @@ namespace EthnoBot.Controllers
                 }
                 else
                 {
-                    Cart c = db.Carts.Where(x => x.UserID == userID).FirstOrDefault();
-                    string[] cartCount = c.CartItems.Split('|');
-                    int realCount = 0;
-                    for (int i = 0; i < cartCount.Length; i++)
-                    {
-                        if (!cartCount[i].Equals(""))
-                        { realCount++; }
-                    }
-                    Session["CartItemCount"] = realCount;
+                    Cart c = db.Carts.Where(x => x.UserId == userID).FirstOrDefault();
+                    int count = db.CartItems.Where(x => x.CartId == c.CartId).ToList().Count;
+                   
+                 
+                    Session["CartItemCount"] = count;
                 }
             }
             catch (Exception e)

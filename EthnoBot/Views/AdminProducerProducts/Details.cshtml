@@ -1,4 +1,4 @@
-﻿@model EthnoBot.Models.ProducerProduct
+﻿@model EthnoBot.Models.Listing
 
 @{
     ViewBag.Title = "Details";
@@ -7,15 +7,15 @@
 <h2>Details</h2>
 
 <div>
-    <h4>ProducerProduct</h4>
+    <h4>Listing</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.ProducerId)
+            @Html.DisplayNameFor(model => model.SellerId)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.ProducerId)
+            @Html.DisplayFor(model => model.SellerId)
         </dd>
 
         <dt>
@@ -37,6 +37,6 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ProducerProductId }) |
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ListingId }) |
     @Html.ActionLink("Back to List", "Index")
 </p>

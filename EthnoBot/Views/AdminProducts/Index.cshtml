@@ -29,7 +29,9 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
+@foreach (var item in Model)
+{
+    string imagepath = item.ImagePath.Substring(0, 40);
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.CategoryId)
@@ -41,7 +43,7 @@
             @Html.DisplayFor(modelItem => item.LatinName)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.ImagePath)
+            @Html.DisplayFor(modelItem => imagepath)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Family)

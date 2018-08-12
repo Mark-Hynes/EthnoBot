@@ -10,8 +10,10 @@ namespace EthnoBot.Models
     {
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
-        public DbSet<Producer> Producers { get; set; }
-        public DbSet<ProducerProduct> ProducerProducts { get; set; }
+        public DbSet<Seller> Sellers { get; set; }
+        public DbSet<Listing> Listings { get; set; }
         public DbSet<Cart> Carts { get; set; }
+        public DbSet<CartItem> CartItems { get; set; }
+        public DbSet<ImageModel> Images { get; set; }
     }
 }

@@ -22,13 +22,13 @@
             </row>
             <row>
                 <div class="card border-success mb-4">
-                    <img class="card-img-top img-fluid" src="@Url.Content("~/Images/Producers/DefaultProducer.png" )" alt="Card image cap" style="width:300px;height:180px">
+                    <img class="card-img-top img-fluid" src="@Url.Content("~/Images/Sellers/DefaultSeller.png" )" alt="Card image cap" style="width:300px;height:180px">
                     <div class="card-body ">
-                        <h5 class="card-title text-success">Producers</h5>
-                        <p class="card-text text-success" style="width:250px;height:50px">Add, Edit, or Delete producers.</p>
+                        <h5 class="card-title text-success">Sellers</h5>
+                        <p class="card-text text-success" style="width:250px;height:50px">Add, Edit, or Delete Sellers.</p>
                     </div>
                     <div class="card-body">
-                        @Html.ActionLink("Manage", "Index", "AdminProducers", new { @class = "btn btn-info btn-lg" }, null)
+                        @Html.ActionLink("Manage", "Index", "AdminSellers", new { @class = "btn btn-info btn-lg" }, null)
                     </div>
                 </div>
             </row>
@@ -52,7 +52,7 @@
                         <p class="card-text text-success" style="width:250px;height:50px">Add, Edit, or Delete products.</p>
                     </div>
                     <div class="card-body">
-                        @Html.ActionLink("Manage", "Index", "AdminProducerProducts", new { @class = "btn btn-info btn-lg" }, null)
+                        @Html.ActionLink("Manage", "Index", "AdminListings", new { @class = "btn btn-info btn-lg" }, null)
                     </div>
                 </div>
             </row>

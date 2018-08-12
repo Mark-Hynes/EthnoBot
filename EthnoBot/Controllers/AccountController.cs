@@ -14,6 +14,7 @@ using System.Data.Entity.Validation;
 using System.Net;
 using System.Net.Mail;
 using EthnoBot.Utils;
+using System.Web.Security;
 
 namespace EthnoBot.Controllers
 {
@@ -27,7 +28,7 @@ namespace EthnoBot.Controllers
         public AccountController()
         {
         }
-        public void sendVerifyCompanyEmail(Producer p)
+        public void sendVerifyCompanyEmail(Seller p)
         {
             GMailer.GmailUsername = "mrkhynes1@gmail.com";
             GMailer.GmailPassword = "bkrytjdxkhxzpueh";
@@ -36,18 +37,21 @@ namespace EthnoBot.Controllers
             mailer.ToEmail = "martinoneill360@gmail.com";
             mailer.Subject = "ADMINISTRATOR INPUT REQUIRED";
            
-            mailer.Body = "Hello Admin"+ Environment.NewLine + Environment.NewLine + "A new Company has registered to be a partner with EthnoBotanicalsIreland" + Environment.NewLine+ Environment.NewLine+
-                "Please navigate to 'Manage Producers' tab to verify the legitimacy of the company's details." + Environment.NewLine+
-                "Once you change the company's value 'Verified' to 'True', the company will be listed on the website as a Producer." + Environment.NewLine+
-                Environment.NewLine+"The company has entered the following details:" + Environment.NewLine+
+            mailer.Body = "Hello Admin"+ Environment.NewLine + Environment.NewLine + "A new user has registered to be a seller on the EthnoBotanicalsIreland website" + Environment.NewLine+ Environment.NewLine+
+                "Please navigate to 'Manage Sellers tab to verify their details." + Environment.NewLine+
+                "Once you change the sellers's value 'Verified' to 'True', the seller will be listed on the website as a Seller." + Environment.NewLine+
+                Environment.NewLine+"The seller has entered the following details:" + Environment.NewLine+
 
-                Environment.NewLine+ Environment.NewLine+"Company Name: " + p.Name+ Environment.NewLine +
+                Environment.NewLine+ Environment.NewLine+"Seller Name: " + p.FirstName+" " +p.LastName+ Environment.NewLine +
                 "Company About: "+ p.About+ Environment.NewLine +
                 "Company Description: "+ p.Description+ Environment.NewLine +
-                "Company Address: " + p.Address+ Environment.NewLine +
-                "Company Email: "  +p.CompanyEmail+ Environment.NewLine +
-                "Customer Support Email: "+ p.CustomerServiceEmail+ Environment.NewLine +
-                "Company Telephone: "+ p.Telephone+ Environment.NewLine +
+                "Address Line 1: " + p.AddressLine1+ Environment.NewLine +
+                "Address Line 2: " + p.AddressLine2+ Environment.NewLine +
+                "Address Line 3: " + p.AddressLine3+ Environment.NewLine +
+                "PostCode: " + p.PostCode + Environment.NewLine +
+                "City: " + p.City + Environment.NewLine +
+                "Country: " + p.Country + Environment.NewLine +
+                "Email: "  +p.Email+ Environment.NewLine +
                 "Company Mobile: "+ p.Mobile+ Environment.NewLine;
             mailer.IsHtml =false;
             mailer.Send();
@@ -176,7 +180,7 @@ namespace EthnoBot.Controllers
         }
 
         [AllowAnonymous]
-        public ActionResult RegisterProducer()
+        public ActionResult RegisterSeller()
         {
             return View();
         }
@@ -195,23 +199,44 @@ namespace EthnoBot.Controllers
                     bool p = checkIfEmailExists(model.Email);
                     if (p == false)
                     {
-                        var user = new ApplicationUser() { UserName = model.Email, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName };
-                        var result = await UserManager.CreateAsync(user, model.Password);
 
                         var roleStore = new RoleStore<IdentityRole>(context);
                         var roleManager = new RoleManager<IdentityRole>(roleStore);
 
                         var userStore = new UserStore<ApplicationUser>(context);
                         var userManager = new UserManager<ApplicationUser>(userStore);
+
+                        ApplicationUser user ;
+                        if (!model.IsSeller)
+                        {
+                            user = new ApplicationUser() { UserName = model.Email, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName, isSeller = 0 };
+                            //add details to seller table + Set up shop!
+                         
+                        }
+                        else
+                        {
+                            user = new ApplicationUser() { UserName = model.Email, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName, isSeller = 1 };
+                            
+                        }
+                        var result = await UserManager.CreateAsync(user, model.Password);
+
+                      
                         try
                         {
-                            userManager.AddToRole(user.Id, "User");
+                           
                             createCart(user.Id);
                             if (result.Succeeded)
                             {
                                 await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                                 ViewData["LoginErrorMessage"] = null;
-                                return RedirectToAction("Index", "Home");
+                                if (user.isSeller == 0)
+                                {
+                                    userManager.AddToRole(user.Id, "Standard User");
+                                    return RedirectToAction("Index", "Home");
+                                }
+                                else {
+                                    userManager.AddToRole(user.Id, "Seller");
+                                    return RedirectToAction("RegisterSeller", "Account"); }
                             }
                             else
                             {
@@ -249,9 +274,9 @@ namespace EthnoBot.Controllers
         {
             Cart userCart = new Cart(); 
             Guid cartID = Guid.NewGuid();
-            userCart.CartID = cartID.ToString();
-            userCart.UserID = id;
-            userCart.CartItems = "";
+            userCart.CartId = cartID.ToString();
+            userCart.UserId = id;
+            
         
                 
               
@@ -264,49 +289,50 @@ namespace EthnoBot.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> RegisterProducer(RegisterProducerViewModel model)
+        public ActionResult RegisterSeller(RegisterSellerViewModel model)
         {
             using (var context = new ApplicationDbContext())
             {
                 if (ModelState.IsValid)
                 {
-                    var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
-                    var result = await UserManager.CreateAsync(user, model.Password);
-                    string id = user.Id;
-                    var roleStore = new RoleStore<IdentityRole>(context);
-                    var roleManager = new RoleManager<IdentityRole>(roleStore);
+                    string userId = User.Identity.GetUserId();
 
-                    var userStore = new UserStore<ApplicationUser>(context);
-                    var userManager = new UserManager<ApplicationUser>(userStore);
-
-                    userManager.AddToRole(id,"Producer");
-                   
-
-
-                    if (result.Succeeded)
-                    {
-                        Producer producer = new Producer { Telephone=model.Telephone, Name = model.Name, About = model.About, Address = model.Address, CompanyEmail = model.Email, CustomerServiceEmail = model.CustomerServiceEmail, Description = model.Description, Mobile = model.Mobile, ASPUserId = user.Id, Verified = "False", ImagePath = "DefaultProducer.png" };
-                        AddProducerToDatabase(producer);
-                        sendVerifyCompanyEmail(producer);
-                        createCart(producer.ASPUserId);
-                        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    ApplicationUser user = UserManager.Users.Where(u => u.Id == userId).First();
+                    Guid guid = Guid.NewGuid();
+                    string idstring = guid.ToString();
+                    Seller seller = new Seller();
+                    seller.IsVerified = false;
+                    seller.SellerId = idstring;
+                    seller.FirstName = user.FirstName;
+                    seller.LastName = user.LastName;
+                    seller.Email = user.Email;
+                    seller.About = model.About;
+                    seller.Description = model.Description;
+                    seller.AddressLine1 = model.AddressLine1;
+                    seller.AddressLine2 = model.AddressLine2;
+                    seller.AddressLine3 = model.AddressLine3;
+                    seller.ASPUserId = userId;
+                    seller.Mobile = model.Mobile;
+                    seller.City = model.City;
+                    seller.PostCode = model.PostCode;
+                    seller.Country = model.Country;
+                    seller.ImagePath = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAMAAAAKE/YAAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAMAUExURYOCbBNlviCU8f/BHRRkvxp82E2WwdyYJSCV8hRlvyCV8iCV8hZtyHaWlf6YADaV2xVlwP/jNR+Q7SCV8hVkv/+rDRVlvyCV8yGU8h+O66uXWyCV8xVkvxl20hRkwESWzJyXbB2I5P/QKBVkwCCV8hyE4ISXhRRkvx+V9BRkv5OXdvSXCv+9GiCV8h+V8iCV8h6L5xdvyxVlvj2W1Bp41CCV8v/qOtWXLhl51BVkvxVkvxp51BZowyaV7DKW4BVkvx+T7x+V8iCS7xuA3ImXgSCV8hRkv1SWuriXThVkv/+yE//LJKOXZB6M6X2XjSCV8iCV8hhyziCW8tmXKRVlviCW8hhuyRRkwI2FZR+O6yCW8xVkvxVkvxRkvxdtyCCV8v/YLbOXUo6XfBVkvx+Y8RRmwTmW2P/EHxRkwIGXiUeWyOCYISGW8iGW8hRkvxhvyxRkv0GWzxRkvxVkvyCW9BRlwKCXaCCV8hRkvxRkwLCXVtKYMSGV8viXBxRkv3qWkRRkvyGV8yCW8hRkwBNkwBRkwBRjwBRkv5eXcRRkwCKY9fWYChZkwJGXeHSXmIKFcRNlwNqYKB6N6qWYYiCV8yCS79aYLRRkwBVkwLiYTQAAAJkzM5kzZpkzmZkzzJkz/5lmAJlmM5lmZplmmZlmzJlm/5mZAJmZM5mZZpmZmZmZzJmZ/5nMAJnMM5nMZpnMmZnMzJnM/5n/AJn/M5n/Zpn/mZn/zJn//8wAAMwAM8wAZswAmcwAzMwA/8wzAMwzM8wzZswzmcwzzMwz/8xmAMxmM8xmZsxmmcxmzMxm/8yZAMyZM8yZZsyZmcyZzMyZ/8zMAMzMM8zMZszMmczMzMzM/8z/AMz/M8z/Zsz/mcz/zMz///8AAP8AM/8AZv8Amf8AzP8A//8zAP8zM/8zZv8zmf8zzP8z//9mAP9mM/9mZv9mmf9mzP9m//+ZAP+ZM/+ZZv+Zmf+ZzP+Z///MAP/MM//MZv/Mmf/MzP/M////AP//M///Zv//mf//zP///xWQUB4AAACbdFJOU/81N//F////wXt88v/////+///+m/9Vm1vU/9uz/9X/////bKz//6BIiv///4ls4vf/Sf+vyv//tOVh/////6nuQv///6SF//92//////+zgv/T/z1Un5b//3DLXLigkf///9o7QP//Ov///7pMvf+Y/8DxYHv/6WWB//89/9//rUZpjlpoTqT/4jb/Uv///3P/2f907P/otP8A+/4U0QAAAAlwSFlzAAAOwwAADsMBx2+oZAAACxhJREFUeF7tnf1/FMUdx6V4IZKlXC6gVHrCqSdSwBhTbCEXFMJDBU5zosWgFHxoIKEmqEUUOMVHtNG29oG2+9d2ZvezdzO735n5zmbZF3m97v0T3O3MvDP57uw87eSBcA0ykC6LgXRZDKTLYiBdFgPpshhIl8VAuiwG0mUxkC6LeyF9eHb4+ljE9eHZw/iwSIqXvgDhhOv78EVxFC19DKoaj+DLoihW+twINFOMfIkLiqFQ6VfgSPAkLimEIqW3Q5BkOy4qggKlUzdgmnFcVgCrlD741Z3zS+d3HX/YUc8SUdcPH991fmnpzlcHkTwnq5C+vOU/1T7PQs3Cs7hUcuDqZWSTg9zSz72J4mMqELNSwcUxbz6HrLzJK/0hSgYBtBwEuBx8iMx8ySf9CUrt0YCVgwYu7/ENMvQjl/QWFNmjAyknHSTocRVZepFH+gUU2IdZ0URVV19Apj7kkM46t6DEoIUkfXYhWw/8pa+hMAVW0xEzhSQKLyFjPt7Sl1GUCjs6qPioVtchazbe0u+iJBUIsUASlceQNRtf6SdQkAqzkY5JNdURTyBzLr7SB1COSh0+LDKNnuAjZM7FU/ogitGYgg8L4k6sVr9G9kw8pR9EKRoejUe6/wE8n+ee0ihEx0uarOkqsmfiJ/0WytBZfXhU30IBPPykf1ufqncy9z+75yHJ3oitYDn4PQrgwZa+deFVFDs21p7RivZ4iqee4616cw6fbz/GH7EzpTemB4C1ilJ6DR8ymEMSSSf9JB1+HcU5YElvJKcz+u1AE58waCKJUG7jI5XxbSjSCkP6PdOQtZ1Et8fTpY4krRl8kGYYpdpwS29EbhQIbf+uaZCEcpaRP6NgM07pR5AXDSrOdxAQWO+CWRRtxCVNTigqxNbs+Igvd/WwLqBwEw7pC8jGTBQh7PiInY/gf0Y2ongDdultyMRGZM1sP6K2o8VoId+HAI1d2jBzqyPbkAn828GEdKaaujQjEKCxSlumbhXmZIvAMRlry4rm3bSvQIHEJv0FMnAhmwTWrShvQ26X8GlIUNik9yO9E/lsZARqjfvDSfZDgsIifQvJGYibkdE/FT+bx2PIsixmkbY/VjRqLY6OiH1W6MccgwaBRZrVdAAR1qbORI8ZxjUKlgbELO0RHYKKeyIh8BstWNpqs7Sto0Qw4XrANKst55NQw7xoapZ29TpS1FrL+JeBZZ+AlpibarM0u8EDTfWxMT05dOLE0OQ0/ito+A3aBeblMLO0Y4UtSwdRvbjwvys/B1d+t7Aj/nTCa/JMYr4TzdI+jUfEkZaI6vmjG+DbY8PRefl78AwOAUSyFCg91gwm/9mFqUb39GTgGxwCiGQpMDzGpt8glSXdN5Tw5gKRLGbp/jQHk6FeJFNcGcJlbPLENK9f2mfBWM0x3ZdxIRdzl8ksvQ9pmeyEm4WduJSJufNhln4faXk8CjErj+JiHuZpMrN0iLQsGPUs+Q6Xs4AGgUX6H0jMYAFSTjzi+t/QIDBLn+VPdg057sE+XX4bUjGvQBulz/InQ6czbd3WUxdHn39+9OKlrfigxwZ2e90yr5ubpF8S4znuDP+PEEpYL4QTRtfjw4R3kMiFGDJU/w6ZNAbp10SSatU8S6gyqQfHSUVZMnoSX8R0RUeEQzRTadh9Y5D+LJLmjTROQyfmElwVLuGrmNNIZidemnkXOilo6U+jJLwx3Watoh+HqMbj+DKiuxkJbSRL6A9BSIeWRhLWdNBRyEQQ9SzRAvspJLQgRvcx9FouKZ1UNGvi7QxcJCchmUGN67tIaKG/gEZWNSkdR3SE03oHVCJS92CfUVwQ8QGSmjiiLPp9DyUNSvqPSBAhhyM2XoaJZC8UCfbiEsnnSGqgpi1UvgYpFUp6N64H9ub6bZhIjBWtV/XbSErTTOI55jikVCjp9Kp9YLsdlSHhVgiSKM/Gn5CUopYsfyU8CCkVSvojXN8nMMeI0uAZmo4YpbHuImmWdnblnGo/KGlcrtOZIW/JSYhILsKP5CIuktAPxcaUFswJkFJhS0uCqZlmSn0RHhJLSOtBvYjECXONmTopLIGUCiEd9zvMtIJOfaoy02i3a7WxE/CQQM8ALpKckKa1dqM5U5nqTBh1Y4j+ByFNbWJTCCakcrPRjqYTc0rX5trCuSI3YuiNRRaetDE8RHQ00n3sIsJDRAcdzhGQUuFKBxW63ZuHh2R1N2JqE0kPSKlQ0tkmb8r8MC+0yWtmK5zb5KUfLnXbuOsnmAi4D5czSErRSGtTG8ko6X4nT+LofOR4jN9AUprU8+VTSKlQ0lrzYd/lMDb2OUwkxXSY9M4HNeKipNWu6YRrneQDmETwuqaTSGqirVh/BiUNUvohpBD1jHws/AYqEtYg4CYSmlGsr0FJg5TutR+cXQ5PwSViPSRTaMOtBSS00Ntl7THc6lU1Z8fAoRXIRJyCpsYpfBmx5xAS2pCzHhJ6FzstHT4WJeEtOeiTj0Rd6/M1vAlfuTPEcwohXCeTMFff57Wqdk3WrHBmEJJNh7BJY5AOvxFJHKPDHtokgmCvoj2qtnWSo0jkQjbXpld3TNLhcf42h2nlqRiz9ZJpAvIMdwKyRg8PI4zS4W7+ItqiHiAWVrAUyqC+GyJZzNLhi0jNYBOcnPwVCRj8AhoEFmkkZvEdpBz8iMtZQIPALH0OaXl8DC0rH+NiHnn2ezyJtEx+BTELXvWcb7+H74rtJsfduOIRzxF59nt4L+gvqvOnGc6k5w2cvAqRLGZpJPVg+oE9MMyw52/+C/p5NqkgqQeVYPNOUntl52bLxJqJPAv6SMqnLTuFhxZuwrTHzQXRr2t47roSlCIdYMQwuenGXYzRu3dvbMI4JfDb3ybIEx7jSMulovW+53cMDe1Q5zcaPu9oROTZOvEnpGXScO2hXuYMg1TMB1WYpf32exxpuYY5Te7O8ATzHnuz9NNIy6PD2bbpt/nqZxDJYpb2erpwNr+KazhjzoRcG2R99m22WWOzFmt0n2A56MYifRip3YiA5vzqK15vAZqjwybN320q52gZdSi317PD2vYOl02aeyvKVwLYLzJww/oLSFDYpJld6uiNG/caukC+MtLibSLJ/coIrwGJXl5hxqqcgmHt7rU0HQK79OvIw0K8y4H5iI5+KZwf0P4upV3avcc+Xn1nT5FEP6Hb2nEcmUPa9ZocdjmwX8LmvQnoOovMJR3OIiOSZJcD+0mHOVy7tfP8NKd0uM18NyaT3+zoQHzYI+QcCjbjlg7DYeSWJplE5r+QlcSHaENMbeT2v6BUCxzpcBs1IGj31yo9uvf9V7DJZ+PIv1CkFZa0aPvStd1Ql1c9ukHyUQ5alXS6cZYyW1rwzLHk/fF2s47QjPEI6V5Qx6ibSPbvew8lOeFLS/4QLBO7Bjy6bnglVyXo1Ov1X6MAHn7Sa/KoDHpXhdcoipZG9kw8pcnjX7xqun/sg8K9Pf5lTR60Qx5ptLobUXAAmXPxlV6Th0etyWO61uaBaGvy6LnCD/m7g2w9yCEd3kZxfXwHAQq3kakPeaSzB1ey50PjHREKW5ClF7mkoz0KGsyqzlT0J8jQj3zSBR3GuoTMfMkrHX67+mNvv0VW3uSWDsN1V9Vnuu8Bw2e9W+c+q5CWREc5/3LXtR94Rzn/cG3L7aX/3tnt2UFKs0ppFcdy2P1zaLbGWjye3Do1bJ269aVQ6fBLw2zU/XzkvoA86Ob+/uMGkn2pQxTG7/8/IyG51fuDHePDs7fwYZHcC+l7zkC6LAbSZTGQLouBdFkMpMtiIF0WA+myGEiXxUC6HMLw/6vA7wb/TZsqAAAAAElFTkSuQmCC";
+                        AddSellerToDatabase(seller);
+                        sendVerifyCompanyEmail(seller);
+                    
                         return RedirectToAction("Index", "Home");
-                    }
-                    else
-                    {
-                        AddErrors(result);
-                    }
+                 
                 }
                 // If we got this far, something failed, redisplay form
                 return View(model);
             }
         }
-        public void AddProducerToDatabase(Producer p)
+        public void AddSellerToDatabase(Seller p)
         {
             try {
                 if (ModelState.IsValid)
                 {
-                    db.Producers.Add(p);
+                    db.Sellers.Add(p);
                     db.SaveChanges();
                 }
             }
