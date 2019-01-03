@@ -48,15 +48,27 @@ namespace EthnoBot.Controllers
         [HttpPost]
         public ActionResult Profilepic(string base64image)
         { //  string base64image = image.
-           
-            
+
+
             string userID = User.Identity.GetUserId();
+            ApplicationUser user = UserManager.Users.Where(u => u.Id == userID).First();
+            user.ImagePath = base64image;
+            if (user.IsSeller)
+            { 
             Seller p = db.Sellers.Where(x => x.ASPUserId == userID).First();
             // string pic = System.IO.Path.GetFileName(file.FileName);
             p.ImagePath = base64image;
-            db.SaveChanges();
+                
+                db.SaveChanges();
+                TempData["Success"] = "Image uploaded successfully";
+               
+            }
+            UserManager.UpdateAsync(user);
+
+            user.ImagePath = user.ImagePath;
             TempData["Success"] = "Image uploaded successfully";
-            return RedirectToAction("SellerIndex");
+            return RedirectToAction("Index");
+
         }
 
     
@@ -100,7 +112,8 @@ namespace EthnoBot.Controllers
             u.AddressLine1 = user.AddressLine1;
             u.AddressLine2 = user.AddressLine2;
             u.AddressLine3 = user.AddressLine3;
-            
+            u.Country = user.Country;
+           
            
             UserManager.Update(u);
             return RedirectToAction("UserIndex");
@@ -156,7 +169,70 @@ namespace EthnoBot.Controllers
                 db.SaveChanges();
             return RedirectToAction("SellerIndex");
         }
+        public ActionResult MyListings()
+        {
+            string userID = User.Identity.GetUserId();
+            Seller seller = db.Sellers.Where(x => x.ASPUserId == userID).First();
 
+            List<Listing> listings = db.Listings.Where(x => x.SellerId == seller.SellerId).ToList();
+
+            List<ListingViewModel> listingViewModels = new List<ListingViewModel>();
+
+
+
+            for (int i = 0; i < listings.Count; i++)
+            {
+                ListingViewModel lo = new ListingViewModel();
+                lo.Listing = listings.ElementAt(i);
+
+                string productId = listings.ElementAt(i).ProductId;
+
+                Product product = db.Products.Where(x => x.ProductId == productId).First();
+
+
+                lo.UnitPriceKG = lo.Listing.UnitPriceKG;
+                lo.UnitsKG = lo.Listing.UnitsKG;
+                lo.Product = product;
+                lo.Seller = seller;
+                listingViewModels.Add(lo);
+
+            }
+
+
+            return View(listingViewModels);
+        }
+        public ActionResult MyDetails()
+        {
+            return View();
+        }
+        public ActionResult MyOrders()
+        { string userId = User.Identity.GetUserId();
+            List<OrderViewModel> orderViewModels = new List<OrderViewModel>();
+            IEnumerable<Order> orders = db.Orders.Where(x => x.SellerId == userId||x.BuyerId==userId).ToList();
+            if(orders!=null)
+            foreach (var order in orders)
+            {
+                    string productid = order.ProductId;
+                    string sellerid = order.SellerId;
+                    string buyerid = order.BuyerId;
+                    OrderViewModel viewModel = new OrderViewModel();
+                    viewModel.Order = order;
+                   viewModel.Product = db.Products.Where(x => x.ProductId ==productid).First();
+                    viewModel.Seller = db.Sellers.Where(x => x.SellerId == sellerid).First();
+                    viewModel.Buyer = UserManager.FindById(buyerid);
+
+                    orderViewModels.Add(viewModel);
+                }
+            return View(orderViewModels);
+        }
+
+        public ActionResult MyMessages()
+        {
+            return View();
+                {
+
+            }
+        }
         [Authorize]
         public ActionResult EditListing(string ListingId ,string newQuantity, string unitPrice)
         {
@@ -168,7 +244,7 @@ namespace EthnoBot.Controllers
                 l.UnitsKG = Convert.ToDecimal(newQuantity);
                 db.SaveChanges();
             
-           return RedirectToAction("SellerIndex");
+           return RedirectToAction("MyListings");
         }
         
             [Authorize]
@@ -195,7 +271,7 @@ namespace EthnoBot.Controllers
             };
             db.Listings.Add(l);
             db.SaveChanges();
-            return RedirectToAction("SellerIndex");
+            return RedirectToAction("MyListings");
         }
 
 
@@ -218,47 +294,56 @@ namespace EthnoBot.Controllers
         {
 
         }
+
+        public async Task<ActionResult> IncompleteSellerIndex()
+        {
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+
+            var model = new UserIndexViewModel
+            {
+                HasPassword = HasPassword(),
+                PhoneNumber = await UserManager.GetPhoneNumberAsync(user.Id),
+                TwoFactor = await UserManager.GetTwoFactorEnabledAsync(user.Id),
+                Logins = await UserManager.GetLoginsAsync(user.Id),
+                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(user.Id),
+                Mobile = await UserManager.GetPhoneNumberAsync(user.Id),
+                AddressLine1 = user.AddressLine1,
+                AddressLine2 = user.AddressLine2,
+                AddressLine3 = user.AddressLine3,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Country = user.Country,
+                Email = user.Email,
+                ImagePath = user.ImagePath
+
+            };
+            return View(model);
+        }
         public ActionResult SellerIndex()
         {
+
+          
             string userId = User.Identity.GetUserId();
-            Seller seller = db.Sellers.Where(x => x.ASPUserId == userId).FirstOrDefault();
-           
-            List<Listing> listings = db.Listings.Where(x => x.SellerId == seller.SellerId).ToList();
 
+            try { Seller seller = db.Sellers.Where(x => x.ASPUserId == userId).FirstOrDefault();
+                if (seller == null)
+                {
+                    return RedirectToAction("IncompleteSellerIndex", "Manage");
+                }
 
+                ManageSellerViewModel sellerViewModel = new ManageSellerViewModel();
 
+                sellerViewModel.Seller = seller;
 
-            List<ListingViewModel> listingViewModels = new List<ListingViewModel>();
-
-
-
-            for (int i = 0; i < listings.Count; i++)
+                return View(sellerViewModel);
+            } catch
             {
-                ListingViewModel lo = new ListingViewModel();
-                lo.Listing = listings.ElementAt(i);
-
-                string productId = listings.ElementAt(i).ProductId;
-
-                Product product = db.Products.Where(x => x.ProductId == productId).First();
-
-
-                lo.UnitPriceKG = lo.Listing.UnitPriceKG;
-                lo.UnitsKG = lo.Listing.UnitsKG;
-                lo.Product = product;
-                lo.Seller = seller;
-                listingViewModels.Add(lo);
-
+                return RedirectToAction("IncompleteSellerIndex", "Manage");
             }
-
-
-            ManageSellerViewModel sellerViewModel = new ManageSellerViewModel();
-            sellerViewModel.listingViewModels = listingViewModels;
-            sellerViewModel.Seller = seller;
-
-            return View(sellerViewModel);
+         
         }
 
-        public ManageController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
+    public ManageController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -346,7 +431,7 @@ namespace EthnoBot.Controllers
                 BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(user.Id),
                 Mobile = await UserManager.GetPhoneNumberAsync(user.Id),
                 AddressLine1 = user.AddressLine1, AddressLine2 = user.AddressLine2, AddressLine3 = user.AddressLine3,
-                FirstName = user.FirstName, LastName = user.LastName, Country = user.Country , Email=user.Email
+                FirstName = user.FirstName, LastName = user.LastName, Country = user.Country , Email=user.Email , ImagePath=user.ImagePath
           
             };
             return View(model);

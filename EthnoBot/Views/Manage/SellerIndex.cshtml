@@ -3,14 +3,24 @@
     ViewBag.Title = "Company Information";
 }
 
+<br />
+<br />
+<nav class="nav nav-tabs nav-fill">
+    <a class="nav-item nav-link text-success active" href="#" ><h3><span class="glyphicon glyphicon-home"></span> Profile Details</h3></a>
+    <a class="nav-item nav-link text-danger" href="@Url.Action("MyListings", "Manage")"><h3><span class="glyphicon glyphicon-leaf"></span> My Listings</h3></a>
+    <a class="nav-item nav-link text-info" href="@Url.Action("MyOrders", "Manage")"><h3><span class="glyphicon glyphicon-th-list"></span> Pending Orders</h3></a>
+    <a class="nav-item nav-link text-muted" href="#"><h3><span class="glyphicon glyphicon-envelope"></span> Messages</h3> </a>
+</nav>
 <div class="container">
     <div class="row">
         <div class="col">
-            <h2 class="text-muted text-center">Profile Details</h2>
+            <br />
+            <h3 class="text-muted text-center">Profile Details</h3>
 
         </div>
     </div>
     <br />
+
 
     @using (Html.BeginForm())
     {
@@ -23,10 +33,15 @@
             <section>
                 <div class="row">
                     <div class="col">
-                        <a href="@Url.Action("ProfilePic", "Manage")">
-                            <img src="@Model.Seller.ImagePath" class="img-circle float-left" alt="..." style="width:200px;height:200px">
-                        </a>
+                        <div class="profile_pic_container">
+                            <a href="@Url.Action("ProfilePic", "Manage")">
+                                <img src="@Model.Seller.ImagePath" class="img-circle float-left" alt="..." style="width:200px;height:200px">  <div class="profile_pic_overlay">
+                                    <div class="text">Update Photo</div>
+                                </div>
+                            </a>
+                        </div>
                     </div>
+                     
                     <div class="col">
                         <div class="row">
                             <div class="col">
@@ -131,43 +146,6 @@
     <hr />
 
 </div>
-<hr />
-<div class="container">
-    <div class="row">
-        <div class="col">
-            <h2 class="text-muted text-center">Product Listings</h2>
-
-        </div>
-    </div>
-    <br />
-    <ul class="list-group">
-        @foreach (var item in Model.listingViewModels)
-        {
-
-            <li class="list-group-item">
-                
-                <div class="row">
-                    <div class="col-xl-3">@Html.ActionLink(item.Product.Title, "ProductAndListings", "Categories", new { id = item.Product.ProductId }, new { @class = "text-info", })</div>
-                    <div class="col-xl-3">
-                        <p class="text-muted">€@item.UnitPriceKG per 1 kg Unit</p>
-                    </div>
-                    <div class="col-xl-3">
-                        <p class="text-muted">@item.UnitsKG Kg Units</p>
-                    </div>
-                    <div class="col-xl-1 offset-xl-0"><button class="btn btn-info float-right" type="button"data-toggle="modal" onclick="editItemPopup('@item.Listing.ListingId','@item.Seller.SellerId','@item.Seller.FirstName+ @item.Seller.LastName','@item.UnitPriceKG','@item.Product.ProductId','@item.Product.Title','@item.UnitsKG')" data-target="#Modal">Edit</button></div>
-                    <div class="col-xl-1"><button class="btn btn-info" type="button" onclick="deleteItem('@item.Listing.ListingId')">Delete</button></div>
-                </div>
-                           </li>
-        }
-    </ul>
-
-
-    @Html.ActionLink("Add new Listing", "AddListing", new { @class = "btn btn-info btn-lg", @role = "button" })
-</div>
-
-
-
-
 
 
 

@@ -1,0 +1,14 @@
+﻿@model EthnoBot.Models.ModifyProductViewModel
+@{
+    ViewBag.Title = "EditProduct";
+}
+
+<h2 class="text-lg-center">Edit Product: @Model.Product.Title</h2>
+
+
+@foreach (var item in Model.CurrentProductTags)
+{
+<h3 class="text-md-left">@item.Name</h3>
+    <h4 class="text-md-center">@item.Description</h4>
+}
+

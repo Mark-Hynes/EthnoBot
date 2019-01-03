@@ -1,0 +1,146 @@
+﻿@model EthnoBot.Models.ProductAndListingsModel
+@using EthnoBot.Models;
+@{
+    ViewBag.Title = Model.Product.Title;
+}
+@{
+    string category = Model.Category.Name;
+    var prod = Model.Product;
+    var listings = Model.ListingViewModels;
+    int i = 0;
+}
+<!-- Stack the columns on mobile by making one full-width and the other half-width -->
+@Html.ActionLink("<-- Back to " + Model.Category.Name, "ListProducts", new { id = Model.Category.CategoryId }, new { @class = "text-info" })
+
+<hr />
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h3 class="text-center text-muted"><strong>Product Details:</strong></h3>
+        </div>
+    </div>
+</div>
+<br />
+<div class="container border-left-0 border-right-0 border-info" style="height:180px;width:1177px;">
+    <div class="row justify-content-center" style="height:180px;">
+        <div class="col-xl-3 offset-0 offset-xl-0"><img src="@Model.Product.ImagePath" class="border border-info img-fluid d-table-row d-flex justify-content-center align-items-center align-content-center align-self-center flex-wrap" style="width:300px;height:180px;margin:0px;padding:0px;" /></div>
+    </div>
+</div>
+<hr />
+<div class="container">
+    <section></section>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h3 class="text-info">Name</h3>
+            <p class="text-muted">@Model.Product.Title</p>
+        </div>
+        <div class="col">
+            <h3 class="text-info">Category</h3>
+            <p class="text-muted">@Model.Category.Name</p>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h3 class="text-info">Family</h3>
+            <p class="text-muted">@Model.Product.Family</p>
+        </div>
+        <div class="col">
+            <h3 class="text-info">Latin Name</h3>
+            <p class="text-muted">@Model.Product.LatinName</p>
+        </div>
+    </div>
+</div>
+<hr />
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h3 class="text-center text-muted"><strong>Sellers that sell this Product:</strong></h3>
+        </div>
+    </div>
+</div>
+<br />
+<div class="container">
+    <div class="list-group text-info">
+        @foreach (var item in listings)
+        {<li class="list-group-item">
+                <div class="row  border-secondary">
+                    <div class="col d-table-row order-1">@Html.ActionLink(item.Seller.FirstName+" "+item.Seller.LastName, "SellerAndListings", new { sellerId = item.Seller.SellerId }, new { @class = "text-info", })</div>
+                    <div class="col d-table-row order-2">
+                        <p class="text-muted">€@item.UnitPriceKG per 1Kg</p>
+                    </div>
+                    <div class="col d-table-row order-3 float-right"><button class="btn btn-info" type="button" data-toggle="modal" onclick="showPopup('@item.Listing.ListingId','@item.Seller.SellerId','@item.Seller.FirstName','@item.UnitPriceKG','@item.Product.ProductId','@item.Product.Title')" data-target="#Modal">Add To Cart</button></div>
+                </div>
+        </li>
+            
+                }
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add selected items to cart</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="Modal-ProductID"></p>
+                    <p id="Modal-Product"></p>
+                    <p id="Modal-Seller"></p>
+                    <p id="Modal-Price"></p>
+                    <div class="input-group mb-3">
+                        <input type="number" id="KGUnits" class="form-control" min="1" max="100" placeholder="1" aria-label="KGUnits" aria-describedby="basic-addon2" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text" id="basic-addon2"> kgs</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" id="addToCart1" class="btn btn-secondary">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+    <script type="text/javascript">
+    var SellerID = "";
+    var productID = "";
+    var unitPrice = "";
+        var quantity = "";
+        var listingId = "";
+    function showPopup(ListingId, SellerId, SellerName, price, productId,productName) {
+        document.getElementById("Modal-Seller").innerText = "Product Name: " + productName;
+        document.getElementById("Modal-Seller").innerText = "Seller Name: " + SellerName;
+        listingId = ListingId;
+
+        document.getElementById("Modal-Price").innerText = "Price per 1kg: " + price;
+        productID = productId;
+        SellerID = SellerId;
+        unitPrice = price;
+
+    }
+
+    (function () {
+        document.getElementById("addToCart1").onclick = function () {
+            quantity = document.getElementById("KGUnits").value
+
+            location.href = '@Url.Action("AddToBasket", "Categories")?listingId=' + listingId +'&quantity=' + quantity;
+
+        };
+    })();
+    </script>

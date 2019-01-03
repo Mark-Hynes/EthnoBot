@@ -1,0 +1,72 @@
+﻿@{
+    ViewBag.Title = "Upload New Profile Image";
+}
+<h3 class="text-muted text-center">Upload New Profile Picture</h3>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<link href="~/Content/iEdit.css" rel="stylesheet" />
+<script src="~/Content/iEdit.js"></script>
+<style type="text/css">
+    #profilepic {
+        display: block;
+        position: relative;
+        width: 20%;
+    }
+    .iEdit-img-edit-select {
+        height: 200px !important;
+        width: 200px !important;
+        border-radius:50% !important;
+    }
+    .iEdit-img-edit-save {
+        height: 40px !important;
+        width: 100px !important;
+     
+    }
+    .iEdit-img-edit-cancel {
+        height: 40px !important;
+        width: 100px !important;
+    }
+    #result {
+        height:200px !important;
+        width:200px !important;
+    }
+</style>
+<hr />
+<div class="container">
+    <input id="file" accept="image/*" name="file" type="file">
+   <hr />
+    @Html.ActionLink("<-- Back to Profile", "SellerIndex", "Manage", null, new { @class="text-info" })
+</div>
+
+
+<script>
+    var source = "";
+    $(document).ready(function () {
+       
+       
+        $("#file").change(function (e) {
+            var img = e.target.files[0];
+
+         
+
+            document.getElementById("file").style.display = 'block';
+            if (!iEdit.open(img, true, function (res) {
+
+                source = res;
+
+
+                var formdata = new FormData();
+                formdata.append("base64image", res);
+                $.ajax({
+                    url: "/Manage/Profilepic",
+                    type: "POST",
+                    data: formdata,
+                    processData: false,
+                    contentType: false
+                });
+                location.href = '@Url.Action("SellerIndex", "Manage")';
+            })) {
+                alert("Please check file type !!!");
+            }
+        });
+    });
+</script>

@@ -1,0 +1,53 @@
+﻿@model IEnumerable<EthnoBot.Models.Seller>
+
+@{
+    ViewBag.Title = "Sellers";
+}
+
+
+<div class="container">
+    <div class="jumbotron-fluid">
+      <br />  <h2 class="text-center text-info"><b>Sellers</b></h2><br /><br />
+    </div>
+    <div class="container">
+
+
+        <div class="card-deck">
+            @foreach (var item in Model)
+            {
+                string shortDes = "";
+               
+
+                <row>
+                    <div class="card border-info mb-4">
+                        <span class="border border-info">
+                            <img class="card-img-top img-fluid" src="" alt="@item.Name" style="width:300px;height:180px">
+                            </span>
+                        <div class="card-body ">
+                            <h5 class="card-title text-info"><b>@item.Name</b></h5>
+                            @if (item.Description.Length >= 150)
+                            {<p class="card-text text-info" style="width:250px;height:100px">@item.Description.Substring(0, 150)..</p>
+                            shortDes = item.Description.Substring(0, 150) + "...";
+                        }
+                        else
+                        {
+                            <p class="card-text text-info" style="width:250px;height:100px">@item.Description</p>
+                        }
+
+                        </div>
+
+                            <div class="card-body">
+                                @Html.ActionLink("View Seller", "SellerAndListings", new { id = item.SellerId }, new { @class = "btn btn-info btn-lg", @role = "button" })
+                            </div>
+
+                    </div>
+                </row>
+
+            }
+
+
+        </div>
+        
+    </div>
+    </div>
+

@@ -42,7 +42,7 @@ namespace EthnoBot.Controllers
         public ActionResult Create()
         {
             ModifyProductViewModel m = new ModifyProductViewModel();
-            m.Categories = db.Categories.ToList();
+          
            
             return View(m);
         }
@@ -89,7 +89,7 @@ namespace EthnoBot.Controllers
         {
             if (ModelState.IsValid)
             {
-                m.Product.CategoryId = m.selectedCategoryId;
+               
                 db.Entry(m.Product).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

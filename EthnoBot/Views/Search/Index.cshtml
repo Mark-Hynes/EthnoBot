@@ -1,0 +1,176 @@
+﻿@model EthnoBot.Models.ProductSearchViewModel
+
+@{
+    /**/
+
+    ViewBag.Title = "Products";
+
+}
+<div class="container" style="margin-left:200px">
+    <div class="row">
+        <div class="col">
+            <a href="#">
+                <div class="card bg-dark text-white" style="width:200px;height:120px">
+                    <img class="card-img" href="#" src="@Model.featureImage1" alt="Card image" style="width:200px;height:120px">
+                    <div class="card-img-overlay" style="width:200px;height:120px">
+                        <h5 class="card-title">Featured Product</h5>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col">
+            <a href="#">
+                <div class="card bg-dark text-white" style="width:200px;height:120px">
+                    <img class="card-img" src="@Model.featureImage2" alt="Card image" style="width:200px;height:120px">
+                    <div class="card-img-overlay" style="width:200px;height:120px">
+                        <h5 class="card-title">Mushrooms</h5>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col">
+            <a href="#">
+                <div class="card bg-dark text-white" style="width:200px;height:120px">
+                    <img class="card-img" src="@Model.featureImage3" alt="Card image" style="width:200px;height:120px">
+                    <div class="card-img-overlay" style="width:200px;height:120px">
+                        <h5 class="card-title">Irish Products</h5>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <hr /><br />
+    <div class="row">
+        <div class="col">
+            <div class="form-group has-search">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div id="searchInput" style="padding: 3px;border: solid 1px #E4E4E4;border-radius:6px;background-color: #fff;">
+                                <div class="input-group col-md-12">
+                                    <input id="searchInput_searchPage"type="text" class="form-control input-lg" placeholder="Search Tags, Products, etc." style="border: 0;box-shadow: none;" />
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-success btn-lg" type="button" id="searchButton"style="margin: 2px 0 0 0;background:none;box-shadow: none;border: 0;color: #666666;padding: 0 8px 0 10px;border-left: solid 1px #ccc;">
+                                            <i class="glyphicon glyphicon-search" style="font-size: 23px;"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="table-container" id="resultsTable">
+
+    </div>
+</div>
+
+
+<div class="nav-side-menu" style="width:200px;top:60px">
+    <div class="brand">Filter Search</div>
+    <div class="menu-list">
+        @foreach (var a in Model.tagCategories)
+        {
+            <ul id="menu-content" class="menu-content collapse out">
+                <li title="@a.Description" data-toggle="collapse" data-target="#@a.TagCategoryId.Trim()" class="collapsed active" style="background:#47A447!important;color:#FFFFFF">
+                    <a href="#" class="text-center" style="background:#47A447!important;color:#FFFFFF"> <span class="glyphicon glyphicon-globe"></span> <b>@a.Name</b></a>
+                </li>
+                <ul class="sub-menu collapse scrollable-menu" id="@a.TagCategoryId.Trim()">
+                    @foreach (var c in Model.tags)
+                    {
+                        if (c.TagCategoryId.Trim().Equals(a.TagCategoryId.Trim()))
+                        {
+                            <li>
+                                <div class="container" title="@c.Description">
+                                    <div class="row">
+                                        <div class="col">
+
+                                            <input type="checkbox" name ="tags[]" id="@c.TagId.Trim()" checked="true" onchange="modifyTagFilter('this','@c.TagId.Trim()')">
+                                            <label>@c.Name</label>
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                    }
+                </ul>
+            </ul>
+        }
+
+
+
+
+
+    </div>
+</div>
+
+<div class="col">
+
+
+</div>
+
+<script language="JavaScript" type="text/javascript" src="/Scripts/jquery-3.3.1.min.js"></script>
+<script>
+
+    $(document).ready(function () {
+        $("#searchInput_searchPage").keyup(function () {
+            var searchText = $("#searchInput_searchPage").val();
+            var tags = [];
+            $('input[name^=tags]').each(function () {
+                if ($(this).is(':checked')) {
+                    tags.push($(this).attr('id'));
+                }
+            });
+            var arrayString = "";
+
+            debugger
+            $.ajax({
+                type: "POST",
+                
+               
+                url: "/Search/PerformSearch?SearchText=" + searchText + "&SelectedTags=" + tags.toString(),
+                contentType: "html",
+                success: function (response) {
+
+                    $("#resultsTable").html(response);
+                }
+            });
+        });
+    });
+
+
+
+    function modifyTagFilter(checkboxel, id) {
+        alert("I got here!")
+        var searchText = $("#searchInput_searchPage").val();
+        var tags = [];
+        $('input[name^=tags]').each(function () {
+            if ($(this).is(':checked')) {
+                tags.push($(this).attr('id'));
+            }
+        });
+        var arrayString = "";
+
+        debugger
+        $.ajax({
+            type: "POST",
+
+
+            url: "/Search/PerformSearch?SearchText=" + searchText + "&SelectedTags=" + tags.toString(),
+            contentType: "html",
+            success: function (response) {
+
+                $("#resultsTable").html(response);
+            }
+        });
+    
+    }
+   
+
+</script>

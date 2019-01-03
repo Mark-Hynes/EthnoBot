@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EthnoBot", "EthnoBot\EthnoBot.csproj", "{E92A8174-FAED-4ADE-834B-813281E8C5CA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EthnoBot", "EthnoBot.csproj", "{E92A8174-FAED-4ADE-834B-813281E8C5CA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +18,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7B77C7BF-07EB-43BA-9B1B-29D97F2CD6E6}
 	EndGlobalSection
 EndGlobal

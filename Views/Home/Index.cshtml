@@ -1,0 +1,40 @@
+﻿@{
+    
+}
+
+<div class="jumbotron" style="background: url('/Images/Home2.png') no-repeat !important;">
+   
+          
+            <p class="lead text-light">
+                <b>Welcome to EthnoBotanicsInternational Marketplace</b><br />
+                Access the diverse range of ethnobotanical, medicinal and theraputic plant species used by people around the world for their useful properties.<br />
+                All our traders comply with international regualations on the handling of endangered species, such as CITES, and practice sustainable practices.
+            </p>
+        
+   
+    
+
+</div>
+
+<div class="row">
+    <div class="col-md-4 border-success">
+        <h3 class="text-success">Getting started</h3>
+        <p class="text-success">
+            Need to find and obtain a product listed on this site? Create an account and browse our Products and Partners
+        </p>
+        <p>@Html.ActionLink("Sign Up", "Register", "Account", routeValues: null, htmlAttributes: new { @class = "btn btn-success btn-lg", @role = "button" })</p>
+    </div>
+    <div class="col-md-4 border-info">
+        <h3 class="text-info">Become a Partner</h3>
+        <p class="text-info">Looking to sign up as a trusted partner? Once your details and Products have been verified, you can start selling your products on our site. It's easy, just fill out this form</p>
+        <p class="text-info">@Html.ActionLink("Sign Up", "RegisterSeller", "Account", routeValues: null, htmlAttributes: new { @class = "btn btn-info btn-lg", @role = "button" })</p>
+    </div>
+    <div class="col-md-4 border-success">
+        <h3 class="text-success">Contact Us</h3>
+        <p class="text-success">Have any questions for us? Visit our contact page for extra details about EthnoBotanicals. All feedback is appreciated.</p>
+        <p class="text-success">@Html.ActionLink("Contact Us", "About", "Home", new { @class = "btn btn-success btn-lg", @role = "button" })</p>
+    </div>
+</div>
+<script type="text/javascript" src="https://cdn.ywxi.net/js/1.js" async></script>
+
+

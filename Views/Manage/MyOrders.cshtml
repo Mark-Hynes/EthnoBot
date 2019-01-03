@@ -1,0 +1,47 @@
+﻿@model IEnumerable <EthnoBot.Models.OrderViewModel>
+    @{
+    ViewBag.Title = "MyOrders";
+       
+}
+
+<br />
+<br />
+<nav class="nav nav-tabs nav-fill">
+    <a class="nav-item nav-link text-success " href="@Url.Action("SellerIndex", "Manage")"><h3><span class="glyphicon glyphicon-home"></span> Profile Details</h3></a>
+    <a class="nav-item nav-link text-danger" href="@Url.Action("MyListings", "Manage")"><h3><span class="glyphicon glyphicon-leaf"></span> My Listings</h3></a>
+    <a class="nav-item nav-link text-info active" href="#"><h3><span class="glyphicon glyphicon-th-list"></span> My Orders</h3></a>
+    <a class="nav-item nav-link text-muted" href="#"><h3><span class="glyphicon glyphicon-envelope"></span>My Messages</h3> </a>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h3 class="text-muted text-center">Pending Orders</h3>
+
+        </div>
+    </div>
+    <br />
+    <ul class="list-group">
+        @foreach (var item in Model)
+        {
+
+            <li class="list-group-item">
+
+                <div class="row">
+                    <div class="col-xl-3 text-info">@item.Buyer.FirstName @item.Buyer.LastName</div>
+                    <div class="col-xl-3">
+                        <p class="text-muted"> @Html.ActionLink("View Product", "ProductAndListings", new { productId = item.Product.ProductId }, new { @class = "btn btn-info btn-lg", @role = "button" })</p>
+                    </div>
+                    <div class="col-xl-3">
+                        <p class="text-muted">@item.Order.Timestamp</p>
+                    </div>
+                    <div class="col-xl-1 offset-xl-0">@Html.ActionLink("View Details", "ProductAndListings", "Categories", new { id = item.Product.ProductId }, new { @class = "btn btn-info float-right", @type = "button" })</div> 
+                    
+                </div>
+            </li>
+        }
+    </ul>
+
+
+</div>

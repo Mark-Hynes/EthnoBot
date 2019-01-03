@@ -3,9 +3,12 @@
 }
 
 
-    <h1>EthnoBotanicals Ireland - ADMIN</h1>
-    <p class="lead">Hello Admin, please select an object type below to add, edit or remove records from the database..</p>
-    <div class="container">
+<nav class="nav nav-tabs nav-fill">
+    <a class="nav-item nav-link text-success active" href="#"><h3><span class="glyphicon glyphicon-home"></span>Products</h3></a>
+    <a class="nav-item nav-link text-danger" href="@Url.Action("MyListings", "Manage")"><h3><span class="glyphicon glyphicon-leaf"></span>Orders</h3></a>
+    <a class="nav-item nav-link text-info" href="@Url.Action("MyOrders", "Manage")"><h3><span class="glyphicon glyphicon-th-list"></span>Requests</h3></a>
+    <a class="nav-item nav-link text-muted" href="#"><h3><span class="glyphicon glyphicon-envelope"></span> Messages</h3> </a>
+</nav>
         <div class="card-deck">
 
             <row>

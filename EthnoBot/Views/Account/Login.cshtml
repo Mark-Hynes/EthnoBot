@@ -8,14 +8,14 @@
 
 <h2 class="text-muted text-center"><b>@ViewBag.Title.</b></h2>
 <hr />
-<div class="row">
+<div class="row" style="margin: auto;">
     <div class="col-md-8">
         <section id="loginForm">
             @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {
                 @Html.AntiForgeryToken()
                
-                <hr />
+               
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 <div class="form-group">
                     <label class="text-info" for="emailInput">Email address</label>

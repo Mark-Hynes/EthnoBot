@@ -1,0 +1,534 @@
+﻿@model EthnoBot.Models.ManageSellerViewModel
+@{
+    List<SelectListItem> listItems = new List<SelectListItem>();
+
+
+    listItems.Add(new SelectListItem { Value = "AF", Text = "Afghanistan" });
+    listItems.Add(new SelectListItem { Value = "AX", Text = "Åland Islands" });
+    listItems.Add(new SelectListItem { Value = "AL", Text = "Albania" });
+    listItems.Add(new SelectListItem { Value = "DZ", Text = "Algeria" });
+    listItems.Add(new SelectListItem { Value = "AS", Text = "American Samoa" });
+    listItems.Add(new SelectListItem { Value = "AD", Text = "Andorra" });
+    listItems.Add(new SelectListItem { Value = "AO", Text = "Angola" });
+    listItems.Add(new SelectListItem { Value = "AI", Text = "Anguilla" });
+    listItems.Add(new SelectListItem { Value = "AQ", Text = "Antarctica" });
+    listItems.Add(new SelectListItem { Value = "AG", Text = "Antigua and Barbuda" });
+    listItems.Add(new SelectListItem { Value = "AR", Text = "Argentina" });
+    listItems.Add(new SelectListItem { Value = "AM", Text = "Armenia" });
+    listItems.Add(new SelectListItem { Value = "AW", Text = "Aruba" });
+    listItems.Add(new SelectListItem { Value = "AU", Text = "Australia" });
+    listItems.Add(new SelectListItem { Value = "AT", Text = "Austria" });
+    listItems.Add(new SelectListItem { Value = "AZ", Text = "Azerbaijan" });
+    listItems.Add(new SelectListItem { Value = "BS", Text = "Bahamas" });
+    listItems.Add(new SelectListItem { Value = "BH", Text = "Bahrain" });
+    listItems.Add(new SelectListItem { Value = "BD", Text = "Bangladesh" });
+    listItems.Add(new SelectListItem { Value = "BB", Text = "Barbados" });
+    listItems.Add(new SelectListItem { Value = "BY", Text = "Belarus" });
+    listItems.Add(new SelectListItem { Value = "BE", Text = "Belgium" });
+    listItems.Add(new SelectListItem { Value = "BZ", Text = "Belize" });
+    listItems.Add(new SelectListItem { Value = "BJ", Text = "Benin" });
+    listItems.Add(new SelectListItem { Value = "BM", Text = "Bermuda" });
+    listItems.Add(new SelectListItem { Value = "BT", Text = "Bhutan" });
+    listItems.Add(new SelectListItem { Value = "BO", Text = "Bolivia, Plurinational State of" });
+    listItems.Add(new SelectListItem { Value = "BQ", Text = "Bonaire, Sint Eustatius and Saba" });
+    listItems.Add(new SelectListItem { Value = "BA", Text = "Bosnia and Herzegovina" });
+    listItems.Add(new SelectListItem { Value = "BW", Text = "Botswana" });
+    listItems.Add(new SelectListItem { Value = "BV", Text = "Bouvet Island" });
+    listItems.Add(new SelectListItem { Value = "BR", Text = "Brazil" });
+    listItems.Add(new SelectListItem { Value = "IO", Text = "British Indian Ocean Territory" });
+    listItems.Add(new SelectListItem { Value = "BN", Text = "Brunei Darussalam" });
+    listItems.Add(new SelectListItem { Value = "BG", Text = "Bulgaria" });
+    listItems.Add(new SelectListItem { Value = "BF", Text = "Burkina Faso" });
+    listItems.Add(new SelectListItem { Value = "BI", Text = "Burundi" });
+    listItems.Add(new SelectListItem { Value = "KH", Text = "Cambodia" });
+
+    listItems.Add(new SelectListItem { Value = "CM", Text = "Cameroon" });
+    listItems.Add(new SelectListItem { Value = "CA", Text = "Canada" });
+    listItems.Add(new SelectListItem { Value = "CV", Text = "Cape Verde" });
+    listItems.Add(new SelectListItem { Value = "KY", Text = "Cayman Islands" });
+    listItems.Add(new SelectListItem { Value = "CF", Text = "Central African Republic" });
+    listItems.Add(new SelectListItem { Value = "TD", Text = "Chad" });
+    listItems.Add(new SelectListItem { Value = "CL", Text = "Chile" });
+    listItems.Add(new SelectListItem { Value = "CN", Text = "China" });
+    listItems.Add(new SelectListItem { Value = "CX", Text = "Christmas Island" });
+    listItems.Add(new SelectListItem { Value = "CC", Text = "Cocos (Keeling) Islands" });
+    listItems.Add(new SelectListItem { Value = "CO", Text = "Colombia" });
+    listItems.Add(new SelectListItem { Value = "KM", Text = "Comoros" });
+    listItems.Add(new SelectListItem { Value = "CG", Text = "Congo" });
+    listItems.Add(new SelectListItem { Value = "CD", Text = "Congo, the Democratic Republic of the" });
+    listItems.Add(new SelectListItem { Value = "CK", Text = "Cook Islands" });
+    listItems.Add(new SelectListItem { Value = "CR", Text = "Costa Rica" });
+    listItems.Add(new SelectListItem { Value = "CI", Text = "Côte d'Ivoire" });
+    listItems.Add(new SelectListItem { Value = "HR", Text = "Croatia" });
+    listItems.Add(new SelectListItem { Value = "CU", Text = "Cuba" });
+    listItems.Add(new SelectListItem { Value = "CW", Text = "Curaçao" });
+    listItems.Add(new SelectListItem { Value = "CY", Text = "Cyprus" });
+    listItems.Add(new SelectListItem { Value = "CZ", Text = "Czech Republic" });
+    listItems.Add(new SelectListItem { Value = "DK", Text = "Denmark" });
+    listItems.Add(new SelectListItem { Value = "DJ", Text = "Djibouti" });
+    listItems.Add(new SelectListItem { Value = "DM", Text = "Dominica" });
+    listItems.Add(new SelectListItem { Value = "DO", Text = "Dominican Republic" });
+    listItems.Add(new SelectListItem { Value = "EC", Text = "Ecuador" });
+    listItems.Add(new SelectListItem { Value = "EG", Text = "Egypt" });
+    listItems.Add(new SelectListItem { Value = "SV", Text = "El Salvador" });
+    listItems.Add(new SelectListItem { Value = "GQ", Text = "Equatorial Guinea" });
+    listItems.Add(new SelectListItem { Value = "ER", Text = "Eritrea" });
+    listItems.Add(new SelectListItem { Value = "EE", Text = "Estonia" });
+    listItems.Add(new SelectListItem { Value = "ET", Text = "Ethiopia" });
+    listItems.Add(new SelectListItem { Value = "FK", Text = "Falkland Islands (Malvinas)" });
+    listItems.Add(new SelectListItem { Value = "FO", Text = "Faroe Islands" });
+    listItems.Add(new SelectListItem { Value = "FJ", Text = "Fiji" });
+    listItems.Add(new SelectListItem { Value = "FI", Text = "Finland" });
+    listItems.Add(new SelectListItem { Value = "FR", Text = "France" });
+    listItems.Add(new SelectListItem { Value = "GF", Text = "French Guiana" });
+    listItems.Add(new SelectListItem { Value = "PF", Text = "French Polynesia" });
+    listItems.Add(new SelectListItem { Value = "TF", Text = "French Southern Territories" });
+    listItems.Add(new SelectListItem { Value = "GA", Text = "Gabon" });
+    listItems.Add(new SelectListItem { Value = "GM", Text = "Gambia" });
+    listItems.Add(new SelectListItem { Value = "GE", Text = "Georgia" });
+    listItems.Add(new SelectListItem { Value = "DE", Text = "Germany" });
+    listItems.Add(new SelectListItem { Value = "GH", Text = "Ghana" });
+    listItems.Add(new SelectListItem { Value = "GI", Text = "Gibraltar" });
+    listItems.Add(new SelectListItem { Value = "GR", Text = "Greece" });
+    listItems.Add(new SelectListItem { Value = "GL", Text = "Greenland" });
+    listItems.Add(new SelectListItem { Value = "GD", Text = "Grenada" });
+    listItems.Add(new SelectListItem { Value = "GP", Text = "Guadeloupe" });
+    listItems.Add(new SelectListItem { Value = "GU", Text = "Guam" });
+    listItems.Add(new SelectListItem { Value = "GT", Text = "Guatemala" });
+    listItems.Add(new SelectListItem { Value = "GG", Text = "Guernsey" });
+    listItems.Add(new SelectListItem { Value = "GN", Text = "Guinea" });
+    listItems.Add(new SelectListItem { Value = "GW", Text = "Guinea-Bissau" });
+    listItems.Add(new SelectListItem { Value = "GY", Text = "Guyana" });
+    listItems.Add(new SelectListItem { Value = "HT", Text = "Haiti" });
+    listItems.Add(new SelectListItem { Value = "HM", Text = "Heard Island and McDonald Islands" });
+    listItems.Add(new SelectListItem { Value = "VA", Text = "Holy See (Vatican City State)" });
+    listItems.Add(new SelectListItem { Value = "HN", Text = "Honduras" });
+    listItems.Add(new SelectListItem { Value = "HK", Text = "Hong Kong" });
+    listItems.Add(new SelectListItem { Value = "HU", Text = "Hungary" });
+    listItems.Add(new SelectListItem { Value = "IS", Text = "Iceland" });
+    listItems.Add(new SelectListItem { Value = "IN", Text = "India" });
+    listItems.Add(new SelectListItem { Value = "ID", Text = "Indonesia" });
+    listItems.Add(new SelectListItem { Value = "IR", Text = "Iran, Islamic Republic of" });
+    listItems.Add(new SelectListItem { Value = "IQ", Text = "Iraq" });
+    listItems.Add(new SelectListItem { Value = "IE", Text = "Ireland" });
+    listItems.Add(new SelectListItem { Value = "IM", Text = "Isle of Man" });
+    listItems.Add(new SelectListItem { Value = "IL", Text = "Israel" });
+    listItems.Add(new SelectListItem { Value = "IT", Text = "Italy" });
+    listItems.Add(new SelectListItem { Value = "JM", Text = "Jamaica" });
+    listItems.Add(new SelectListItem { Value = "JP", Text = "Japan" });
+    listItems.Add(new SelectListItem { Value = "JE", Text = "Jersey" });
+    listItems.Add(new SelectListItem { Value = "JO", Text = "Jordan" });
+    listItems.Add(new SelectListItem { Value = "KZ", Text = "Kazakhstan" });
+    listItems.Add(new SelectListItem { Value = "KE", Text = "Kenya" });
+    listItems.Add(new SelectListItem { Value = "KI", Text = "Kiribati" });
+    listItems.Add(new SelectListItem { Value = "KP", Text = "Korea, Democratic People's Republic of" });
+    listItems.Add(new SelectListItem { Value = "KR", Text = "Korea, Republic of" });
+    listItems.Add(new SelectListItem { Value = "KW", Text = "Kuwait" });
+    listItems.Add(new SelectListItem { Value = "KG", Text = "Kyrgyzstan" });
+    listItems.Add(new SelectListItem { Value = "LA", Text = "Lao People's Democratic Republic" });
+    listItems.Add(new SelectListItem { Value = "LV", Text = "Latvia" });
+    listItems.Add(new SelectListItem { Value = "LB", Text = "Lebanon" });
+    listItems.Add(new SelectListItem { Value = "LS", Text = "Lesotho" });
+    listItems.Add(new SelectListItem { Value = "LR", Text = "Liberia" });
+    listItems.Add(new SelectListItem { Value = "LY", Text = "Libya" });
+    listItems.Add(new SelectListItem { Value = "LI", Text = "Liechtenstein" });
+    listItems.Add(new SelectListItem { Value = "LT", Text = "Lithuania" });
+    listItems.Add(new SelectListItem { Value = "LU", Text = "Luxembourg" });
+    listItems.Add(new SelectListItem { Value = "MO", Text = "Macao" });
+    listItems.Add(new SelectListItem { Value = "MK", Text = "Macedonia, the former Yugoslav Republic of" });
+    listItems.Add(new SelectListItem { Value = "MG", Text = "Madagascar" });
+    listItems.Add(new SelectListItem { Value = "MW", Text = "Malawi" });
+    listItems.Add(new SelectListItem { Value = "MY", Text = "Malaysia" });
+    listItems.Add(new SelectListItem { Value = "MV", Text = "Maldives" });
+    listItems.Add(new SelectListItem { Value = "ML", Text = "Mali" });
+    listItems.Add(new SelectListItem { Value = "MT", Text = "Malta" });
+    listItems.Add(new SelectListItem { Value = "MH", Text = "Marshall Islands" });
+    listItems.Add(new SelectListItem { Value = "MQ", Text = "Martinique" });
+    listItems.Add(new SelectListItem { Value = "MR", Text = "Mauritania" });
+    listItems.Add(new SelectListItem { Value = "MU", Text = "Mauritius" });
+    listItems.Add(new SelectListItem { Value = "YT", Text = "Mayotte" });
+    listItems.Add(new SelectListItem { Value = "MX", Text = "Mexico" });
+    listItems.Add(new SelectListItem { Value = "FM", Text = "Micronesia, Federated States of" });
+    listItems.Add(new SelectListItem { Value = "MD", Text = "Moldova, Republic of" });
+    listItems.Add(new SelectListItem { Value = "MC", Text = "Monaco" });
+    listItems.Add(new SelectListItem { Value = "MN", Text = "Mongolia" });
+    listItems.Add(new SelectListItem { Value = "ME", Text = "Montenegro" });
+    listItems.Add(new SelectListItem { Value = "MS", Text = "Montserrat" });
+    listItems.Add(new SelectListItem { Value = "MA", Text = "Morocco" });
+    listItems.Add(new SelectListItem { Value = "MZ", Text = "Mozambique" });
+    listItems.Add(new SelectListItem { Value = "MM", Text = "Myanmar" });
+    listItems.Add(new SelectListItem { Value = "NA", Text = "Namibia" });
+    listItems.Add(new SelectListItem { Value = "NR", Text = "Nauru" });
+    listItems.Add(new SelectListItem { Value = "NP", Text = "Nepal" });
+    listItems.Add(new SelectListItem { Value = "NL", Text = "Netherlands" });
+    listItems.Add(new SelectListItem { Value = "NC", Text = "New Caledonia" });
+    listItems.Add(new SelectListItem { Value = "NZ", Text = "New Zealand" });
+    listItems.Add(new SelectListItem { Value = "NI", Text = "Nicaragua" });
+    listItems.Add(new SelectListItem { Value = "NE", Text = "Niger" });
+    listItems.Add(new SelectListItem { Value = "NG", Text = "Nigeria" });
+    listItems.Add(new SelectListItem { Value = "NU", Text = "Niue" });
+    listItems.Add(new SelectListItem { Value = "NF", Text = "Norfolk Island" });
+    listItems.Add(new SelectListItem { Value = "MP", Text = "Northern Mariana Islands" });
+    listItems.Add(new SelectListItem { Value = "NO", Text = "Norway" });
+    listItems.Add(new SelectListItem { Value = "OM", Text = "Oman" });
+    listItems.Add(new SelectListItem { Value = "PK", Text = "Pakistan" });
+    listItems.Add(new SelectListItem { Value = "PW", Text = "Palau" });
+    listItems.Add(new SelectListItem { Value = "PS", Text = "Palestinian Territory, Occupied" });
+    listItems.Add(new SelectListItem { Value = "PA", Text = "Panama" });
+    listItems.Add(new SelectListItem { Value = "PG", Text = "Papua New Guinea" });
+    listItems.Add(new SelectListItem { Value = "PY", Text = "Paraguay" });
+    listItems.Add(new SelectListItem { Value = "PE", Text = "Peru" });
+    listItems.Add(new SelectListItem { Value = "PH", Text = "Philippines" });
+    listItems.Add(new SelectListItem { Value = "PN", Text = "Pitcairn" });
+    listItems.Add(new SelectListItem { Value = "PL", Text = "Poland" });
+    listItems.Add(new SelectListItem { Value = "PT", Text = "Portugal" });
+    listItems.Add(new SelectListItem { Value = "PR", Text = "Puerto Rico" });
+    listItems.Add(new SelectListItem { Value = "QA", Text = "Qatar" });
+    listItems.Add(new SelectListItem { Value = "RE", Text = "Réunion" });
+    listItems.Add(new SelectListItem { Value = "RO", Text = "Romania" });
+    listItems.Add(new SelectListItem { Value = "RU", Text = "Russian Federation" });
+    listItems.Add(new SelectListItem { Value = "RW", Text = "Rwanda" });
+    listItems.Add(new SelectListItem { Value = "BL", Text = "Saint Barthélemy" });
+    listItems.Add(new SelectListItem { Value = "SH", Text = "Saint Helena, Ascension and Tristan da Cunha" });
+    listItems.Add(new SelectListItem { Value = "KN", Text = "Saint Kitts and Nevis" });
+    listItems.Add(new SelectListItem { Value = "LC", Text = "Saint Lucia" });
+    listItems.Add(new SelectListItem { Value = "MF", Text = "Saint Martin (French part)" });
+    listItems.Add(new SelectListItem { Value = "PM", Text = "Saint Pierre and Miquelon" });
+    listItems.Add(new SelectListItem { Value = "VC", Text = "Saint Vincent and the Grenadines" });
+    listItems.Add(new SelectListItem { Value = "WS", Text = "Samoa" });
+    listItems.Add(new SelectListItem { Value = "SM", Text = "San Marino" });
+    listItems.Add(new SelectListItem { Value = "ST", Text = "Sao Tome and Principe" });
+    listItems.Add(new SelectListItem { Value = "SA", Text = "Saudi Arabia" });
+    listItems.Add(new SelectListItem { Value = "SN", Text = "Senegal" });
+    listItems.Add(new SelectListItem { Value = "RS", Text = "Serbia" });
+    listItems.Add(new SelectListItem { Value = "SC", Text = "Seychelles" });
+    listItems.Add(new SelectListItem { Value = "SL", Text = "Sierra Leone" });
+    listItems.Add(new SelectListItem { Value = "SG", Text = "Singapore" });
+    listItems.Add(new SelectListItem { Value = "SX", Text = "Sint Maarten (Dutch part)" });
+    listItems.Add(new SelectListItem { Value = "SK", Text = "Slovakia" });
+    listItems.Add(new SelectListItem { Value = "SI", Text = "Slovenia" });
+    listItems.Add(new SelectListItem { Value = "SB", Text = "Solomon Islands" });
+    listItems.Add(new SelectListItem { Value = "SO", Text = "Somalia" });
+    listItems.Add(new SelectListItem { Value = "ZA", Text = "South Africa" });
+    listItems.Add(new SelectListItem { Value = "GS", Text = "South Georgia and the South Sandwich Islands" });
+    listItems.Add(new SelectListItem { Value = "SS", Text = "South Sudan" });
+    listItems.Add(new SelectListItem { Value = "ES", Text = "Spain" });
+    listItems.Add(new SelectListItem { Value = "LK", Text = "Sri Lanka" });
+    listItems.Add(new SelectListItem { Value = "SD", Text = "Sudan" });
+    listItems.Add(new SelectListItem { Value = "SR", Text = "Suriname" });
+    listItems.Add(new SelectListItem { Value = "SJ", Text = "Svalbard and Jan Mayen" });
+    listItems.Add(new SelectListItem { Value = "SZ", Text = "Swaziland" });
+    listItems.Add(new SelectListItem { Value = "SE", Text = "Sweden" });
+    listItems.Add(new SelectListItem { Value = "CH", Text = "Switzerland" });
+    listItems.Add(new SelectListItem { Value = "SY", Text = "Syrian Arab Republic" });
+    listItems.Add(new SelectListItem { Value = "TW", Text = "Taiwan, Province of China" });
+    listItems.Add(new SelectListItem { Value = "TJ", Text = "Tajikistan" });
+    listItems.Add(new SelectListItem { Value = "TZ", Text = "Tanzania, United Republic of" });
+    listItems.Add(new SelectListItem { Value = "TH", Text = "Thailand" });
+    listItems.Add(new SelectListItem { Value = "TL", Text = "Timor-Leste" });
+    listItems.Add(new SelectListItem { Value = "TG", Text = "Togo" });
+    listItems.Add(new SelectListItem { Value = "TK", Text = "Tokelau" });
+    listItems.Add(new SelectListItem { Value = "TO", Text = "Tonga" });
+    listItems.Add(new SelectListItem { Value = "TT", Text = "Trinidad and Tobago" });
+    listItems.Add(new SelectListItem { Value = "TN", Text = "Tunisia" });
+    listItems.Add(new SelectListItem { Value = "TR", Text = "Turkey" });
+    listItems.Add(new SelectListItem { Value = "TM", Text = "Turkmenistan" });
+    listItems.Add(new SelectListItem { Value = "TC", Text = "Turks and Caicos Islands" });
+    listItems.Add(new SelectListItem { Value = "TV", Text = "Tuvalu" });
+    listItems.Add(new SelectListItem { Value = "UG", Text = "Uganda" });
+    listItems.Add(new SelectListItem { Value = "UA", Text = "Ukraine" });
+    listItems.Add(new SelectListItem { Value = "AE", Text = "United Arab Emirates" });
+    listItems.Add(new SelectListItem { Value = "GB", Text = "United Kingdom" });
+    listItems.Add(new SelectListItem { Value = "US", Text = "United States" });
+    listItems.Add(new SelectListItem { Value = "UM", Text = "United States Minor Outlying Islands" });
+    listItems.Add(new SelectListItem { Value = "UY", Text = "Uruguay" });
+    listItems.Add(new SelectListItem { Value = "UZ", Text = "Uzbekistan" });
+    listItems.Add(new SelectListItem { Value = "VU", Text = "Vanuatu" });
+    listItems.Add(new SelectListItem { Value = "VE", Text = "Venezuela, Bolivarian Republic of" });
+    listItems.Add(new SelectListItem { Value = "VN", Text = "Viet Nam" });
+    listItems.Add(new SelectListItem { Value = "VG", Text = "Virgin Islands, British" });
+    listItems.Add(new SelectListItem { Value = "VI", Text = "Virgin Islands, U.S." });
+    listItems.Add(new SelectListItem { Value = "WF", Text = "Wallis and Futuna" });
+    listItems.Add(new SelectListItem { Value = "EH", Text = "Western Sahara" });
+    listItems.Add(new SelectListItem { Value = "YE", Text = "Yemen" });
+    listItems.Add(new SelectListItem { Value = "ZM", Text = "Zambia" });
+    listItems.Add(new SelectListItem { Value = "ZW", Text = "Zimbabwe" });
+
+
+
+
+
+}
+
+<br />
+<br />
+<nav class="nav nav-tabs nav-fill">
+    <a class="nav-item nav-link text-success active" href="#" ><h3><span class="glyphicon glyphicon-home"></span> Profile Details</h3></a>
+    <a class="nav-item nav-link text-danger" href="@Url.Action("MyListings", "Manage")"><h3><span class="glyphicon glyphicon-leaf"></span> My Listings</h3></a>
+    <a class="nav-item nav-link text-info" href="@Url.Action("MyOrders", "Manage")"><h3><span class="glyphicon glyphicon-th-list"></span> Pending Orders</h3></a>
+    <a class="nav-item nav-link text-muted" href="#"><h3><span class="glyphicon glyphicon-envelope"></span> Messages</h3> </a>
+</nav>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <br />
+            <h3 class="text-muted text-center">Profile Details</h3>
+
+        </div>
+    </div>
+    <br />
+
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+        <div class="col-md-6">
+            <br />
+            <section>
+                <div class="row">
+                    <div class="col">
+                        <div class="profile_pic_container">
+                            <a href="@Url.Action("ProfilePic", "Manage")">
+                                <img src="@Model.Seller.ImagePath" class="img-circle float-left" alt="..." style="width:200px;height:200px">  <div class="profile_pic_overlay">
+                                    <div class="text">Update Photo</div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                     
+                    <div class="col">
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label class="text-info" for="nameInput">First Name</label>
+                                    @Html.EditorFor(model => model.Seller.FirstName, new { htmlAttributes = new { @id = "FirstName", @style = "cursor: default !important;", @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Seller.FirstName, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label class="text-info" for="nameInput">Last Name</label>
+                                    @Html.EditorFor(model => model.Seller.LastName, new { htmlAttributes = new { @id = "LastName", @style = "cursor: default !important;", @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Seller.FirstName, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label class="text-info" for="emailInput">Email</label>
+                                    @Html.EditorFor(model => model.Seller.Email, new { htmlAttributes = new { @class = "form-control text-default" }, @id = "emailInput" })
+                                    @Html.ValidationMessageFor(model => model.Seller.Email, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label class="text-info" for="mobileInput">Mobile</label>
+                                    @Html.EditorFor(model => model.Seller.Mobile, new { htmlAttributes = new { @class = "form-control text-default" }, @id = "mobileInput" })
+                                    @Html.ValidationMessageFor(model => model.Seller.Mobile, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label class="text-info" for="aboutInput">About</label><br />
+                    @Html.TextAreaFor(model => model.Seller.About, new { htmlAttributes = new { @class = "form-control text-default md-textarea" }, @id = "aboutInput", @rows = "3", @style = "max-width:100%;width:100%;" })
+                    @Html.ValidationMessageFor(model => model.Seller.About, "", new { @class = "text-danger" })
+
+                </div>
+
+
+                <div class="form-group">
+                    <label class="text-info" for="descriptionInput">Description</label><br />
+                    @Html.TextAreaFor(model => model.Seller.Description, new { htmlAttributes = new { @class = "form-control text-default md-textarea" }, @id = "descriptionInput", @rows = "3", @style = "max-width:100%;width:100%;" })
+                    @Html.ValidationMessageFor(model => model.Seller.Description, "", new { @class = "text-danger" })
+                </div>
+
+            </section>
+        </div>
+        <div class="col-md-6">
+            <br />
+            <section>
+                <div class="form-group">
+                    <label class="text-info" for="addressInput">Address Line 1</label><br />
+                    @Html.EditorFor(model => model.Seller.AddressLine1, new { htmlAttributes = new { @class = "form-control text-default" }, @id = "addressLine1Input" })
+                    @Html.ValidationMessageFor(model => model.Seller.AddressLine1, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    <label class="text-info" for="addressInput">Address Line 2</label><br />
+                    @Html.EditorFor(model => model.Seller.AddressLine2, new { htmlAttributes = new { @class = "form-control text-default" }, @id = "addressLine2Input" })
+                    @Html.ValidationMessageFor(model => model.Seller.AddressLine2, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    <label class="text-info" for="addressInput">Address Line 3</label><br />
+                    @Html.EditorFor(model => model.Seller.AddressLine3, new { htmlAttributes = new { @class = "form-control text-default" }, @id = "addressLine3Input" })
+                    @Html.ValidationMessageFor(model => model.Seller.AddressLine3, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    <label class="text-info" for="Input">Post Code</label><br />
+                    @Html.EditorFor(model => model.Seller.PostCode, new { htmlAttributes = new { @class = "form-control text-default" }, @id = "postCodeInput" })
+                    @Html.ValidationMessageFor(model => model.Seller.PostCode, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    <label class="text-info" for="Input">City</label><br />
+                    @Html.EditorFor(model => model.Seller.City, new { htmlAttributes = new { @class = "form-control text-default" }, @id = "cityInput" })
+                    @Html.ValidationMessageFor(model => model.Seller.City, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    <label class="text-info" for="Input">Country</label><br />
+                    @Html.DropDownListFor(model => model.Seller.Country, listItems, Model.Seller.Country, new { @class = "form-control text-default", @style = "min-height:35px;", @id="countryInput" })
+                    @Html.ValidationMessageFor(model => model.Seller.Country, "", new { @class = "text-danger" })
+                </div>
+
+ 
+
+                <br />
+                <input type="submit" value="Save Changes" id="Save" onclick="saveProfileChanges" class="btn btn-info float-left" />
+
+
+            </section>
+        </div>
+    }
+    <hr />
+
+</div>
+
+
+
+
+
+
+    <div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        Edit Selected Listing
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="Modal-ProductID"></p>
+                    <p id="Modal-Product"></p>
+                    <p id="Modal-Seller"></p>
+
+                    <div class="input-group mb-3">
+                        <input type="number" id="KGUnits" class="form-control" min="1" max="100" placeholder="1" aria-label="KGUnits" aria-describedby="basic-addon2" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text" id="basic-addon2"> kgs</span>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="number" id="Modal-Price" class="form-control" min="1" max="100" placeholder="1" aria-label="KGPrice" aria-describedby="basic-addon2" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text" id="basic-addon2"> $ per 1Kg</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+
+                    <button type="button" id="SaveChanges" class="btn btn-secondary">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+    var SellerID = "";
+    var productID = "";
+    var unitPrice = "";
+        var quantity = "";
+        var ListingId = "";
+
+        function changePicture()
+        {
+               location.href = '@Url.Action("ProfilePic", "Manage")';
+
+        }
+
+
+
+        function editItemPopup(ListingID, SellerId, SellerName, price, productId, productName, oldquantity) {
+            ListingId = ListingID;
+        productID = productId;
+        SellerID = SellerId;
+        unitPrice = price;
+        quantity = oldquantity;
+        document.getElementById("Modal-Product").innerText = "Product Name: " + productName;
+
+
+
+        document.getElementById("Modal-Price").value = price;
+        document.getElementById("KGUnits").value = oldquantity;
+
+        }
+        function saveProfileChanges() {
+
+           var Description = document.getElementById("Description").value;
+                 var About = document.getElementById("About").value;
+                 var CompanyEmail = document.getElementById("CompanyEmail").value;
+                 var Mobile = document.getElementById("Mobile").value;
+                 var Telephone = document.getElementById("Telephone").value;
+                 var CustomerServiceEmail = document.getElementById("CustomerServiceEmail").value;
+                 var Address = document.getElementById("Address").value;
+                 var Name = document.getElementById("Name").value;
+
+
+                 location.href = '@Url.Action("DeleteListing", "Manage")?Name=' + Name + '&About=' + About + '&Description=' + Description + '&CompanyEmail=' + CompanyEmail + '&Mobile=' + Mobile + '&Telephone=' + Telephone + '&CustomerServiceEmail=' + CustomerServiceEmail + '&Address=' + Address;
+
+
+        }
+    function deleteItem(listingId) {
+       location.href = '@Url.Action("DeleteListing", "Manage")?listingId=' + listingId ;
+
+    }
+
+
+    (function () {
+        document.getElementById("SaveChanges").onclick = function () {
+            var newQuantity = document.getElementById("KGUnits").value;
+            var newUnitPrice = document.getElementById("Modal-Price").value;
+            location.href = '@Url.Action("EditListing", "Manage")?ListingId=' + ListingId + "&newQuantity=" + newQuantity + '&unitPrice=' + newUnitPrice;
+
+        };
+
+        document.getElementById("Save").onclick = function () {
+
+                 var Description = document.getElementById("Description").value;
+                 var About = document.getElementById("About").value;
+                 var CompanyEmail = document.getElementById("CompanyEmail").value;
+                 var Mobile = document.getElementById("Mobile").value;
+                 var Telephone = document.getElementById("Telephone").value;
+                 var CustomerServiceEmail = document.getElementById("CustomerServiceEmail").value;
+                 var Address = document.getElementById("Address").value;
+                 var Name = document.getElementById("Name").value;
+            alert(Name);
+
+
+            location.href = '@Url.Action("DeleteListing", "Manage")?Name=' + Name;
+
+        };
+
+
+        })();
+    </script>
+
+
+
+
+

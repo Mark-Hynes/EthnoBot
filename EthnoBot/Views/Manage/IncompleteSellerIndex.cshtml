@@ -1,0 +1,219 @@
+﻿@model EthnoBot.Models.UserIndexViewModel
+@{
+    ViewBag.Title = "IncompleteSellerIndex";
+}
+
+@{
+    ViewBag.Title = "My Details";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h2 class="text-muted text-center">Profile Details</h2>
+
+        </div>
+    </div>
+    <br />
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+        <div class="col-md-6">
+            <br />
+            <section>
+                <div class="row">
+                    <div class="col">
+                        <div class="profile_pic_container">
+                            <a href="@Url.Action("ProfilePic", "Manage")">
+                                <img src="@Model.ImagePath" class="img-circle" alt="Update Profile Picture" style="width:200px;height:200px">
+                                <div class="profile_pic_overlay">
+                                    <div class="text">Update Photo</div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label class="text-info" for="nameInput">First Name</label>
+                                    @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @id = "FirstName", @style = "cursor: default !important;", @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label class="text-info" for="emailInput">Email</label>
+                                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control text-default" }, @id = "emailInput" })
+                                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label class="text-info" for="addressInput">Address Line 1</label><br />
+                                    @Html.EditorFor(model => model.AddressLine1, new { htmlAttributes = new { @class = "form-control text-default" }, @id = "addressLine1Input" })
+                                    @Html.ValidationMessageFor(model => model.AddressLine1, "", new { @class = "text-danger" })
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label class="text-info" for="mobileInput">Mobile</label>
+                                    @Html.EditorFor(model => model.Mobile, new { htmlAttributes = new { @class = "form-control text-default" }, @id = "mobileInput" })
+                                    @Html.ValidationMessageFor(model => model.Mobile, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+
+            </section>
+        </div>
+        <div class="col-md-6">
+            <br />
+            <section>
+                <div class="form-group">
+                    <label class="text-info" for="nameInput">Last Name</label>
+                    @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @id = "LastName", @style = "cursor: default !important;", @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    <label class="text-info" for="addressInput">Address Line 2</label><br />
+                    @Html.EditorFor(model => model.AddressLine2, new { htmlAttributes = new { @class = "form-control text-default" }, @id = "addressLine2Input" })
+                    @Html.ValidationMessageFor(model => model.AddressLine2, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    <label class="text-info" for="addressInput">Address Line 3</label><br />
+                    @Html.EditorFor(model => model.AddressLine3, new { htmlAttributes = new { @class = "form-control text-default" }, @id = "addressLine3Input" })
+                    @Html.ValidationMessageFor(model => model.AddressLine3, "", new { @class = "text-danger" })
+                </div>
+
+
+                <br />
+                <input type="submit" value="Save Changes" id="Save" onclick="saveProfileChanges" class="btn btn-info float-left" />
+
+
+            </section>
+        </div>
+    }
+    <hr />
+
+</div>
+<hr />
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="text-center text-muted">You have not completed the setup of your profile yet. To sell on this site, click the button below to add remaining details</h3>
+        </div>
+        <div class="col"></div>
+        <div class="col">
+            <div class="row">
+                <div class="col"></div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    @Html.ActionLink("Finish Setup", "RegisterSeller", "Account", routeValues: null, htmlAttributes: new { @type = "button", @class = "btn btn-success btn-block btn-lg" })
+
+                </div>
+            </div>
+        </div>
+        <div class="col"></div>
+    </div>
+</div>
+    </div>
+<div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12"></div>
+        </div>
+    </div>
+</div>
+<div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12"></div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var SellerID = "";
+    var productID = "";
+    var unitPrice = "";
+        var quantity = "";
+        var ListingId = "";
+
+        function changePicture()
+        {
+               location.href = '@Url.Action("ProfilePic", "Manage")';
+
+        }
+
+
+
+
+        function saveProfileChanges() {
+
+           var Description = document.getElementById("Description").value;
+                 var About = document.getElementById("About").value;
+                 var CompanyEmail = document.getElementById("CompanyEmail").value;
+                 var Mobile = document.getElementById("Mobile").value;
+                 var Telephone = document.getElementById("Telephone").value;
+                 var CustomerServiceEmail = document.getElementById("CustomerServiceEmail").value;
+                 var Address = document.getElementById("Address").value;
+                 var Name = document.getElementById("Name").value;
+
+
+                 location.href = '@Url.Action("DeleteListing", "Manage")?Name=' + Name + '&About=' + About + '&Description=' + Description + '&CompanyEmail=' + CompanyEmail + '&Mobile=' + Mobile + '&Telephone=' + Telephone + '&CustomerServiceEmail=' + CustomerServiceEmail + '&Address=' + Address;
+
+
+        }
+
+
+
+    (function () {
+        document.getElementById("SaveChanges").onclick = function () {
+            var newQuantity = document.getElementById("KGUnits").value;
+            var newUnitPrice = document.getElementById("Modal-Price").value;
+            location.href = '@Url.Action("EditListing", "Manage")?ListingId=' + ListingId + "&newQuantity=" + newQuantity + '&unitPrice=' + newUnitPrice;
+
+        };
+
+        document.getElementById("Save").onclick = function () {
+
+                 var Description = document.getElementById("Description").value;
+                 var About = document.getElementById("About").value;
+                 var CompanyEmail = document.getElementById("CompanyEmail").value;
+                 var Mobile = document.getElementById("Mobile").value;
+                 var Telephone = document.getElementById("Telephone").value;
+                 var CustomerServiceEmail = document.getElementById("CustomerServiceEmail").value;
+                 var Address = document.getElementById("Address").value;
+                 var Name = document.getElementById("Name").value;
+            alert(Name);
+
+
+            location.href = '@Url.Action("DeleteListing", "Manage")?Name=' + Name;
+
+        };
+
+
+        })();
+</script>
