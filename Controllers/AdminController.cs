@@ -13,6 +13,7 @@ namespace EthnoBot.Controllers
     {
         private EthnoBotEntities db = new EthnoBotEntities();
         // GET: Admin
+        [Authorize(Roles = "Admin")]
         public ActionResult Index()
         {
             return View();
@@ -101,6 +102,34 @@ namespace EthnoBot.Controllers
             model.Product = product;
             model.CurrentProductTags = productTags;
             return View(model);
+        }
+
+        [Authorize(Roles = "Admin")]
+        public ActionResult PerformTagSearch(string SearchText)
+
+        {
+            Session["SearchString"] = SearchText;
+            
+            //used to store all unique product Ids, so no duplicates are shown
+           
+            //Final List of products to be shown in Search Results
+        
+           
+          
+                    List<Tag> tags = db.Tags.Where(x => x.Name.Contains(SearchText)||x.Description.Contains(SearchText)).ToList();
+            List<TagSearchResultViewModel> results = new List<TagSearchResultViewModel>();
+            foreach (var tag in tags)
+            {
+                TagSearchResultViewModel srvm = new TagSearchResultViewModel();
+                srvm.Tag = tag;
+                string categoryId = tag.TagCategoryId;
+                TagCategory category= db.TagCategories.Where(x=>x.TagCategoryId==categoryId).First();
+                srvm.TagCategory = category;
+                results.Add(srvm);
+
+            }
+
+            return PartialView("SearchTagsPartial", results);
         }
 
     }

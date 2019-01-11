@@ -1,26 +1,43 @@
 ﻿@model IEnumerable<EthnoBot.Models.Product>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
 
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+               
+                <th>Product Name</th>
+                <th>Description</th>
+                <th>Action</th>
+               </tr>
+        </thead>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Title)
-        </td>
-        <td>    
-            @Html.DisplayFor(modelItem => item.LatinName)
-        </td>
-       
-        <td>
-            @Html.ActionLink("Edit Product", "EditProduct", "Admin", new { id = item.ProductId.TrimEnd() }, new { @class = "text-info", }) |
-            @Html.ActionLink("Product Details", "ProductDetails", "Admin", new { id = item.ProductId.TrimEnd() }, new { @class = "text-info", }) |
-            @Html.ActionLink("Delete Product", "DeleteProduct", "Admin", new { id = item.ProductId.TrimEnd() }, new { @class = "text-info", })
-        </td>
-    </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LatinName)
+                </td>
 
-</table>
+                <td>
+                    @Html.ActionLink("Edit Product", "EditProduct", "Admin", new { id = item.ProductId.TrimEnd() }, new { @class = "text-success", }) |
+                    @Html.ActionLink("Product Details", "ProductDetails", "Admin", new { id = item.ProductId.TrimEnd() }, new { @class = "text-info", }) |
+                    @Html.ActionLink("Delete Product", "DeleteProduct", "Admin", new { id = item.ProductId.TrimEnd() }, new { @class = "text-danger", })
+                </td>
+            </tr>
+        }
+
+    </table>
+    </div>
+<div class="container">
+    <div class="row">
+        <div class="col float-right">
+            <p>
+                @Html.ActionLink("Create New", "Create")
+            </p>
+        </div>
+    </div>
+</div>

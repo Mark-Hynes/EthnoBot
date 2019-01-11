@@ -17,7 +17,7 @@ namespace EthnoBot.Controllers
     public class SearchController : Controller
     {
         private EthnoBotEntities db = new EthnoBotEntities();
-        
+
         // GET: Categories
         public ActionResult Index()
         {
@@ -27,11 +27,18 @@ namespace EthnoBot.Controllers
             CountCartItems();
             return View(psvm);
         }
-     
+
+        public ActionResult SearchWString(string searchString)
+        {
+            Session["SearchString"] = searchString;
+            return RedirectToAction("Index");
+        }
+
         public ActionResult PerformSearch(string SearchText, string SelectedTags)
 
         {
-            string[] selectedTags = SelectedTags.Split(','); 
+            Session["SearchString"] = SearchText;
+            string[] selectedTags = SelectedTags.Split(',');
             //used to store all unique product Ids, so no duplicates are shown
             List<string> productIds = new List<string>();
             //Final List of products to be shown in Search Results
@@ -39,21 +46,22 @@ namespace EthnoBot.Controllers
             //List of tags that contained/matched the search query
             //List<Tag> tagResults = db.Tags.Where(x => x.Name.Contains(SearchText)).ToList();
             //List of products that contained/matched the search query
-         //   List<Product> productResults = db.Products.Where(x => x.Title.Contains(SearchText)).ToList();
-          //  foreach (Product p in productResults)
-          //  {
-          //      if (!productIds.Contains(p.ProductId))
-          //      {   //adding all unique product ids to the list
-          //          productIds.Add(p.ProductId);
+            //   List<Product> productResults = db.Products.Where(x => x.Title.Contains(SearchText)).ToList();
+            //  foreach (Product p in productResults)
+            //  {
+            //      if (!productIds.Contains(p.ProductId))
+            //      {   //adding all unique product ids to the list
+            //          productIds.Add(p.ProductId);
 
-                   
-         //       }
-         //   }
-            //adding the product results to finalResults 
-         //   finalResults = productResults;
+
+            //       }
+            //   }
+            //adding the product results to finalResults
+            //   finalResults = productResults;
             //go through the returned tags, and search tagAssociations table
             //to find any additional products not already in the Product list
-            for(int i=0;i<selectedTags.Length;i++) {
+            for (int i = 0; i < selectedTags.Length; i++)
+            {
                 string tagId = selectedTags[i];
                 try
                 {
@@ -61,9 +69,9 @@ namespace EthnoBot.Controllers
                     foreach (TagAssociation ta in tagAssociations)
                     {
                         if (!productIds.Contains(ta.ProductId))
-                        {   
-                            
-                            Product productFromTag = db.Products.Where(x => x.ProductId == ta.ProductId&&x.Title.Contains(SearchText)).First();
+                        {
+
+                            Product productFromTag = db.Products.Where(x => x.ProductId == ta.ProductId && x.Title.Contains(SearchText)).First();
                             //adding all unique product ids to the list
                             productIds.Add(ta.ProductId);
                             //add new product to the final list
@@ -78,54 +86,54 @@ namespace EthnoBot.Controllers
             }
             SearchResultsViewModel srvm = new SearchResultsViewModel();
             srvm.products = finalResults;
-            return PartialView("SearchPartial",srvm);
+            return PartialView("SearchPartial", srvm);
         }
 
 
-       
+
         public ActionResult ListProducts(string id)
         {
-         
+
             return View();
         }
         public List<ListingViewModel> listingViewModels;
         public ActionResult ProductAndListings(string productId)
         {
 
-            Product product = db.Products.FirstOrDefault(x=>x.ProductId==productId);
+            Product product = db.Products.FirstOrDefault(x => x.ProductId == productId);
             List<Listing> listings = db.Listings.Where(x => x.ProductId == productId).ToList();
-           
-            
-           
 
 
-           listingViewModels= new List<ListingViewModel>();
-              
 
-              
+
+
+            listingViewModels = new List<ListingViewModel>();
+
+
+
             for (int i = 0; i < listings.Count; i++)
             {
                 ListingViewModel lo = new ListingViewModel();
                 lo.Listing = listings.ElementAt(i);
-             
-                string sellerId =listings.ElementAt(i).SellerId;
-                
+
+                string sellerId = listings.ElementAt(i).SellerId;
+
                 Seller seller = db.Sellers.Where(x => x.SellerId == sellerId).First();
-              
-             
-                lo.UnitPriceKG =lo.Listing.UnitPriceKG;
+
+
+                lo.UnitPriceKG = lo.Listing.UnitPriceKG;
                 lo.UnitsKG = lo.Listing.UnitsKG;
                 lo.Product = product;
                 lo.Seller = seller;
                 listingViewModels.Add(lo);
-                
+
             }
 
 
             ProductAndListingsModel pm = new ProductAndListingsModel();
             pm.ListingViewModels = listingViewModels;
             pm.Product = product;
-                
+
             return View(pm);
         }
 
@@ -141,13 +149,14 @@ namespace EthnoBot.Controllers
             CartItem c;
             try
             {
-                 c = db.CartItems.Where(x => x.ListingId == l.ListingId).First();
+                c = db.CartItems.Where(x => x.ListingId == l.ListingId).First();
                 c.UnitsKG += Convert.ToDecimal(quantity);
                 db.SaveChanges();
                 CountCartItems();
                 return Redirect(Request.UrlReferrer.ToString());
 
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 c = new CartItem();
                 c.CartItemId = cartitemId.ToString();
@@ -158,8 +167,8 @@ namespace EthnoBot.Controllers
                 db.SaveChanges();
                 CountCartItems();
                 return Redirect(Request.UrlReferrer.ToString());
-            }          
-            
+            }
+
         }
 
         public void CountCartItems()
@@ -207,7 +216,7 @@ namespace EthnoBot.Controllers
                     string productId = listings.ElementAt(i).ProductId;
 
                     Product product = db.Products.Where(x => x.ProductId == productId).First();
-                    
+
 
                     lo.UnitPriceKG = lo.Listing.UnitPriceKG;
                     lo.UnitsKG = lo.Listing.UnitsKG;
@@ -224,9 +233,11 @@ namespace EthnoBot.Controllers
 
                 return View(pm);
             }
-            catch (Exception err) {
+            catch (Exception err)
+            {
                 string error = err.InnerException.ToString();
-                return View("Error"); }
+                return View("Error");
+            }
         }
 
 
@@ -234,7 +245,7 @@ namespace EthnoBot.Controllers
         public ActionResult SellerList()
         {
             var Sellers = db.Sellers.ToList();
-                     
+
             return View(Sellers);
         }
         public string GetImage(string imageId)
@@ -247,6 +258,6 @@ namespace EthnoBot.Controllers
             // return File(ms, "image/jpeg", imageId);
         }
 
-      
+
     }
 }

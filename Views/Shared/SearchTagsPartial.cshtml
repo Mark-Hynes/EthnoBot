@@ -1,0 +1,22 @@
+﻿@model IEnumerable<EthnoBot.Models.TagSearchResultViewModel>
+
+
+@if(Model!=null){
+foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem =>item.TagCategory.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Tag.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Tag.Description)
+        </td>
+        <td>
+            @Html.ActionLink("Add Tag", "AddTagToProduct", new { productId=item.Tag.TagId }) |
+         </td>
+    </tr>
+}
+
+}else{<p>No tags found, please refine search</p>}

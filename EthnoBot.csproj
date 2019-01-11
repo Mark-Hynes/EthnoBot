@@ -534,6 +534,7 @@
     <Compile Include="Models\TagAssociation.cs" />
     <Compile Include="Models\TagCategory.cs" />
     <Compile Include="Models\Tag.cs" />
+    <Compile Include="Models\TagSearchResultViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Utils\Gmailer.cs" />
@@ -589,6 +590,7 @@
     <Content Include="Images\Categories\ShamanicPlants.png" />
     <Content Include="Images\Home.png" />
     <Content Include="Images\Home2.png" />
+    <Content Include="Images\Home3.png" />
     <Content Include="Images\linkedin.png" />
     <Content Include="Images\Producers\DefaultProducer.png" />
     <Content Include="Images\Producers\EthnoBotanicalIreland.png" />
@@ -642,6 +644,7 @@
     <Content Include="Views\Shared\SearchPartial.cshtml" />
     <Content Include="Views\Admin\ProductIndex.cshtml" />
     <Content Include="Views\Admin\EditProduct.cshtml" />
+    <Content Include="Views\Shared\SearchTagsPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
