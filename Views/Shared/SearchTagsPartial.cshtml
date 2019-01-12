@@ -14,7 +14,8 @@ foreach (var item in Model) {
             @Html.DisplayFor(modelItem => item.Tag.Description)
         </td>
         <td>
-            @Html.ActionLink("Add Tag", "AddTagToProduct", new { productId=item.Tag.TagId }) |
+            <a href="/Admin/AddTagToProduct?productId=@item.productId&tagId=@item.Tag.TagId">Add</a>
+            @Html.ActionLink("Add Tag", "AddTagToProduct", new { productId=item.productId , tagId=item.Tag.TagId }) |
          </td>
     </tr>
 }

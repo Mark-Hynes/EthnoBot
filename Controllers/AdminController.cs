@@ -19,7 +19,18 @@ namespace EthnoBot.Controllers
             return View();
         }
 
-
+        public ActionResult AddTagToProduct(string productId, string tagId)
+        {
+            string associationId = Guid.NewGuid().ToString();
+            TagAssociation ta = new TagAssociation();
+            ta.TagAssociationId = associationId.Trim();
+            ta.TagId = tagId;
+            ta.ProductId = productId;
+            db.TagAssociations.Add(ta);
+            db.SaveChanges();
+            string prodid = productId;
+            return RedirectToAction("EditProduct",new {  prodid } );
+        }
 
         //Product Details 
         [Authorize(Roles = "Admin")]
@@ -93,7 +104,8 @@ namespace EthnoBot.Controllers
             foreach (var x in associations)
             {
                 string currentId = x.TagId;
-                Tag currentTag = db.Tags.Where(y => y.TagId == currentId).First();
+
+                Tag currentTag = db.Tags.Where(y => y.TagId.Trim()==currentId.Trim()).First();
                 productTags.Add(currentTag);
   //              TagIds.Add(x.TagId);
             }
@@ -105,7 +117,7 @@ namespace EthnoBot.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        public ActionResult PerformTagSearch(string SearchText)
+        public ActionResult PerformTagSearch(string SearchText,string productId)
 
         {
             Session["SearchString"] = SearchText;
@@ -125,6 +137,7 @@ namespace EthnoBot.Controllers
                 string categoryId = tag.TagCategoryId;
                 TagCategory category= db.TagCategories.Where(x=>x.TagCategoryId==categoryId).First();
                 srvm.TagCategory = category;
+                srvm.productId = productId;
                 results.Add(srvm);
 
             }

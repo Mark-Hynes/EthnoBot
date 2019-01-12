@@ -116,8 +116,9 @@
 
                   $(document).ready(function () {
                       var searchText = $("#searchInput_searchPage").val();
+                     
 
-
+                      if (searchText == null || searchText.length < 0) { searchText = "%showAll" }
                       var arrayString = "";
 
                       debugger
@@ -125,7 +126,7 @@
                           type: "POST",
 
 
-                          url: "/Admin/PerformTagSearch?SearchText=" + searchText,
+                          url: "/Admin/PerformTagSearch?SearchText=" + searchText+"&productId=@Model.Product.ProductId",
                           contentType: "html",
                           success: function (response) {
 
@@ -136,8 +137,8 @@
 
                       $("#searchInput_searchPage").keyup(function () {
                           var searchText = $("#searchInput_searchPage").val();
-                        
-                         
+
+                          if (searchText == null || searchText.length<0) { searchText = "%showAll" }
                           var arrayString = "";
 
                           debugger
@@ -145,7 +146,7 @@
                               type: "POST",
 
 
-                              url: "/Admin/PerformTagSearch?SearchText=" + searchText,
+                                   url: "/Admin/PerformTagSearch?SearchText=" + searchText+"&productId=@Model.Product.ProductId",
                               contentType: "html",
                               success: function (response) {
 

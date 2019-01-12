@@ -7,8 +7,6 @@ namespace EthnoBot.Models
     {
         public TagCategory TagCategory { get; set; }
         public Tag Tag { get; set; }
-       
-
-
+        public string productId { get; set; }
     }
 }
