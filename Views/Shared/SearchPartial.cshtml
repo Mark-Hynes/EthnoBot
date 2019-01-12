@@ -5,16 +5,18 @@ foreach (var item in Model.products)
 {
 <div class="col-sm-6 item">
     <div class="row">
-        <div class="col-md-12 col-lg-5"><a href="#"><img src="@Model.featureImage1" class="img-fluid" /></a></div>
+        <div class="col-md-12 col-lg-5"><a href="#"><img src="@item.ImagePath"  style="width:220px;height:160px;"/></a></div>
         <div class="col align-content-end">
             <h3 class="name">@item.Title</h3>
-            <p class="description">Aenean tortor est, vulputate quis leo in, vehicula rhoncus lacus. Praesent aliquam in tellus eu gravida.</p>
+            <p >@item.Abstract</p>
+            <p class="description">@item.Description</p>
             <div class="row">
                 <div class="col align-items-end"><button class="btn btn-primary btn-block" type="button">Button</button></div>
             </div>
         </div>
     </div>
 </div>
+      
 }
 }
 else {<h3 class="text-success">No results found, try refining your search</h3>}

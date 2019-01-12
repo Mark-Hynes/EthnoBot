@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace EthnoBot.Models
 {
-    [Bind(Exclude = "ProductId")]
+   
     [Table("Products")]
     public class Product
     {
@@ -20,9 +20,11 @@ namespace EthnoBot.Models
         [DisplayName("Product Name")]
         [Required(ErrorMessage = "Product Name is required.")]
         public string Title { get; set; }
-        [DisplayName("Latin Name")]
+        [DisplayName("Description")]
+        public string Description { get; set; }
 
-        public string LatinName { get; set; }
+        [DisplayName("Abstract")]
+        public string Abstract { get; set; }
         
         
         [DisplayName("Product Image")]

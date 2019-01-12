@@ -12,9 +12,6 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.CategoryId)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.Title)
         </th>
         <th>
@@ -23,19 +20,11 @@
         <th>
             @Html.DisplayNameFor(model => model.ImagePath)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Family)
-        </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model)
-{
-    string imagepath = item.ImagePath.Substring(0, 40);
+@foreach (var item in Model) {
     <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.CategoryId)
-        </td>
         <td>
             @Html.DisplayFor(modelItem => item.Title)
         </td>
@@ -43,10 +32,7 @@
             @Html.DisplayFor(modelItem => item.Description)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => imagepath)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Family)
+            @Html.DisplayFor(modelItem => item.ImagePath)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.ProductId }) |
