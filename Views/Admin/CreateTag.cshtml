@@ -1,0 +1,54 @@
+﻿@model EthnoBot.Models.EditTagViewModel
+
+@{
+    ViewBag.Title = "Create Tag";
+    List<SelectListItem> listItems = new List<SelectListItem>();
+
+    foreach (var item in Model.TagCategories) {
+        listItems.Add(new SelectListItem { Value = item.TagCategoryId.Trim(), Text = item.Name });
+    } 
+    }
+
+<h2>Create</h2>
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+<div class="form-horizontal">
+    <h4>Tag</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+     <div class="form-group">
+        <label class="text-info" for="Input">Category</label><br />
+        @Html.DropDownListFor(model => model.Tag.TagCategoryId, listItems,  new { @class = "form-control text-default", @style = "min-height:35px;", @id = "countryInput" })
+        @Html.ValidationMessageFor(model => model.Tag.TagCategoryId, "", new { @class = "text-danger" })
+    </div>
+    
+    <div class="form-group">
+        @Html.LabelFor(model => model.Tag.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Tag.Name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Tag.Name, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Tag.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Tag.Description, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Tag.Description, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Create" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "TagIndex")
+</div>

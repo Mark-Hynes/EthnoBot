@@ -37,6 +37,10 @@ namespace EthnoBot.Controllers
         public ActionResult PerformSearch(string SearchText, string SelectedTags)
 
         {
+            if (SearchText.Equals(""))
+            {
+
+            }
             Session["SearchString"] = SearchText;
             string[] selectedTags = SelectedTags.Split(',');
             //used to store all unique product Ids, so no duplicates are shown
@@ -68,19 +72,30 @@ namespace EthnoBot.Controllers
                     List<TagAssociation> tagAssociations = db.TagAssociations.Where(x => x.TagId == tagId).ToList();
                     foreach (TagAssociation ta in tagAssociations)
                     {
-                        if (!productIds.Contains(ta.ProductId))
+                        if (!productIds.Contains(ta.ProductId.Replace("\\r\\n", "")))
                         {
+                            string searchtext = SearchText.ToLower();
+                            Product productFromTag = db.Products.Where(x => x.ProductId.Contains(ta.ProductId)).First();
 
-                            Product productFromTag = db.Products.Where(x => x.ProductId == ta.ProductId && x.Title.Contains(SearchText)).First();
-                            //adding all unique product ids to the list
-                            productIds.Add(ta.ProductId);
-                            //add new product to the final list
-                            finalResults.Add(productFromTag);
-                        }
+                            if (SearchText.Equals(""))
+                            {
+                                productIds.Add(ta.ProductId.Replace("\\r\\n", ""));
+                                //add new product to the final list
+                                finalResults.Add(productFromTag);
+                            }
+                           else if ((productFromTag.Title.IndexOf(SearchText, 0, StringComparison.CurrentCultureIgnoreCase) != -1)||(productFromTag.Abstract.IndexOf(SearchText, 0, StringComparison.CurrentCultureIgnoreCase) != -1)||(productFromTag.Description.IndexOf(SearchText, 0, StringComparison.CurrentCultureIgnoreCase) != -1))
+                            {
+                                productIds.Add(ta.ProductId.Replace("\\r\\n", ""));
+                                //add new product to the final list
+                                finalResults.Add(productFromTag);
+                            } else {
+                                Console.WriteLine(productFromTag.Title + " did not contain " + SearchText);
+                            } }
                     }
                 }
-                catch
+                catch(Exception e)
                 {
+                    Console.WriteLine(e.ToString());
                     //No Tag association was found for a product that was found earlier through the initial product search
                 }
             }

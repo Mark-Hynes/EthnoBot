@@ -10,14 +10,133 @@ using System.Web.Mvc;
 
 namespace EthnoBot.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
+
     {
         private EthnoBotEntities db = new EthnoBotEntities();
         // GET: Admin
         [Authorize(Roles = "Admin")]
         public ActionResult Index()
         {
-            return View();
+            return RedirectToAction("AdminIndex");
+        }
+        [Authorize(Roles = "Admin")]
+        public ActionResult TagIndex()
+        {
+            return View(db.Tags.ToList());
+        }
+        [Authorize(Roles = "Admin")]
+        // GET: Tags/Details/5
+        public ActionResult TagDetails(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Tag tag = db.Tags.Find(id);
+            if (tag == null)
+            {
+                return HttpNotFound();
+            }
+            return View(tag);
+        }
+        [Authorize(Roles = "Admin")]
+        // GET: Tags/Create
+        public ActionResult CreateTag()
+        {
+            EditTagViewModel vm = new EditTagViewModel();
+            vm.TagCategories = db.TagCategories.ToList();
+            return View(vm);
+        }
+
+        // POST: Tags/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateTag(EditTagViewModel vm)
+        {
+            string tagGuid = Guid.NewGuid().ToString();
+            vm.Tag.TagId = tagGuid.Trim();
+            vm.Tag.TagType = "Plant";
+            db.Tags.Add(vm.Tag);
+            db.SaveChanges();
+            return RedirectToAction("TagIndex");
+
+
+
+        }
+        [Authorize(Roles = "Admin")]
+        // GET: Tags/Edit/5
+        public ActionResult EditTag(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Tag tag = db.Tags.Find(id);
+            if (tag == null)
+            {
+
+
+                return HttpNotFound();
+            }
+            EditTagViewModel mv = new EditTagViewModel();
+            TagCategory tc = db.TagCategories.Where(x => x.TagCategoryId.Contains(tag.TagCategoryId)).First();
+            mv.TagCategories = db.TagCategories.ToList();
+            mv.TagCategory = tc;
+            mv.Tag = tag;
+            return View(mv);
+        }
+
+        // POST: Tags/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditTag(EditTagViewModel tagVM)
+        {
+            Tag tag = db.Tags.Where(x => x.TagId.Contains(tagVM.Tag.TagId)).First();
+            tag.TagId = tagVM.Tag.TagId;
+            tag.TagType = tagVM.Tag.TagType;
+            tag.Description = tagVM.Tag.Description;
+            tag.Name = tagVM.Tag.Name;
+            tag.TagCategoryId = tagVM.Tag.TagCategoryId;
+
+
+            db.SaveChanges();
+            return RedirectToAction("TagIndex");
+
+
+        }
+
+        // GET: Tags/Delete/5
+        public ActionResult Delete(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Tag tag = db.Tags.Find(id);
+            if (tag == null)
+            {
+                return HttpNotFound();
+            }
+            return View(tag);
+        }
+
+        // POST: Tags/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(string id)
+        {
+            Tag tag = db.Tags.Find(id);
+            db.Tags.Remove(tag);
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         public ActionResult AddTagToProduct(string productId, string tagId)
@@ -174,7 +293,7 @@ namespace EthnoBot.Controllers
                 TagSearchResultViewModel srvm = new TagSearchResultViewModel();
                 srvm.Tag = tag;
                 string categoryId = tag.TagCategoryId;
-                TagCategory category= db.TagCategories.Where(x=>x.TagCategoryId==categoryId).First();
+                TagCategory category= db.TagCategories.Where(x=>x.TagCategoryId.Contains(categoryId)).First();
                 srvm.TagCategory = category;
                 srvm.productId = productId;
                 results.Add(srvm);

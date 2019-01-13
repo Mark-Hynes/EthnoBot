@@ -7,6 +7,8 @@ namespace EthnoBot.Models
     {
         [Key]
         public string TagId { get; set; }
+        [Column("TagType")]
+        public string TagType { get; set; }
         [Column("TagCategoryId")]
         public string TagCategoryId { get; set; }
         [Column("Name")]
