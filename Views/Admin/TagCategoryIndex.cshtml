@@ -1,0 +1,51 @@
+﻿@model IEnumerable<EthnoBot.Models.TagCategory>
+
+@{
+    ViewBag.Title = "Tag Category Admin";
+}
+
+<h2 class="text-center">Tag Category Admin</h2>
+
+<hr />
+
+    <p class="text-center">
+        @Html.ActionLink("Create Tag Category", "CreateTagCategory", "Admin", null, new { @class = "btn btn-info btn-large" }) <br />
+    </p>
+<br />
+
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TagType)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TagType)
+                </td>
+                <td>
+                    @Html.ActionLink("Go To Tag Category", "EditTagCategory", "Admin", new { tagcatid = item.TagCategoryId.TrimEnd() }, new { @class = "btn btn-success btn-large" })  |
+                    @Html.ActionLink("Delete Tag Category", "DeleteTagCategory", "Admin", new { id = item.TagCategoryId.TrimEnd() }, new { @class = "btn btn-danger btn-large" })  |
+                </td>
+            </tr>
+
+        }
+
+    </table>
+

@@ -24,6 +24,7 @@ namespace EthnoBot.Controllers
             ProductSearchViewModel psvm = new ProductSearchViewModel();
             psvm.readTagCategories(db);
             psvm.readAndSortTags(db);
+            psvm.FeatureSearchItems = db.FeatureSearchItems.ToList();
             CountCartItems();
             return View(psvm);
         }

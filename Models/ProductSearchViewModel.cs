@@ -15,6 +15,7 @@ namespace EthnoBot.Models
         public string featureImage2;
         public string featureImage3;
 
+        public List<FeatureSearchItem> FeatureSearchItems;
         public List<TagCategory> tagCategories;
         public List<Tag> tags;
         public ProductSearchViewModel()

@@ -24,7 +24,11 @@ namespace EthnoBot.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult TagIndex()
         {
-            return View(db.Tags.ToList());
+            TagAdminViewModel tavm = new TagAdminViewModel();
+            tavm.TagCategories = db.TagCategories.ToList();
+            tavm.Tags = db.Tags.ToList();
+
+            return View(tavm);
         }
         [Authorize(Roles = "Admin")]
         // GET: Tags/Details/5
@@ -60,7 +64,7 @@ namespace EthnoBot.Controllers
         {
             string tagGuid = Guid.NewGuid().ToString();
             vm.Tag.TagId = tagGuid.Trim();
-            vm.Tag.TagType = "Plant";
+            
             db.Tags.Add(vm.Tag);
             db.SaveChanges();
             return RedirectToAction("TagIndex");
@@ -112,15 +116,28 @@ namespace EthnoBot.Controllers
 
 
         }
+        [Authorize(Roles = "Admin")]
+        public ActionResult DeleteProduct(string id)
+        {
+            Product p = db.Products.Find(id);
+            List<TagAssociation> ta = db.TagAssociations.Where(x => x.ProductId.Contains(id)).ToList();
+            db.TagAssociations.RemoveRange(ta);
+            db.Products.Remove(p);
+            db.SaveChanges();
+            return RedirectToAction("ProductIndex");
+        }
 
+
+        [Authorize(Roles = "Admin")]
         // GET: Tags/Delete/5
-        public ActionResult Delete(string id)
+        public ActionResult DeleteTag(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Tag tag = db.Tags.Find(id);
+
             if (tag == null)
             {
                 return HttpNotFound();
@@ -129,16 +146,19 @@ namespace EthnoBot.Controllers
         }
 
         // POST: Tags/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [Authorize(Roles = "Admin")]
+        [HttpPost, ActionName("DeleteTag")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
             Tag tag = db.Tags.Find(id);
+            List<TagAssociation> ta = db.TagAssociations.Where(x => x.TagId.Contains(id)).ToList();
+            db.TagAssociations.RemoveRange(ta);
             db.Tags.Remove(tag);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("TagIndex");
         }
-
+        [Authorize(Roles = "Admin")]
         public ActionResult AddTagToProduct(string productId, string tagId)
         {
             string associationId = Guid.NewGuid().ToString();
@@ -182,9 +202,32 @@ namespace EthnoBot.Controllers
             Product p = db.Products.Where(x => x.ProductId.Contains(productId)).First();
             p.ImagePath = base64image;
             db.SaveChanges();
-            return RedirectToAction("EditProduct", new { productId });
+            string id = productId;
+            return RedirectToAction("EditProduct", new { id });
 
         }
+        [Authorize(Roles = "Admin")]
+        public ActionResult ChangeFeatureSearchItemPicture(string id)
+        {
+            return View(model: id.Trim());
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public ActionResult ChangeFeatureSearchItemPicture(string featureSearchItemId, string base64image)
+        { //  string base64image = image.
+
+
+            FeatureSearchItem p = db.FeatureSearchItems.Where(x => x.FeatureSearchItemId.Contains(featureSearchItemId)).First();
+            p.ImagePath = base64image;
+           
+            db.SaveChanges();
+            string id = featureSearchItemId;
+            return RedirectToAction("EditFeatureSearchItem", new { id });
+
+        }
+
+
 
 
 
@@ -220,7 +263,19 @@ namespace EthnoBot.Controllers
 
             return View();
         }
+        [Authorize(Roles = "Admin")]
+        public ActionResult RemoveTagFromProduct(string tagId, string productId)
+        {
+            List<TagAssociation> ta = db.TagAssociations.Where(x => x.ProductId.Contains(productId)&&x.TagId.Contains(tagId)).ToList();
+            foreach (var item in ta)
+            {
+                db.TagAssociations.Remove(item);
 
+            }
+            string id = productId;
+            db.SaveChanges();
+            return RedirectToAction("EditProduct", new { id });
+        }
 
         // POST: AdminProducts/Edit/5
         [HttpPost]
@@ -243,6 +298,7 @@ namespace EthnoBot.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult EditProduct(string id)
         {
+            id = id.Substring(0, 36);
            
             if (id == null)
             {
@@ -302,6 +358,229 @@ namespace EthnoBot.Controllers
 
             return PartialView("SearchTagsPartial", results);
         }
+        [Authorize(Roles = "Admin")]
+        public ActionResult TagCategoryIndex()
+        {
+            return View(db.TagCategories.ToList());
+        }
+        [Authorize(Roles = "Admin")]
+        // GET: TagCategories/Details/5
+        public ActionResult TagCategoryDetails(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            TagCategory tagCategory = db.TagCategories.Find(id);
+            if (tagCategory == null)
+            {
+                return HttpNotFound();
+            }
+            return View(tagCategory);
+        }
+        [Authorize(Roles = "Admin")]
+        // GET: TagCategories/Create
+        public ActionResult CreateTagCategory()
+        {
+            return View();
+        }
+
+        // POST: TagCategories/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateTagCategory([Bind(Include = "TagCategoryId,Name,Description,TagType")] TagCategory tagCategory)
+        {
+            tagCategory.TagCategoryId = Guid.NewGuid().ToString();
+            if (ModelState.IsValid)
+            {
+                db.TagCategories.Add(tagCategory);
+                db.SaveChanges();
+                return RedirectToAction("TagCategoryIndex");
+            }
+
+            return View(tagCategory);
+        }
+
+        // GET: TagCategories/Edit/5
+        [Authorize(Roles = "Admin")]
+        public ActionResult EditTagCategory(string tagcatid)
+        {
+            if (tagcatid == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            TagCategory tagCategory = db.TagCategories.Where(x=>x.TagCategoryId.Contains(tagcatid)).First();
+            if (tagCategory == null)
+            {
+                return HttpNotFound();
+            }
+            return View(tagCategory);
+        }
+
+        // POST: TagCategories/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditTagCategory([Bind(Include = "TagCategoryId,Name,Description,TagType")] TagCategory tagCategory)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(tagCategory).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("TagCategoryIndex");
+            }
+            return View(tagCategory);
+        }
+
+        [Authorize(Roles = "Admin")] // GET: TagCategories/Delete/5
+        public ActionResult DeleteTagCategory(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            TagCategory tagCategory = db.TagCategories.Find(id);
+            if (tagCategory == null)
+            {
+                return HttpNotFound();
+            }
+            return View(tagCategory);
+        }
+
+        [Authorize(Roles = "Admin")] // POST: TagCategories/Delete/5
+        [HttpPost, ActionName("DeleteTagCategory")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteTagCategoryConfirmed(string id)
+        {
+            TagCategory tagCategory = db.TagCategories.Find(id);
+            db.TagCategories.Remove(tagCategory);
+            db.SaveChanges();
+            return RedirectToAction("TagCategoryIndex");
+        }
+
+        // GET: FeatureSearchItems
+        [Authorize(Roles = "Admin")]
+        public ActionResult FeatureSearchItemIndex()
+        {
+            return View(db.FeatureSearchItems.ToList());
+        }
+
+        // GET: FeatureSearchItems/Details/5
+        [Authorize(Roles = "Admin")]
+        public ActionResult FeatureSearchItemDetails(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            FeatureSearchItem featureSearchItem = db.FeatureSearchItems.Find(id);
+            if (featureSearchItem == null)
+            {
+                return HttpNotFound();
+            }
+            return View(featureSearchItem);
+        }
+
+        // GET: FeatureSearchItems/Create
+        [Authorize(Roles = "Admin")]
+        public ActionResult CreateFeatureSearchItem()
+        {
+            FeatureSearchItemViewModel vm = new FeatureSearchItemViewModel();
+            vm.Products = db.Products.ToList();
+
+            return View(vm);
+        }
+
+        // POST: FeatureSearchItems/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+        public ActionResult CreateFeatureSearchItem(FeatureSearchItemViewModel featureSearchItemvm)
+        {
+            featureSearchItemvm.FeatureSearchItem.FeatureSearchItemId = Guid.NewGuid().ToString();
+            if (ModelState.IsValid)
+            {
+                db.FeatureSearchItems.Add(featureSearchItemvm.FeatureSearchItem);
+                db.SaveChanges();
+                return RedirectToAction("FeatureSearchItemIndex");
+            }
+
+            return View(featureSearchItemvm);
+        }
+
+        // GET: FeatureSearchItems/Edit/5
+        [Authorize(Roles = "Admin")]
+        public ActionResult EditFeatureSearchItem(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            FeatureSearchItem featureSearchItem = db.FeatureSearchItems.Find(id);
+            if (featureSearchItem == null)
+            {
+                return HttpNotFound();
+            }
+            FeatureSearchItemViewModel vm = new FeatureSearchItemViewModel();
+            vm.FeatureSearchItem = featureSearchItem;
+            vm.Products = db.Products.ToList();
+            return View(vm);
+        }
+
+        // POST: FeatureSearchItems/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+        public ActionResult EditFeatureSearchItem(FeatureSearchItemViewModel vm)
+        {
+            string id = vm.FeatureSearchItem.FeatureSearchItemId;
+            if (ModelState.IsValid)
+            {
+                db.Entry(vm.FeatureSearchItem).State = EntityState.Modified;
+                db.SaveChanges();
+               
+              
+            }
+            return RedirectToAction("EditFeatureSearchItem", new { id });
+        }
+
+        // GET: FeatureSearchItems/Delete/5
+        [Authorize(Roles = "Admin")]
+        public ActionResult DeleteFeatureSearchItem(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            FeatureSearchItem featureSearchItem = db.FeatureSearchItems.Find(id);
+            if (featureSearchItem == null)
+            {
+                return HttpNotFound();
+            }
+            return View(featureSearchItem);
+        }
+
+        // POST: FeatureSearchItems/Delete/5
+        [Authorize(Roles = "Admin")]
+        [HttpPost, ActionName("DeleteFeatureSearchItem")]
+        [ValidateAntiForgeryToken]
+        public ActionResult FeatureSearchItemDeleteConfirmed(string id)
+        {
+            FeatureSearchItem featureSearchItem = db.FeatureSearchItems.Find(id);
+            db.FeatureSearchItems.Remove(featureSearchItem);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
 
     }
 }

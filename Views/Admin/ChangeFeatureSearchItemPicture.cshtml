@@ -1,8 +1,8 @@
 ﻿@{
-    ViewBag.Title = "Upload New Product Image";
+    ViewBag.Title = "Upload New Search Item Image";
     
 }
-<h3 class="text-muted text-center">Upload New Product Image</h3>
+<h3 class="text-muted text-center">Upload New Search Item Image</h3>
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <link href="~/Content/iEdit.css" rel="stylesheet" />
 <script src="~/Content/iEdit.js"></script>
@@ -13,8 +13,8 @@
         width: 20%;
     }
     .iEdit-img-edit-select {
-        height: 200px !important;
-        width: 300px !important;
+        height: 240px !important;
+        width: 400px !important;
        
     }
     .iEdit-img-edit-save {
@@ -28,8 +28,8 @@
         width: 100px !important;
     }
     #result {
-        height:200px !important;
-        width:300px !important;
+        height:240px !important;
+        width:400px !important;
     }
 </style>
 <hr />
@@ -57,18 +57,18 @@
 
 
                 var formdata = new FormData();
-                formdata.append("productId","@Model")
+                formdata.append("featureSearchItemId","@Model")
                 formdata.append("base64image", res);
                 
                 $.ajax({
-                    url: "/Admin/ChangeProductPicture",
+                    url: "/Admin/ChangeFeatureSearchItemPicture",
                     type: "POST",
                     data: formdata,
                     processData: false,
                     contentType: false
                 });
               
-                location.href = '@Url.Action("EditProduct", "Admin",new {id=Model})';
+                location.href = '@Url.Action("EditFeatureSearchItem", "Admin",new {id=Model})';
             })) {
                 alert("Please check file type !!!");
             }

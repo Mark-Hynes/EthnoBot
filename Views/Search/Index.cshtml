@@ -14,6 +14,7 @@
             <div class="col">
                 <a href="#">
                     <div class="card bg-dark text-white" style="width:200px;height:120px">
+
                         <img class="card-img" href="#" src="@Model.featureImage1" alt="Card image" style="width:200px;height:120px">
                         <div class="card-img-overlay" style="width:200px;height:120px">
                             <h5 class="card-title">Featured Product</h5>
@@ -82,30 +83,55 @@
         <div class="menu-list">
             @foreach (var a in Model.tagCategories)
             {
-                <ul id="menu-content" class="menu-content collapse out">
-                    <li title="@a.Description" data-toggle="collapse" data-target="#@a.TagCategoryId.Trim()" class="collapsed active" style="background:#47A447!important;color:#FFFFFF">
-                        <a href="#" class="text-center" style="background:#47A447!important;color:#FFFFFF"> <span class="glyphicon glyphicon-leaf"></span> <b>@a.Name</b></a>
-                    </li>
-                    <ul class="sub-menu collapse scrollable-menu" id="@a.TagCategoryId.Trim()">
-                        @foreach (var c in Model.tags)
-                        {
-                            if (c.TagCategoryId.Trim().Equals(a.TagCategoryId.Trim()))
-                            {
-                                <li>
-                                    <div class="container" title="@c.Description">
-                                        <div class="row">
-                                            <div class="col">
-                                                <input type="checkbox" name="tags[]" id="@c.TagId.Trim()" checked="true" onchange="modifyTagFilter('this','@c.TagId.Trim()')">
-                                                <label>@c.Name</label>
-                                            </div>
+            <ul id="menu-content" class="menu-content collapse out">
 
-                                        </div>
-                                    </div>
-                                </li>
+
+                @{
+                    if (a.TagType.Equals("Mushroom"))
+                    {
+                <li title="@a.Description" data-toggle="collapse" data-target="#@a.TagCategoryId.Trim()" class="collapsed active" style="background:#966B3A!important;color:#FFFFFF">
+                    <a href="#" class="text-center" style="background:#966B3A!important;color:#FFFFFF">
+
+                        <img src="~/Images/mushroom-icon-white.png" alt="Mushroom" style="width:13px;height:13px">
+                        <b>@a.Name</b>
+                    </a>
+                </li>
                             }
-                        }
+                            else if (a.TagType.Equals("Plant"))
+                            {
+                <li title="@a.Description" data-toggle="collapse" data-target="#@a.TagCategoryId.Trim()" class="collapsed active" style="background:#47A447!important;color:#FFFFFF">
+                    <a href="#" class="text-center" style="background:#47A447!important;color:#FFFFFF">
+                        <span class="glyphicon glyphicon-leaf"></span>
+                        <b>@a.Name</b>
+                    </a>
+               </li>
+                            }
+                            }
+
+
+
+
+                        
+                        <ul class="sub-menu collapse scrollable-menu" id="@a.TagCategoryId.Trim()">
+                            @foreach (var c in Model.tags)
+                            {
+                                if (c.TagCategoryId.Trim().Equals(a.TagCategoryId.Trim()))
+                                {
+                                    <li>
+                                        <div class="container" title="@c.Description">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <input type="checkbox" name="tags[]" id="@c.TagId.Trim()" checked="true" onchange="modifyTagFilter('this','@c.TagId.Trim()')">
+                                                    <label>@c.Name</label>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </li>
+                                }
+                            }
+                        </ul>
                     </ul>
-                </ul>
             }
 
 
@@ -185,6 +211,34 @@
     function modifyTagFilter(checkboxel, id) {
         document.getElementById("resultsTable").style.display = "none";
         document.getElementById("searchLoader").style.display = "block";
+        var searchText = $("#searchInput_searchPage").val();
+        var tags = [];
+        $('input[name^=tags]').each(function () {
+            if ($(this).is(':checked')) {
+                tags.push($(this).attr('id'));
+            }
+        });
+        var arrayString = "";
+
+        debugger
+        $.ajax({
+            type: "POST",
+            url: "/Search/PerformSearch?SearchText=" + searchText + "&SelectedTags=" + tags.toString(),
+            contentType: "html",
+            success: function (response) {
+
+                $("#resultsTable").html(response);
+                document.getElementById("searchLoader").style.display = "none";
+                document.getElementById("resultsTable").style.display = "block";
+            }
+        });
+
+    }
+
+    function bulkmomdifytags(checkboxel, id) {
+        document.getElementById("resultsTable").style.display = "none";
+        document.getElementById("searchLoader").style.display = "block";
+        
         var searchText = $("#searchInput_searchPage").val();
         var tags = [];
         $('input[name^=tags]').each(function () {

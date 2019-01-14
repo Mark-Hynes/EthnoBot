@@ -1,0 +1,46 @@
+﻿@model IEnumerable<EthnoBot.Models.FeatureSearchItem>
+
+@{
+    ViewBag.Title = "Feature Search Items";
+}
+
+<h2 class="text-center">Feature Search Items</h2>
+<hr />
+<p class="text-center">
+    @Html.ActionLink("Create New", "CreateFeatureSearchItem",null,new { @class="btn btn-large btn-info"})
+</p>
+<br />
+<table class="table">
+    <tr>
+      <th>
+            @Html.DisplayNameFor(model => model.DisplayedText)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SearchText)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Type)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+     
+        <td>
+            @Html.DisplayFor(modelItem => item.DisplayedText)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SearchText)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Type)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "EditFeatureSearchItem", new { id=item.FeatureSearchItemId }) |
+             @Html.ActionLink("Delete", "DeleteFeatureSearchItem", new { id=item.FeatureSearchItemId })
+        </td>
+    </tr>
+}
+
+</table>

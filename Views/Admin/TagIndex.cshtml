@@ -1,32 +1,42 @@
-﻿@model IEnumerable<EthnoBot.Models.Tag>
+﻿@model EthnoBot.Models.TagAdminViewModel
 
 @{
-    ViewBag.Title = "Tag Index";
+    ViewBag.Title = "Tag Admin";
 }
 
-<h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "CreateTag")
+<h2 class="text-center">Tag Admin</h2>
+<hr />
+<p class="text-center">
+    @Html.ActionLink("Create New Tag", "CreateTag",null, new { @class = "btn btn-info btn-large" })
 </p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.TagCategoryId)
+         Tag Category
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Name)
+         Tag Name
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Description)
+         Description
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
+@foreach (var item in Model.Tags)
+{
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.TagCategoryId)
+            @{
+                foreach (var i in Model.TagCategories)
+                {
+                    if (i.TagCategoryId.Contains(item.TagCategoryId))
+                    {
+                        @Html.ActionLink(i.Name, "EditTagCategory", "Admin", new { tagcatid = i.TagCategoryId.TrimEnd() }, new { @class ="text-success" }) 
+                        break;
+                    }
+                }
+            }
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Name)
@@ -35,9 +45,10 @@
             @Html.DisplayFor(modelItem => item.Description)
         </td>
         <td>
-            @Html.ActionLink("Edit Tag", "EditTag", new { id=item.TagId }) |
-            @Html.ActionLink("Tag Details", "TagDetails", new { id=item.TagId }) |
-            @Html.ActionLink("Delete TaG", "DeleteTag", new { id=item.TagId })
+            <p class="float-right">|</p>
+            @Html.ActionLink("Go To Tag", "EditTag", new { id = item.TagId }, new { @class = "btn btn-success btn-large float-left" }) |
+
+            @Html.ActionLink("Delete Tag", "DeleteTag", new { id = item.TagId }, new { @class = "btn btn-danger btn-large float-right" })
         </td>
     </tr>
 }

@@ -12,6 +12,7 @@ namespace EthnoBot.Models
  
         public DbSet<Seller> Sellers { get; set; }
         public DbSet<Listing> Listings { get; set; }
+        public DbSet<FeatureSearchItem> FeatureSearchItems { get; set; }
         public DbSet<Cart> Carts { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
         public DbSet<ImageModel> Images { get; set; }

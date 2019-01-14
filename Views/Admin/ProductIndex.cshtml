@@ -1,15 +1,21 @@
 ﻿@model IEnumerable<EthnoBot.Models.Product>
 
+<h2 class="text-center">Product Admin</h2>
 
+<hr />
+<p class="text-center">
+    @Html.ActionLink("Create New Product", "CreateProduct", null, new { @class = "btn btn-primary btn-large" })
+</p>
+<br />
 <div class="table-responsive">
     <table class="table">
         <thead>
             <tr>
-               
+
                 <th>Product Name</th>
                 <th>Description</th>
                 <th>Action</th>
-               </tr>
+            </tr>
         </thead>
 
         @foreach (var item in Model)
@@ -23,21 +29,16 @@
                 </td>
 
                 <td>
-                    @Html.ActionLink("Edit Product", "EditProduct", "Admin", new { id = item.ProductId.TrimEnd() }, new { @class = "text-success", }) |
-                    @Html.ActionLink("Product Details", "ProductDetails", "Admin", new { id = item.ProductId.TrimEnd() }, new { @class = "text-info", }) |
-                    @Html.ActionLink("Delete Product", "DeleteProduct", "Admin", new { id = item.ProductId.TrimEnd() }, new { @class = "text-danger", })
+                    @Html.ActionLink("Go To Product", "EditProduct", "Admin", new { id = item.ProductId.TrimEnd() }, new { @class = "btn btn-success btn-large float-left" })  |
+
+                    @Html.ActionLink("Delete Product", "DeleteProduct", "Admin", new { id = item.ProductId.TrimEnd() }, new { @class = "btn btn-danger btn-large" })
                 </td>
             </tr>
         }
 
     </table>
-    </div>
-<div class="container">
-    <div class="row">
-        <div class="col float-right">
-            <p>
-                @Html.ActionLink("Create New", "CreateProduct")
-            </p>
-        </div>
-    </div>
 </div>
+
+
+</div>
+

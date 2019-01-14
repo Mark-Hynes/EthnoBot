@@ -2,52 +2,60 @@
 
 @{
     ViewBag.Title = "Edit Tag";
+    List<SelectListItem> categoryItems = new List<SelectListItem>();
+    List<SelectListItem> typeItems = new List<SelectListItem>();
+    typeItems.Add(new SelectListItem { Value = "Mushroom", Text = "Mushroom" });
+    typeItems.Add(new SelectListItem { Value = "Plant", Text = "Plant" });
+    foreach (var item in Model.TagCategories)
+    {
+        categoryItems.Add(new SelectListItem { Value = item.TagCategoryId.Trim(), Text = item.Name });
+    }
 }
 
-<h2>Edit</h2>
+<h2 class="text-center">Edit @Model.Tag.Name</h2>
+<div class="container">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Tag</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.TagId)
+        <div class="form-horizontal">
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.TagCategoryId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.TagCategoryId, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.TagCategoryId, "", new { @class = "text-danger" })
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Tag.TagId)
+
+            <div class="form-group">
+                <label class="text-info" for="Input">Tag Category</label><br />
+                @Html.DropDownListFor(model => model.Tag.TagCategoryId, categoryItems, Model.Tag.TagCategoryId, new { @class = "form-control text-default", @style = "min-height:35px;", @id = "countryInput" })
+                @Html.ValidationMessageFor(model => model.Tag.TagCategoryId, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                <label class="text-info" for="Input">Tag Type</label><br />
+                @Html.DropDownListFor(model => model.Tag.TagType, typeItems, Model.Tag.TagType, new { @class = "form-control text-default", @style = "min-height:35px;", @id = "countryInput" })
+                @Html.ValidationMessageFor(model => model.Tag.TagType, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                <label class="text-info" for="Input">Tag Name</label><br />
+                @Html.EditorFor(model => model.Tag.Name, new { htmlAttributes = new { @class = "form-control text-default" }, @id = "cityInput" })
+                @Html.ValidationMessageFor(model => model.Tag.Name, "", new { @class = "text-danger" })
+            </div>
+
+
+            <div class="form-group">
+                <label class="text-info" for="Input">Tag Description</label><br />
+                @Html.EditorFor(model => model.Tag.Description, new { htmlAttributes = new { @class = "form-control text-default" }, @id = "cityInput" })
+                @Html.ValidationMessageFor(model => model.Tag.Description, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                </div>
             </div>
         </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
-}
-
+    }
+</div>
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "TagIndex")
 </div>
