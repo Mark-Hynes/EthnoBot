@@ -61,9 +61,6 @@ namespace EthnoBot.Models
         [DisplayName("Email")]
         public string Email { get; set; }
 
-        [DisplayName("Image Path")]
-
-        public string ImagePath { get; set; }
         public string ASPUserId{ get; set; }
         public bool IsVerified { get; set; }
        

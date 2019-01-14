@@ -113,11 +113,11 @@ namespace EthnoBot.Controllers
             return View();
         }
         public List<ListingViewModel> listingViewModels;
-        public ActionResult ProductAndListings(string productId)
+        public ActionResult ProductAndListings(string id)
         {
 
-            Product product = db.Products.FirstOrDefault(x => x.ProductId == productId);
-            List<Listing> listings = db.Listings.Where(x => x.ProductId == productId).ToList();
+            Product product = db.Products.FirstOrDefault(x => x.ProductId ==id);
+            List<Listing> listings = db.Listings.Where(x => x.ProductId == id).ToList();
 
 
 

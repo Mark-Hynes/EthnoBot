@@ -11,7 +11,7 @@ foreach (var item in Model.products)
             <p ><i>@item.Abstract</i></p>
             <p class="description">@item.Description</p>
             <div class="row">
-                <div class="col align-items-end"><button class="btn btn-primary btn-block" type="button">View Product</button></div>
+                <div class="col align-items-end"><a class="btn btn-primary btn-block" href="/Search/ProductAndListings/@item.ProductId">View Product</a></div>
             </div>
         </div>
     </div>
