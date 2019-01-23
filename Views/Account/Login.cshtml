@@ -8,9 +8,9 @@
 <br />
 <h2 class="text-muted text-center"><b>@ViewBag.Title</b></h2>
 <hr />
-<div class="container" style="width:400px; margin:0 auto;">
+<div class="container" style="width:280px; margin:0 auto;">
     <div class="row">
-        <div class="col">
+        <div class="col" style="width:280px">
             <section id="loginForm">
                 @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                 {
@@ -19,36 +19,40 @@
 
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                     <div class="form-group">
-                        <label class="text-info" for="emailInput">Email address</label>
+                        <label class="text-default" for="emailInput">Email address</label>
                         @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control text-default" }, @id = "emailInput" })
                         @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                     </div>
 
                     <div class="form-group">
-                        <label class="text-info" for="passwordInput">Password</label>
+                        <label class="text-default" for="passwordInput">Password</label>
                         @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control text-default" }, @id = "passwordInput" })
                         @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
                     </div>
                     <div class="form-group">
-                        <div class="col-md-offset-2 col-md-10">
-                            <div class="checkbox float-right">
-                                @Html.CheckBoxFor(m => m.RememberMe)
-                                @Html.LabelFor(m => m.RememberMe)
-                            </div>
+
+                        <div class="checkbox float-left">
+                            @Html.CheckBoxFor(m => m.RememberMe)
+                            @Html.LabelFor(m => m.RememberMe)
+
                         </div>
+                        <input type="submit" value="Log in" class="btn btn-info float-right" />
+                        <br />
+                        <p class="float-left">
+    <u>@Html.ActionLink("Register as a new user", "Register", null, new { @class = "text-info" })</u>
+</p>
                     </div>
+                    
                     <div class="form-group">
-                        <div class="col-md-offset-2 col-md-10">
-                            <input type="submit" value="Log in" class="btn btn-info float-right" />
-                        </div>
+
+
+
                     </div>
-                    <h5>
-                        <u>@Html.ActionLink("Register as a new user", "Register", null, new { @class = "text-info" })</u>
-                    </h5>
+
                     @* Enable this once you have account confirmation enabled for password reset functionality
-                    <p>
-                        @Html.ActionLink("Forgot your password?", "ForgotPassword")
-                    </p>*@
+            <p>
+                @Html.ActionLink("Forgot your password?", "ForgotPassword")
+            </p>*@
                 }
             </section>
         </div>

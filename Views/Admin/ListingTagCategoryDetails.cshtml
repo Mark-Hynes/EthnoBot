@@ -1,13 +1,13 @@
-﻿@model EthnoBot.Models.Category
+﻿@model EthnoBot.Models.ListingTagCategory
 
 @{
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<h2 class="text-center">Details of @Model.Name</h2>
 
 <div>
-    <h4>Category</h4>
+
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -26,9 +26,17 @@
             @Html.DisplayFor(model => model.Description)
         </dd>
 
+        <dt>
+            @Html.DisplayNameFor(model => model.ListingTagType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ListingTagType)
+        </dd>
+
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.CategoryId }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Edit", "EditListingTagCategory", new { id = Model.ListingTagCategoryId }) |
+    @Html.ActionLink("Back to List", "ListingTagCategoryIndex")
 </p>

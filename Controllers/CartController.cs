@@ -53,7 +53,7 @@ namespace EthnoBot.Controllers
                     m.Listing = l;
                     m.Product = p;
                     m.Seller = s;
-                    m.Subtotal = Convert.ToDecimal(m.Listing.UnitPriceKG * m.Listing.UnitsKG);
+                   // m.Subtotal = Convert.ToDecimal(m.Listing.UnitPriceKG * m.Listing.UnitsKG);
                     CartItemViewModels.Add(m);
                 }
                 countCartItems();
@@ -99,16 +99,16 @@ namespace EthnoBot.Controllers
                 Seller seller = db.Sellers.Where(x => x.SellerId == l.SellerId).First();
                 Product product = db.Products.Where(x => x.ProductId == l.ProductId).FirstOrDefault();
 
-                 
 
-                  
-                   
-                    decimal total = Convert.ToDecimal(l.UnitPriceKG * item.UnitsKG);
+
+
+
+                decimal total = 10; //Convert.ToDecimal(l.UnitPriceKG * item.UnitsKG);
                     listItems.items.Add(new Item()
                     {
                         name = product.Title + " x " + item.UnitsKG,
                         currency = "EUR",
-                        price = l.UnitPriceKG.ToString(),
+                        price = "10",
                         quantity = item.UnitsKG.ToString(),
                         sku = "sku"
                         
@@ -141,7 +141,7 @@ namespace EthnoBot.Controllers
                     order.Status = 0; 
                     order.BuyerId = User.Identity.GetUserId();
                     order.UnitsKG = CartItemViewModels.ElementAt(j).CartItem.UnitsKG;
-                    order.UnitPriceKG = CartItemViewModels.ElementAt(j).Listing.UnitPriceKG;
+                    order.UnitPriceKG = 10;//CartItemViewModels.ElementAt(j).Listing.UnitPriceKG;
                     order.TotalPrice = (order.UnitPriceKG * order.UnitsKG);
                     Subtotal +=Convert.ToDouble(order.TotalPrice);
                     db.Orders.Add(order);

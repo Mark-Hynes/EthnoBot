@@ -1,0 +1,68 @@
+﻿@model EthnoBot.Models.ListingTagAdminViewModel
+
+@{
+    ViewBag.Title = "Create";
+    List<SelectListItem> categoryItems = new List<SelectListItem>();
+    List<SelectListItem> typeItems = new List<SelectListItem>();
+    typeItems.Add(new SelectListItem { Value = "Mushroom", Text = "Mushroom" });
+    typeItems.Add(new SelectListItem { Value = "Plant", Text = "Plant" });
+    typeItems.Add(new SelectListItem { Value = "Seeds", Text = "Seeds" });
+    foreach (var item in Model.ListingTagCategories)
+    {
+        categoryItems.Add(new SelectListItem { Value = item.ListingTagCategoryId.Trim(), Text = item.Name });
+    }
+}
+
+<h2>Create Listing Tag</h2>
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+<div class="form-horizontal">
+
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="form-group">
+        <label class="text-info" for="Input">Tag Type</label><br />
+        @Html.DropDownListFor(model => model.ListingTag.ListingTagType, typeItems, new { @class = "form-control text-default", @style = "min-height:35px;", @id = "countryInput" })
+        @Html.ValidationMessageFor(model => model.ListingTag.ListingTagType, "", new { @class = "text-danger" })
+    </div>
+
+
+    <div class="form-group">
+        <label class="text-info" for="Input">Tag Category</label><br />
+        @Html.DropDownListFor(model => model.ListingTag.ListingTagCategoryId, categoryItems, new { @class = "form-control text-default", @style = "min-height:35px;", @id = "countryInput" })
+        @Html.ValidationMessageFor(model => model.ListingTag.ListingTagCategoryId, "", new { @class = "text-danger" })
+    </div>
+
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ListingTag.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.ListingTag.Name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ListingTag.Name, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ListingTag.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.ListingTag.Description, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ListingTag.Description, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Create" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "ListingTagIndex")
+</div>

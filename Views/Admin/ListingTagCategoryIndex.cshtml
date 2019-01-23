@@ -1,0 +1,45 @@
+﻿@model IEnumerable<EthnoBot.Models.ListingTagCategory>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2 class="text-center">Listing Tag Category Index</h2><hr />
+
+<p class="text-center">
+    <a class="btn btn-large text-center btn-info" href="@Url.Action("CreateListingTagCategory", "Admin")">Create Listings Tag Category</a>
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ListingTagType)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ListingTagType)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "EditListingTagCategory", new { id=item.ListingTagCategoryId }) |
+            @Html.ActionLink("Details", "ListingTagCategoryDetails", new { id=item.ListingTagCategoryId }) |
+            @Html.ActionLink("Delete", "DeleteListingTagCategory", new { id=item.ListingTagCategoryId })
+        </td>
+    </tr>
+}
+
+</table>

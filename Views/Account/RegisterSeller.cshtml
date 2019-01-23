@@ -259,80 +259,82 @@
                     listItems.Add(new SelectListItem { Value = "ZW", Text = "Zimbabwe" });
 
                 }
-
-                <h2 class="text-info">@ViewBag.Title.</h2>
+<br />
+                <h2 class="text-muted text-center"><b>@ViewBag.Title</b></h2>
 
                 @using (Html.BeginForm("RegisterSeller", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                 {
                     @Html.AntiForgeryToken()
 
                     <hr />
-                    @Html.ValidationSummary("", new { @class = "text-danger" })
-                    <div class="col-md-6">
-                        <section>
-                            <div class="form-group">
-                                <label class="text-info" for="aboutInput">About You</label><br />
-                                @Html.TextAreaFor(model => model.About, new { htmlAttributes = new { @class = "form-control text-default md-textarea" }, @id = "aboutInput", @rows = "3" })
-                                @Html.ValidationMessageFor(model => model.About, "", new { @class = "text-danger" })
+                    <div class="container">
+                        @Html.ValidationSummary("", new { @class = "text-danger" })
+                        <div class="col-md-6 text-default">
+                            <section>
+                                <div class="form-group">
+                                    <label for="aboutInput">About You</label><br />
+                                    @Html.TextAreaFor(model => model.About, new { htmlAttributes = new { @class = "form-control text-default md-textarea" }, @id = "aboutInput", @rows = "3" ,@style = "width:280px" })
+                                    @Html.ValidationMessageFor(model => model.About, "", new { @class = "text-danger" })
 
-                            </div>
-
-
-                            <div class="form-group">
-                                <label class="text-info" for="descriptionInput">Description</label><br />
-                                @Html.TextAreaFor(model => model.Description, new { htmlAttributes = new { @class = "form-control text-default md-textarea" }, @id = "descriptionInput", @rows = "3" })
-                                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-                            </div>
-
-                            <div class="form-group">
-                                <label class="text-info" for="addressLine1Input">Address Line 1 *</label><br />
-                                @Html.EditorFor(model => model.AddressLine1, new { htmlAttributes = new { @class = "form-control text-default" }, @id = "addressLine1Input" })
-                                @Html.ValidationMessageFor(model => model.AddressLine1, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="form-group">
-                                <label class="text-info" for="addressLine2Input">Address Line 2 *</label><br />
-                                @Html.EditorFor(model => model.AddressLine2, new { htmlAttributes = new { @class = "form-control text-default" }, @id = "addressLine2Input" })
-                                @Html.ValidationMessageFor(model => model.AddressLine2, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="form-group">
-                                <label class="text-info" for="addressLine3Input">Address Line 3 *</label><br />
-                                @Html.EditorFor(model => model.AddressLine3, new { htmlAttributes = new { @class = "form-control text-default" }, @id = "addressLine3Input" })
-                                @Html.ValidationMessageFor(model => model.AddressLine3, "", new { @class = "text-danger" })
-                            </div>
-                        </section>
-                    </div>
-                    <div class="col-md-6">
-                        <section>
-
-                            <div class="form-group">
-                                <label class="text-info" for="postCodeInput">PostCode *</label><br />
-                                @Html.EditorFor(model => model.PostCode, new { htmlAttributes = new { @class = "form-control text-default" }, @id = "postCodeInput" })
-                                @Html.ValidationMessageFor(model => model.PostCode, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="form-group">
-                                <label class="text-info" for="cityInput">City *</label><br />
-                                @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control text-default" }, @id = "cityInput" })
-                                @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="form-group">
-                                <label class="text-info" for="countryInput">Country *</label><br />
-                                @Html.DropDownListFor(model => model.Country, listItems, "-- Select Country --", new { @class = "form-control text-default", @style = "min-height:35px;" })
-                                @Html.ValidationMessageFor(model => model.Country, "", new { @class = "text-danger" })
-                            </div>
-
-                            <div class="form-group">
-                                <label class="text-info" for="mobileInput">Mobile</label>
-                                @Html.EditorFor(model => model.Mobile, new { htmlAttributes = new { @class = "form-control text-default" }, @id = "mobileInput" })
-                                @Html.ValidationMessageFor(model => model.Mobile, "", new { @class = "text-danger" })
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-md-offset-2 col-md-10">
-                                    <input type="submit" class="btn btn-info" value="Register" />
-                                    @Html.ActionLink("I'll set up later", "Index", "Home", null, new { @class = "btn btn-info" })
                                 </div>
-                            </div>
-                        </section>
+
+
+                                <div class="form-group">
+                                    <label for="descriptionInput">Description</label><br />
+                                    @Html.TextAreaFor(model => model.Description, new { htmlAttributes = new { @class = "form-control text-default lg-textarea" }, @id = "descriptionInput", @rows = "3",@style="width:280px" })
+                                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="addressLine1Input">Address Line 1 *</label><br />
+                                    @Html.EditorFor(model => model.AddressLine1, new { htmlAttributes = new { @class = "form-control text-default" }, @id = "addressLine1Input" })
+                                    @Html.ValidationMessageFor(model => model.AddressLine1, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group">
+                                    <label for="addressLine2Input">Address Line 2 *</label><br />
+                                    @Html.EditorFor(model => model.AddressLine2, new { htmlAttributes = new { @class = "form-control text-default" }, @id = "addressLine2Input" })
+                                    @Html.ValidationMessageFor(model => model.AddressLine2, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group">
+                                    <label for="addressLine3Input">Address Line 3 *</label><br />
+                                    @Html.EditorFor(model => model.AddressLine3, new { htmlAttributes = new { @class = "form-control text-default" }, @id = "addressLine3Input" })
+                                    @Html.ValidationMessageFor(model => model.AddressLine3, "", new { @class = "text-danger" })
+                                </div>
+                            </section>
+                        </div>
+                        <div class="col-md-6">
+                            <section>
+
+                                <div class="form-group">
+                                    <label for="postCodeInput">PostCode *</label><br />
+                                    @Html.EditorFor(model => model.PostCode, new { htmlAttributes = new { @class = "form-control text-default" }, @id = "postCodeInput" })
+                                    @Html.ValidationMessageFor(model => model.PostCode, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group">
+                                    <label for="cityInput">City *</label><br />
+                                    @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control text-default" }, @id = "cityInput" })
+                                    @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group">
+                                    <label for="countryInput">Country *</label><br />
+                                    @Html.DropDownListFor(model => model.Country, listItems, "-- Select Country --", new { @class = "form-control text-default", @style = "min-height:35px;" })
+                                    @Html.ValidationMessageFor(model => model.Country, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="mobileInput">Mobile</label>
+                                    @Html.EditorFor(model => model.Mobile, new { htmlAttributes = new { @class = "form-control text-default" }, @id = "mobileInput" })
+                                    @Html.ValidationMessageFor(model => model.Mobile, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-md-offset-2 col-md-10">
+                                        <input type="submit" class="btn btn-info" value="Register" />
+                                        @Html.ActionLink("I'll set up later", "Index", "Home", null, new { @class = "btn btn-info" })
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
                     </div>
                 }
 

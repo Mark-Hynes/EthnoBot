@@ -76,7 +76,7 @@ namespace EthnoBot.Controllers
                         if (!productIds.Contains(ta.ProductId.Replace("\\r\\n", "")))
                         {
                             string searchtext = SearchText.ToLower();
-                            Product productFromTag = db.Products.Where(x => x.ProductId.Contains(ta.ProductId)).First();
+                            Product productFromTag = db.Products.Where(x => x.ProductId.Trim().Contains(ta.ProductId.Trim())).First();
 
                             if (SearchText.Equals(""))
                             {
@@ -137,8 +137,7 @@ namespace EthnoBot.Controllers
                 Seller seller = db.Sellers.Where(x => x.SellerId == sellerId).First();
 
 
-                lo.UnitPriceKG = lo.Listing.UnitPriceKG;
-                lo.UnitsKG = lo.Listing.UnitsKG;
+               
                 lo.Product = product;
                 lo.Seller = seller;
                 listingViewModels.Add(lo);
@@ -234,8 +233,7 @@ namespace EthnoBot.Controllers
                     Product product = db.Products.Where(x => x.ProductId == productId).First();
 
 
-                    lo.UnitPriceKG = lo.Listing.UnitPriceKG;
-                    lo.UnitsKG = lo.Listing.UnitsKG;
+                   
                     lo.Product = product;
                     lo.Seller = seller;
                     listingViewModels.Add(lo);

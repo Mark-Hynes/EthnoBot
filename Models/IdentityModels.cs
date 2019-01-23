@@ -49,5 +49,9 @@ namespace EthnoBot.Models
         public System.Data.Entity.DbSet<EthnoBot.Models.TagCategory> TagCategories { get; set; }
 
         public System.Data.Entity.DbSet<EthnoBot.Models.FeatureSearchItem> FeatureSearchItems { get; set; }
+
+        public System.Data.Entity.DbSet<EthnoBot.Models.ListingTagCategory> ListingTagCategories { get; set; }
+
+        public System.Data.Entity.DbSet<EthnoBot.Models.ListingTag> ListingTags { get; set; }
     }
 }

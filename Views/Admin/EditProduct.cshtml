@@ -2,6 +2,10 @@
 @{
     ViewBag.Title = "EditProduct";
     string prodId = Model.ProductId.TrimEnd();
+    List<SelectListItem> typeItems = new List<SelectListItem>();
+    typeItems.Add(new SelectListItem { Value = "Mushroom", Text = "Mushroom" });
+    typeItems.Add(new SelectListItem { Value = "Plant", Text = "Plant" });
+    typeItems.Add(new SelectListItem { Value = "Seeds", Text = "Seeds" });
 }
 
 <h2 class="text-lg-center">Edit Product: @Model.Product.Title</h2>
@@ -16,7 +20,12 @@
         @Html.HiddenFor(model => model.Product.ImagePath)
         @Html.HiddenFor(model => model.ProductId)
         <div class="row">
-          <div class="col">
+            <div class="col">
+                <div class="form-group">
+                    <label class="text-info" for="Input">Product Type</label><br />
+                    @Html.DropDownListFor(model => model.Product.ProductType, typeItems, new { @class = "form-control text-default", @style = "min-height:35px;", @id = "countryInput" })
+                    @Html.ValidationMessageFor(model => model.Product.ProductType, "", new { @class = "text-danger" })
+                </div>
                 <div class="form-group">
                     <label class="text-info" for="nameInput">Product Name</label>
                     @Html.EditorFor(model => model.Product.Title, new { htmlAttributes = new { @id = "Title", @style = "cursor: default !important;", @class = "form-control" } })

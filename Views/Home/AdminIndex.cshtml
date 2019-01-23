@@ -9,14 +9,27 @@
 <div class="container">
     <div class="row text-center">
         <div class="col text-center">
-            @Html.ActionLink("Manage Products", "ProductIndex", "Admin",null,new { @class = "btn btn-success btn-large" })
+            @Html.ActionLink("Manage Products", "ProductIndex", "Admin", null, new { @class = "btn btn-success btn-large" })
         </div>
         <div class="col text-center">
-            @Html.ActionLink("Manage Tag Categories", "TagCategoryIndex", "Admin",null,new { @class = "btn btn-danger btn-large" })
+            @Html.ActionLink("Manage Tag Categories", "TagCategoryIndex", "Admin", null, new { @class = "btn btn-danger btn-large" })
         </div>
 
         <div class="col text-center">
-            @Html.ActionLink("Manage Tags", "TagIndex", "Admin",null,new { @class = "btn btn-info btn-large" })
+            @Html.ActionLink("Manage Tags", "TagIndex", "Admin", null, new { @class = "btn btn-info btn-large" })
+        </div>
+    </div>
+    <hr />
+    <div class="row text-center">
+        <div class="col text-center">
+            @Html.ActionLink("Manage Listings", "ListingsIndex", "Admin", null, new { @class = "btn btn-success btn-large" })
+        </div>
+        <div class="col text-center">
+            @Html.ActionLink("Manage Listing Tag Categories", "ListingTagCategoryIndex", "Admin", null, new { @class = "btn btn-danger btn-large" })
+        </div>
+
+        <div class="col text-center">
+            @Html.ActionLink("Manage Listing Tags", "ListingTagIndex", "Admin", null, new { @class = "btn btn-info btn-large" })
         </div>
     </div>
 </div>

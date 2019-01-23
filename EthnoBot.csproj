@@ -486,10 +486,6 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
-    <Compile Include="Controllers\AdminImageController.cs" />
-    <Compile Include="Controllers\AdminListingController.cs" />
-    <Compile Include="Controllers\AdminProducersController.cs" />
-    <Compile Include="Controllers\AdminProductsController.cs" />
     <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -505,11 +501,13 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\AddListingViewModel.cs" />
     <Compile Include="Models\Cart.cs" />
     <Compile Include="Models\CartItem.cs" />
     <Compile Include="Models\CartItemViewModel.cs" />
     <Compile Include="Models\CartViewModel.cs" />
     <Compile Include="Models\Countries.cs" />
+    <Compile Include="Models\CreateListingViewModel.cs" />
     <Compile Include="Models\EditTagViewModel.cs" />
     <Compile Include="Models\FeatureSearchItem.cs" />
     <Compile Include="Models\FeatureSearchItemViewModel.cs" />
@@ -521,6 +519,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\ModifyProductViewModel.cs" />
     <Compile Include="Models\MyListingsModel.cs" />
+    <Compile Include="Models\Offer.cs" />
     <Compile Include="Models\OrderViewModel.cs" />
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\PayPalConfiguration.cs" />
@@ -535,8 +534,12 @@
     <Compile Include="Models\RDSContext.cs" />
     <Compile Include="Models\SearchResultsViewModel.cs" />
     <Compile Include="Models\EthnoBotEntities.cs" />
+    <Compile Include="Models\ListingTag.cs" />
+    <Compile Include="Models\ListingTagAdminViewModel.cs" />
     <Compile Include="Models\TagAdminViewModel.cs" />
+    <Compile Include="Models\ListingTagAssociation.cs" />
     <Compile Include="Models\TagAssociation.cs" />
+    <Compile Include="Models\ListingTagCategory.cs" />
     <Compile Include="Models\TagCategory.cs" />
     <Compile Include="Models\Tag.cs" />
     <Compile Include="Models\TagSearchResultViewModel.cs" />
@@ -595,10 +598,13 @@
     <Content Include="Images\Categories\ShamanicPlants.png" />
     <Content Include="Images\Home.png" />
     <Content Include="Images\Home2.png" />
+    <Content Include="Images\Home3.jpg" />
     <Content Include="Images\Home3.png" />
+    <Content Include="Images\Image3.jpg" />
     <Content Include="Images\linkedin.png" />
     <Content Include="Images\mushroom-icon-black.png" />
     <Content Include="Images\mushroom-icon-black.svg" />
+    <Content Include="Images\mushroom-icon-brown.png" />
     <Content Include="Images\mushroom-icon-white.png" />
     <Content Include="Images\mushroom-icon-white.svg" />
     <Content Include="Images\Producers\DefaultProducer.png" />
@@ -607,11 +613,13 @@
     <Content Include="Images\Products\DefaultProduct.png" />
     <Content Include="Images\Products\EnglishTree.jpg" />
     <Content Include="Images\Products\GermanGrass.jpg" />
+    <Content Include="Images\Products\Image3.jpg" />
     <Content Include="Images\Products\IrishGrass.jpg" />
     <Content Include="Images\Products\MexicanTarragon.png" />
     <Content Include="Images\Products\mushroom-icon-white.png" />
     <Content Include="Images\Products\Sinicuichi.png" />
     <Content Include="Images\Products\WinterCherry.png" />
+    <Content Include="Images\seed-icon2.png" />
     <Content Include="Images\Three.jpg" />
     <Content Include="Images\Four.png" />
     <Content Include="ApplicationInsights.config">
@@ -680,6 +688,17 @@
     <Content Include="Views\Admin\EditFeatureSearchItem.cshtml" />
     <Content Include="Views\Admin\FeatureSearchItemIndex.cshtml" />
     <Content Include="Views\Admin\ChangeFeatureSearchItemPicture.cshtml" />
+    <Content Include="Views\Admin\CreateListingTagCategory.cshtml" />
+    <Content Include="Views\Admin\DeleteListingTagCategory.cshtml" />
+    <Content Include="Views\Admin\ListingTagCategoryDetails.cshtml" />
+    <Content Include="Views\Admin\EditListingTagCategory.cshtml" />
+    <Content Include="Views\Admin\ListingTagCategoryIndex.cshtml" />
+    <Content Include="Views\Admin\CreateListingTag.cshtml" />
+    <Content Include="Views\Admin\DeleteListingTag.cshtml" />
+    <Content Include="Views\Admin\ListingTagDetails.cshtml" />
+    <Content Include="Views\Admin\EditListingTag.cshtml" />
+    <Content Include="Views\Admin\ListingTagIndex.cshtml" />
+    <Content Include="Views\Shared\CreateListingPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -744,26 +763,6 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Home\AdminIndex.cshtml" />
-    <Content Include="Views\AdminCategories\Create.cshtml" />
-    <Content Include="Views\AdminCategories\Delete.cshtml" />
-    <Content Include="Views\AdminCategories\Details.cshtml" />
-    <Content Include="Views\AdminCategories\Edit.cshtml" />
-    <Content Include="Views\AdminCategories\Index.cshtml" />
-    <Content Include="Views\AdminProducers\Create.cshtml" />
-    <Content Include="Views\AdminProducers\Delete.cshtml" />
-    <Content Include="Views\AdminProducers\Details.cshtml" />
-    <Content Include="Views\AdminProducers\Edit.cshtml" />
-    <Content Include="Views\AdminProducers\Index.cshtml" />
-    <Content Include="Views\AdminProducerProducts\Create.cshtml" />
-    <Content Include="Views\AdminProducerProducts\Delete.cshtml" />
-    <Content Include="Views\AdminProducerProducts\Details.cshtml" />
-    <Content Include="Views\AdminProducerProducts\Edit.cshtml" />
-    <Content Include="Views\AdminProducerProducts\Index.cshtml" />
-    <Content Include="Views\AdminProducts\Create.cshtml" />
-    <Content Include="Views\AdminProducts\Delete.cshtml" />
-    <Content Include="Views\AdminProducts\Details.cshtml" />
-    <Content Include="Views\AdminProducts\Edit.cshtml" />
-    <Content Include="Views\AdminProducts\Index.cshtml" />
     <Content Include="Views\Search\Create.cshtml" />
     <Content Include="Views\Search\Delete.cshtml" />
     <Content Include="Views\Search\Details.cshtml" />
@@ -771,7 +770,6 @@
     <Content Include="Views\Search\Index.cshtml" />
     <Content Include="Views\Search\ListProducts.cshtml" />
     <Content Include="Views\Search\CSSTest.cshtml" />
-    <Content Include="Views\AdminImage\Index.cshtml" />
     <Content Include="Views\Search\ProductAndListings.cshtml" />
     <Content Include="Views\Search\SellerAndListings.cshtml" />
     <Content Include="Views\Search\ProducerList.cshtml" />
@@ -795,7 +793,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Logs\" />
-    <Folder Include="Views\Producer\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

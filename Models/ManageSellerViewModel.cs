@@ -9,5 +9,6 @@ namespace EthnoBot.Models
     {
         public Seller Seller { get; set; }
         public List<ListingViewModel> listingViewModels { get; set; }
+        public string ImagePath { get; internal set; }
     }
 }

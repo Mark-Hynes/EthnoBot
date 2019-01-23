@@ -14,8 +14,10 @@ namespace EthnoBot.Models
         public string ListingId { get; set; }
         public string SellerId { get; set; }
         public string ProductId { get; set; }
-        public decimal UnitsKG { get; set; }
-        public decimal UnitPriceKG { get; set; }
+        public string Currency { get; set; }
+        public string Measurement { get; set; }
+        public decimal Units { get; set; }
+        public decimal Price { get; set; }
 
     }
 }

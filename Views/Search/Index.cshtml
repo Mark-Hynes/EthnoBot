@@ -89,49 +89,58 @@
                 @{
                     if (a.TagType.Equals("Mushroom"))
                     {
-                <li title="@a.Description" data-toggle="collapse" data-target="#@a.TagCategoryId.Trim()" class="collapsed active" style="background:#966B3A!important;color:#FFFFFF">
-                    <a href="#" class="text-center" style="background:#966B3A!important;color:#FFFFFF">
+                        <li title="@a.Description" data-toggle="collapse" data-target="#@a.TagCategoryId.Trim()" class="collapsed active text-center" style="background:#FFFFFF!important;color:#966B3A">
+                            <a href="#" class="text-center" style="background:#FFFFFF!important;color:#966B3A">
 
-                        <img src="~/Images/mushroom-icon-white.png" alt="Mushroom" style="width:13px;height:13px">
-                        <b>@a.Name</b>
-                    </a>
-                </li>
-                            }
-                            else if (a.TagType.Equals("Plant"))
-                            {
-                <li title="@a.Description" data-toggle="collapse" data-target="#@a.TagCategoryId.Trim()" class="collapsed active" style="background:#47A447!important;color:#FFFFFF">
-                    <a href="#" class="text-center" style="background:#47A447!important;color:#FFFFFF">
-                        <span class="glyphicon glyphicon-leaf"></span>
-                        <b>@a.Name</b>
-                    </a>
-               </li>
-                            }
-                            }
+                                <img src="~/Images/mushroom-icon-brown.png" alt="Mushroom" style="width:13px;height:13px">
+                                <b>@a.Name</b>
+                            </a>
+                        </li>
+                    }
+                    else if (a.TagType.Equals("Plant"))
+                    {
+                        <li title="@a.Description" data-toggle="collapse" data-target="#@a.TagCategoryId.Trim()" class="collapsed active text-center" style="background:#FFFFFF!important;color:#47A447">
+                            <a href="#" class="text-center" style="background:#FFFFFF!important;color:#47A447">
+                                <span class="glyphicon glyphicon-leaf"></span>
+                                <b>@a.Name</b>
+                            </a>
+                        </li>
+                    }
+                    else if (a.TagType.Equals("Seeds"))
+                    {
+                        <li title="@a.Description" data-toggle="collapse" data-target="#@a.TagCategoryId.Trim()" class="collapsed active" style="background:#39B3D7!important;color:#FFFFFF;word-wrap:hyphenate;">
+                            <a href="#" class="text-center" style="background:#39B3D7!important;color:#FFFFFF">
+                                <img src="~/Images/seed-icon2.png" alt="Seeds" style="width:16px;height:16px">
+                                <b style=" max-width:100px;word-wrap:hyphenate">@a.Name</b>
+                            </a>
+                        </li>
+                    }
+                }
 
 
 
 
-                        
-                        <ul class="sub-menu collapse scrollable-menu" id="@a.TagCategoryId.Trim()">
-                            @foreach (var c in Model.tags)
-                            {
-                                if (c.TagCategoryId.Trim().Equals(a.TagCategoryId.Trim()))
-                                {
-                                    <li>
-                                        <div class="container" title="@c.Description">
-                                            <div class="row">
-                                                <div class="col">
-                                                    <input type="checkbox" name="tags[]" id="@c.TagId.Trim()" checked="true" onchange="modifyTagFilter('this','@c.TagId.Trim()')">
-                                                    <label>@c.Name</label>
-                                                </div>
 
-                                            </div>
+                <ul class="sub-menu collapse scrollable-menu" id="@a.TagCategoryId.Trim()">
+                    @foreach (var c in Model.tags)
+                    {
+                        if (c.TagCategoryId.Trim().Equals(a.TagCategoryId.Trim()))
+                        {
+                            <li>
+                                <div class="container" title="@c.Description">
+                                    <div class="row">
+                                        <div class="col" style="max-width:190px">
+                                            <input type="checkbox" name="tags[]" id="@c.TagId.Trim()" checked="true" onchange="modifyTagFilter('this','@c.TagId.Trim()')">
+                                            <label>@c.Name</label>
                                         </div>
-                                    </li>
-                                }
-                            }
-                        </ul>
-                    </ul>
+
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                    }
+                </ul>
+            </ul>
             }
 
 

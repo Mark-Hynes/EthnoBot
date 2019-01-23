@@ -25,10 +25,11 @@ namespace EthnoBot.Models
 
         [DisplayName("Abstract")]
         public string Abstract { get; set; }
-        
-        
+
         [DisplayName("Product Image")]
         public string ImagePath { get; set; }
+        [DisplayName("Product Type")]
+        public string ProductType { get; set; }
 
 
     }

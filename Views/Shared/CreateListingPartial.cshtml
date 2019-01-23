@@ -1,0 +1,57 @@
+﻿@model EthnoBot.Models.ListingViewModel
+
+
+<div class="container">
+
+            @{
+                if (Model.Offers.Count < 0)
+                {
+
+                }
+                else
+                {
+
+                    foreach (var item in Model.Offers)
+                    {
+                       
+            <tr>
+                <th scope="row"></th>
+                <td>@item.Units @item.Measurement</td>
+                @{
+                    if (item.Currency.Equals("USD"))
+                    {
+                        <td>
+                            $ @item.Price
+                        </td>
+                    }
+                    else if (item.Currency.Equals("EUR"))
+                    {
+                        <td>
+                            € @item.Price
+                        </td>
+                    }
+                    else if (item.Currency.Equals("GBP"))
+                    {
+                        <td>
+                            £ @item.Price
+                        </td>
+                    }
+                }
+
+
+                        <td>
+                            <a class="btn btn-info float-left" href="/Manage/EditOffer/@item.OfferId">Edit</a>
+                            <a class="btn btn-danger float-right" href="/Manage/RemoveOffer/@item.OfferId">Remove</a>
+                        </td>
+
+            </tr>
+
+                   
+
+                    }
+                </tbody>
+            </table>
+        }
+
+            }
+        </div>

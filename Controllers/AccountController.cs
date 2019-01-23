@@ -313,6 +313,8 @@ namespace EthnoBot.Controllers
                     seller.PostCode = model.PostCode;
                     seller.Country = model.Country;
                     AddSellerToDatabase(seller);
+
+                    UserManager.AddToRole(user.Id, "Seller");
                     user.IsSeller = true;
                     UserManager.UpdateAsync(user);
                         sendVerifyCompanyEmail(seller);
@@ -324,6 +326,9 @@ namespace EthnoBot.Controllers
                 return View(model);
             }
         }
+
+   
+
         public void AddSellerToDatabase(Seller p)
         {
             try {

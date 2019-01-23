@@ -581,6 +581,236 @@ namespace EthnoBot.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize(Roles = "Admin")]
+        // GET: ListingTagCategories
+        public ActionResult ListingTagCategoryIndex()
+        {
+            return View(db.ListingTagCategories.ToList());
+        }
+        [Authorize(Roles = "Admin")]
+        // GET: ListingTagCategories/Details/5
+        public ActionResult ListingTagCategoryDetails(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ListingTagCategory listingTagCategory = db.ListingTagCategories.Find(id);
+            if (listingTagCategory == null)
+            {
+                return HttpNotFound();
+            }
+            return View(listingTagCategory);
+        }
+        [Authorize(Roles = "Admin")]
+        // GET: ListingTagCategories/Create
+        public ActionResult CreateListingTagCategory()
+        {
+           
+         
+            return View();
+        }
+
+        // POST: ListingTagCategories/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+        public ActionResult CreateListingTagCategory([Bind(Include = "ListingTagCategoryId,Name,Description,ListingTagType")] ListingTagCategory listingTagCategory)
+        {
+            listingTagCategory.ListingTagCategoryId = Guid.NewGuid().ToString();
+            if (ModelState.IsValid)
+            {
+                db.ListingTagCategories.Add(listingTagCategory);
+                db.SaveChanges();
+                return RedirectToAction("ListingTagCategoryIndex");
+            }
+
+            return View(listingTagCategory);
+        }
+
+        // GET: ListingTagCategories/Edit/5
+        [Authorize(Roles = "Admin")]
+        public ActionResult EditListingTagCategory(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ListingTagCategory listingTagCategory = db.ListingTagCategories.Find(id);
+            if (listingTagCategory == null)
+            {
+                return HttpNotFound();
+            }
+            return View(listingTagCategory);
+        }
+
+        // POST: ListingTagCategories/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+        public ActionResult EditListingTagCategory([Bind(Include = "ListingTagCategoryId,Name,Description,ListingTagType")] ListingTagCategory listingTagCategory)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(listingTagCategory).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("ListingTagCategoryIndex");
+            }
+            return View(listingTagCategory);
+        }
+        [Authorize(Roles = "Admin")]
+        // GET: ListingTagCategories/Delete/5
+        public ActionResult DeleteListingTagCategory(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ListingTagCategory listingTagCategory = db.ListingTagCategories.Find(id);
+            if (listingTagCategory == null)
+            {
+                return HttpNotFound();
+            }
+            return View(listingTagCategory);
+        }
+        [Authorize(Roles = "Admin")]
+        // POST: ListingTagCategories/Delete/5
+        [HttpPost, ActionName("DeleteListingTagCategory")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteListingTagCategoryConfirmed(string id)
+        {
+            ListingTagCategory listingTagCategory = db.ListingTagCategories.Find(id);
+            db.ListingTagCategories.Remove(listingTagCategory);
+            db.SaveChanges();
+            return RedirectToAction("ListingTagCategoryIndex");
+        }
+
+
+
+
+
+        // GET: ListingTags
+        [Authorize(Roles = "Admin")]
+        public ActionResult ListingTagIndex()
+        {
+            return View(db.ListingTags.ToList());
+        }
+
+        // GET: ListingTags/Details/5
+        [Authorize(Roles = "Admin")]
+        public ActionResult ListingTagDetails(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ListingTag listingTag = db.ListingTags.Find(id);
+            if (listingTag == null)
+            {
+                return HttpNotFound();
+            }
+            return View(listingTag);
+        }
+
+        // GET: ListingTags/Create
+        [Authorize(Roles = "Admin")]
+        public ActionResult CreateListingTag()
+        {
+            ListingTagAdminViewModel vm = new ListingTagAdminViewModel();
+            vm.ListingTagCategories = db.ListingTagCategories.OrderBy(x => x.Name).ToList();
+            return View(vm);
+        }
+
+        // POST: ListingTags/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+        public ActionResult CreateListingTag([Bind(Include = "ListingTagId,ListingTagType,ListingTagCategoryId,Name,Description")] ListingTag listingTag)
+        {
+            listingTag.ListingTagId = Guid.NewGuid().ToString();
+
+            if (ModelState.IsValid)
+            {
+                db.ListingTags.Add(listingTag);
+                db.SaveChanges();
+                return RedirectToAction("ListingTagIndex");
+            }
+
+            return View(listingTag);
+        }
+
+        // GET: ListingTags/Edit/5
+        [Authorize(Roles = "Admin")]
+        public ActionResult EditListingTag(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ListingTag listingTag = db.ListingTags.Find(id);
+            if (listingTag == null)
+            {
+                return HttpNotFound();
+            }
+            ListingTagAdminViewModel vm = new ListingTagAdminViewModel();
+            vm.ListingTagCategories = db.ListingTagCategories.OrderBy(x => x.Name).ToList();
+            vm.ListingTag = listingTag;
+            return View(vm);
+        }
+
+        // POST: ListingTags/Edit/5
+        [Authorize(Roles = "Admin")]
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditListingTag([Bind(Include = "ListingTagId,ListingTagType,ListingTagCategoryId,Name,Description")] ListingTag listingTag)
+        {
+
+            if (ModelState.IsValid)
+            {
+                db.Entry(listingTag).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("ListingTagIndex");
+            }
+            return View(listingTag);
+        }
+
+        // GET: ListingTags/Delete/5
+        [Authorize(Roles = "Admin")]
+        public ActionResult DeleteListingTag(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ListingTag listingTag = db.ListingTags.Find(id);
+            if (listingTag == null)
+            {
+                return HttpNotFound();
+            }
+            return View(listingTag);
+        }
+
+        // POST: ListingTags/Delete/5
+        [HttpPost, ActionName("DeleteListingTag")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteListingTagConfirmed(string id)
+        {
+            ListingTag listingTag = db.ListingTags.Find(id);
+            db.ListingTags.Remove(listingTag);
+            db.SaveChanges();
+            return RedirectToAction("ListingTagIndex");
+        }
 
     }
+
+
+
 }

@@ -11,8 +11,10 @@
     <div class="row">
         <div class="col">
             <h3 class="text-lg-center" style="float:center">You have no items in your cart</h3>
-            <h4 class="text-md-center" style="float:center">To search for Products, click the button below</h4><br />
-            <div class="col-md-auto text-center">@Html.ActionLink("Find Products", "Index", "Search", null, new { @type = "button", @class = "btn btn-success", @style="float:center" })</div>
+            <h4 class="text-md-center" style="float:center">
+                To add items, click the button below
+            </h4><br />
+            <div class="col-md-auto text-center"><a href="/Search/Index" class="btn btn-success" style="float:center" >Find Products</a></div>
         </div>
     </div>
 </div>
