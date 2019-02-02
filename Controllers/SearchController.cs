@@ -131,22 +131,36 @@ namespace EthnoBot.Controllers
             {
                 ListingViewModel lo = new ListingViewModel();
                 lo.Listing = listings.ElementAt(i);
-
+                string listingId = lo.Listing.ListingId;
                 string sellerId = listings.ElementAt(i).SellerId;
-
+                lo.Offers = db.Offers.Where(x => x.ListingId == lo.Listing.ListingId).ToList();
                 Seller seller = db.Sellers.Where(x => x.SellerId == sellerId).First();
-
-
+                               
                
                 lo.Product = product;
                 lo.Seller = seller;
+                //lo.ProcessingOption = db
                 listingViewModels.Add(lo);
 
             }
 
-
-            ProductAndListingsModel pm = new ProductAndListingsModel();
+            List<string> tags =new List<string>();
+            ProductAndListingsModel pm = new ProductAndListingsModel();pm.ProductTags = new List<Tag>();
             pm.ListingViewModels = listingViewModels;
+            pm.TagCategories = db.TagCategories.ToList();
+            string productId = product.ProductId;
+            List<TagAssociation> associations = db.TagAssociations.Where(x => x.ProductId.Contains(productId)).ToList();
+            foreach (var item in associations)
+            {
+                if (!tags.Contains(item.TagId)) { tags.Add(item.TagId);
+                    string tagId = item.TagId;
+                    Tag t = db.Tags.Where(x => x.TagId.Contains(tagId)).First();
+                    pm.ProductTags.Add(t); }
+            }
+            
+            ListingTagCategory category = db.ListingTagCategories.Where(x => x.Name.Contains("Processing Options")).FirstOrDefault();
+            string processingOptionsTagCategory = category.ListingTagCategoryId.Trim();
+            pm.processingOptions = db.ListingTags.Where(x =>x.ListingTagCategoryId.Contains(processingOptionsTagCategory)).ToList(); 
             pm.Product = product;
 
             return View(pm);

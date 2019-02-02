@@ -70,5 +70,10 @@ namespace EthnoBot.Controllers
             ViewBag.Message = "This can be viewed only by users in Admin role only";
             return View();
         }
+
+        public ActionResult TermsAndConditions()
+        {
+            return View();
+        }
     }
 }

@@ -571,6 +571,7 @@
     <Content Include="Content\iEdit.min.js" />
     <Content Include="Content\images\favicon.ico" />
     <Content Include="Content\images\Jcrop.gif" />
+    <Content Include="Content\images\popper.min.js" />
     <Content Include="Content\Jcrop.gif" />
     <Content Include="Content\jquery.Jcrop.css" />
     <Content Include="Content\jquery.Jcrop.min.css" />
@@ -596,6 +597,7 @@
     <Content Include="Images\Categories\LoveHerbs.png" />
     <Content Include="Images\Categories\SacredPlants.png" />
     <Content Include="Images\Categories\ShamanicPlants.png" />
+    <Content Include="Images\home-background_v3.png" />
     <Content Include="Images\Home.png" />
     <Content Include="Images\Home2.png" />
     <Content Include="Images\Home3.jpg" />
@@ -699,6 +701,7 @@
     <Content Include="Views\Admin\EditListingTag.cshtml" />
     <Content Include="Views\Admin\ListingTagIndex.cshtml" />
     <Content Include="Views\Shared\CreateListingPartial.cshtml" />
+    <Content Include="Views\Home\TermsAndConditions.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

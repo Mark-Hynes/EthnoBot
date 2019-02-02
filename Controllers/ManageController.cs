@@ -160,31 +160,38 @@ namespace EthnoBot.Controllers
                 db.SaveChanges();
             return RedirectToAction("SellerIndex");
         }
+        [Authorize]
         public ActionResult MyListings()
         {
             string userID = User.Identity.GetUserId();
-            Seller seller = db.Sellers.Where(x => x.ASPUserId == userID).First();
+            Seller seller = db.Sellers.Where(x => x.ASPUserId.Contains(userID)).First();
 
-            List<Listing> listings = db.Listings.Where(x => x.SellerId == seller.SellerId).ToList();
+           
             List<ListingViewModel> listingViewModels = new List<ListingViewModel>();
-
-
-
-            for (int i = 0; i < listings.Count; i++)
+            try
             {
-                ListingViewModel lo = new ListingViewModel();
-                lo.Listing = listings.ElementAt(i);
 
-                string productId = listings.ElementAt(i).ProductId;
-                string listingId = lo.Listing.ListingId.ToString();
-                Product product = db.Products.Where(x => x.ProductId == productId).First();
-                lo.Offers = db.Offers.Where(x => x.ListingId == listingId).ToList();
-                lo.Product = product;
-                lo.Seller = seller;
-                listingViewModels.Add(lo);
+                List<Listing> listings = db.Listings.Where(x => x.SellerId.Contains(seller.SellerId)).ToList();
+                for (int i = 0; i < listings.Count; i++)
+                {
+                    ListingViewModel lo = new ListingViewModel();
+                    lo.Listing = listings.ElementAt(i);
 
+                    string productId = listings.ElementAt(i).ProductId.Trim();
+                    string listingId = lo.Listing.ListingId.Trim();
+                    Product product = db.Products.Where(x => x.ProductId.Contains(productId)).First();
+                    lo.Offers = db.Offers.Where(x => x.ListingId.Contains(listingId)).ToList();
+                    lo.Product = product;
+                    lo.Seller = seller;
+                    listingViewModels.Add(lo);
+
+                }
+                return View(listingViewModels);
             }
-
+            catch (Exception e)
+            {
+                return View(listingViewModels);
+            }
 
             return View(listingViewModels);
         }
@@ -233,44 +240,65 @@ namespace EthnoBot.Controllers
             return RedirectToAction("MyListings");
         }
 
-        public ActionResult LoadListingTags(string listingcategoryId)
+
+
+
+        public ActionResult LoadListingTags(string productId)
         {
-            List<ListingTag> tags = db.ListingTags.Where(x => x.ListingTagCategoryId.Contains(listingcategoryId)).OrderBy(x=>x.Name).ToList();
-            return PartialView("",tags);
+            Product p = db.Products.Where(x => x.ProductId.Contains(productId)).First();
+            string productTye;
+            // List<ListingTag> tags = db.ListingTags.Where(x => x.ListingTagCategoryId.Contains(listingcategoryId)).OrderBy(x=>x.Name).ToList();
+            return PartialView("","");
         }
             [Authorize]
         public ActionResult AddListing()
         {
-            AddListingViewModel vm = new AddListingViewModel();
+            ListingViewModel vm = new ListingViewModel();
             vm.ListingTagCategories = db.ListingTagCategories.OrderBy(x => x.Name).ToList();
             vm.ListingTags = db.ListingTags.OrderBy(x => x.ListingTagType).ToList();
+            vm.NewOffer = new Offer();
+           
             vm.Products = db.Products.OrderBy(x=>x.ProductType).ToList();
-            List < SelectListItem > typeItems = new List<SelectListItem>();
-            typeItems.Add(new SelectListItem { Value = "Mushroom", Text = "Mushroom" });
-            typeItems.Add(new SelectListItem { Value = "Plant", Text = "Plant" });
-   
           
-            
+                   
             return View(vm);
                                
         }
         [Authorize]
-        public ActionResult CompleteListing(string SellerId, string productId, string quantity, string unitPrice )
+        public ActionResult CompleteListing(string selectedTags, string productId, string description, string currency, string currencyAmount, string unitMeasurement, string unitAmount )
         {
-
-           
+          //  string regex = "^ (\d{ 1,5}|\d{ 0,5}\.\d{ 1,2})$";
+            
             string userID = User.Identity.GetUserId();
             Seller pr = db.Sellers.Where(x => x.ASPUserId == userID).First();
             Guid guid = Guid.NewGuid();
+
             Listing l = new Listing
             { ListingId = guid.ToString(),
-                SellerId = SellerId,
+                SellerId = pr.SellerId,
                 ProductId =productId,
+                Description = description
+
             };
             db.Listings.Add(l);
             Offer offer = new Offer();
             offer.OfferId = Guid.NewGuid().ToString();
             offer.ListingId = l.ListingId;
+            offer.Currency = currency;
+            offer.Price = Decimal.Parse(currencyAmount);
+            offer.Units = Decimal.Parse(unitAmount);
+            offer.Measurement = unitMeasurement;
+            db.Offers.Add(offer);
+
+            string[] listingTagIds = selectedTags.Split(',');
+            foreach (var item in listingTagIds)
+            {
+                ListingTagAssociation association = new ListingTagAssociation();
+                association.ListingTagAssociationId = Guid.NewGuid().ToString();
+                association.ListingId = l.ListingId;
+                association.ListingTagId = item;
+                db.ListingTagAssociations.Add(association);
+            }
             db.SaveChanges();
             return RedirectToAction("MyListings");
         }

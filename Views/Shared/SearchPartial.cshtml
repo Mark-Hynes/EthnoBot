@@ -1,22 +1,28 @@
 ﻿@model EthnoBot.Models.SearchResultsViewModel
 
-@if(Model.products.Count>=1){
-foreach (var item in Model.products)
+@if (Model.products.Count >= 1)
 {
-<div class="col-sm-6 item">
-    <div class="row">
-        <div class="col-md-12 col-lg-5"><a href="#"><img src="@item.ImagePath"  style="width:220px;height:160px;"/></a></div>
-        <div class="col align-content-end">
-            <h3 class="name">@item.Title</h3>
-            <p ><i>@item.Abstract</i></p>
-            <p class="description">@item.Description</p>
+<div class="row">
+    @foreach (var item in Model.products)
+    {
+        string id = item.ProductId;
+        <div class="col-lg-5 col-md-5 col-sm-12 item border" >
             <div class="row">
-                <div class="col align-items-end"><a class="btn btn-primary btn-block" href="/Search/ProductAndListings/@item.ProductId">View Products</a></div>
+                <div class="col-lg-5 col-md-12 col-sm-12 border" style="background:#F8F9FA"><img class="rounded" src="@item.ImagePath" style="width:150px;height:150px;margin-left: auto;margin-right: auto;display: block;" /></div>
+                <div class="col-lg-7 col-md-12 col-sm-12">
+                    <h4 class="name text-lg-center text-sm-center text-md-center">@item.Title</h4>
+              
+                    <p class="text-truncate text-lg-left text-sm-center text-md-center"><i>@item.Abstract</i></p>
+                    <p class="description text-truncate text-lg-left text-sm-center text-md-center">@item.Description</p>
+                    <div class="row">
+                        <div class="col align-items-end"><a class="btn btn-primary btn-block" href="/Search/ProductAndListings/@item.ProductId">View Products</a></div>
+                    </div>
+                </div>
             </div>
+
         </div>
-    </div>
+
+    }
 </div>
-      
-}
 }
 else {<h3 class="text-success">No results found, try refining your search</h3>}

@@ -1,9 +1,163 @@
-﻿
-<h2 class="text-center">This site is still in development</h2><hr />
-<h3 class="text-center">
-    Thank you for your interest in the site, please check back later for updates!
-</h3>
-<br />
-<div class="text-center">
-    <a class="btn btn-large btn-success" href="/Home/Index/">Back to home page</a>
+﻿@model EthnoBot.Models.ProductAndListingsModel
+
+<div class="container-fluid" style="background:#F3F5F6;height:100%">
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-4">
+            <div class="img-container border-success">
+                <img style="width:300px;height:300px;" class="rounded" src="@Model.Product.ImagePath" />
+            </div>
+        </div>
+        <div class="col-1"></div>
+        <div class="col-6">
+            <div class="row">
+                <p class="lead text-left" style="color:#639286"><b>@Model.Product.Title</b></p>
+            </div>
+
+            <div class="row">
+                <div class="col-9  text-left" style="background:#ffffff;color:#639286;min-height:110px;border-color:#639286;">
+                    <p class="mb-0">@Model.Product.Description</p>
+
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="alert alert-dark">
+                    <span class="glyphicon glyphicon-play"></span><a href="#" data-toggle="collapse" data-target="#multiCollapseProcessingOptions" class="alert-link" aria-expanded="false" aria-controls="multiCollapse">Processing Options</a>
+                </div>
+                <div class="col-9 collapse multi-collapse" id="multiCollapseProcessingOptions" style="background:#FFFFFF">
+
+
+
+                    <div class="row">
+                        @foreach (var item in Model.processingOptions)
+                        {
+                            <div class="col-4">
+                                <div class="checkbox">
+                                    <label><input type="checkbox" value="">@item.Name</label>
+                                </div>
+                            </div>
+
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-6">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="bg-secondary" scope="col">Qty</th>
+                                <th scope="col" class="bg-secondary">Price</th>
+                                <th class="bg-secondary">Action</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @if (Model.ListingViewModels.Count < 1)
+                            {
+                            <td class="bg-light">No Products Found</td>
+                            }
+                            else
+                            {
+
+                                foreach (var item in Model.ListingViewModels.First().Offers)
+                                {
+                            <tr>
+
+                                <td class="bg-light border">@item.Units @item.Measurement</td>
+                                @{
+                                    if (item.Currency.Contains("GBP"))
+                                    {
+                                        <td class="bg-light border">£ @item.Price</td>}
+                                    if (item.Currency.Contains("USD"))
+                                    {
+                                        <td class="bg-light border">$ @item.Price</td>}
+                                    if (item.Currency.Contains("EUR"))
+                                    {
+                                        <td class="bg-light border">€ @item.Price</td>}
+                                }
+
+                                <td class="bg-light border"><button type="button" class="btn btn-success" data-container="body" data-toggle="popover" data-placement="PopoverText"> Add To Basket
+</button></td>
+
+                            </tr>
+                            }
+                        }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-10 border" style="background:#FFFFFF;color:#639286;">
+                <div class="row">
+                    <table class="table">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Seller</th>
+                                <th scope="col">Product Specification</th>
+                                <th scope="col">Rating</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.ListingViewModels)
+                            {
+                                <tr>
+                                    <th scope="row">#</th>
+
+                                    <td>@item.Seller.FirstName @item.Seller.LastName</td>
+                                    <td>Processing type</td>
+                                    <td>
+                                        @{ int stars = 5;
+
+                                            for (stars = 1; stars <= 5; stars++)
+                                            {
+                                                if ((int)item.Seller.AverageRating >= stars)
+                                                {
+                                                    <span class="fa fa-star" style="color:orange"></span>
+
+                                                }
+                                                else
+                                                {
+                                                    <span class="fa fa-star"></span>
+                                                }
+                                            }
+
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                </div>
+
+                <br>
+
+
+            </div>
+            <div class="col-1"></div>
+        </div>
+
     </div>
+   
+            <div class="row">
+                @{ foreach (var item in Model.TagCategories)
+                    {
+                        foreach (var item2 in Model.ProductTags)
+                        {
+                            if (item2.TagCategoryId.Contains(item.TagCategoryId))
+                            {<div class="col-5">
+                                    <a class="" style="background:#FFFFFF;color:#639286;" href="@Url.Action("Index","Search")"><b>@item.Name:</b>@item2.Name</a>
+                                </div>
+                            }
+                        }
+                    }
+                }
+            </div>
+       
+ 

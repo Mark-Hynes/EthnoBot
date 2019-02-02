@@ -34,10 +34,6 @@
 	font-size: 8pt;	
 }
 
-.iEdit-img-edit-cancel{
-	margin-left: 16px;
-	background-color: #ee5155;
-}
 
 .iEdit-img-edit-can{
 	position: fixed;
@@ -54,9 +50,9 @@
 
 .iEdit-img-edit-select {
     position: fixed;
-    width: 200px !important;
-    height: 200px !important;
-    border-radius: 50% !important;
+    width: 300px !important;
+    height: 300px !important;
+    border-radius: 100% !important;
     background-color: rgba(10,10,10,0.5);
     box-shadow: inset 0px 0px 0px 3px rgba(256,256,256,0.8);
 }

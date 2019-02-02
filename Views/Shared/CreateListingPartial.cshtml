@@ -1,19 +1,40 @@
 ﻿@model EthnoBot.Models.ListingViewModel
 
+@{
+    List<SelectListItem> currencyItems = new List<SelectListItem>();
+    currencyItems.Add(new SelectListItem { Value = "USD", Text = "$" });
+    currencyItems.Add(new SelectListItem { Value = "EUR", Text = "€" });
+    currencyItems.Add(new SelectListItem { Value = "GBP", Text = "£" });
+    List<SelectListItem> measurementItems = new List<SelectListItem>();
+    measurementItems.Add(new SelectListItem { Value = "Kg", Text = "kilogram(s) (kg)" });
+    measurementItems.Add(new SelectListItem { Value = "g", Text = "gram(s) (g)" });
+    measurementItems.Add(new SelectListItem { Value = "mg", Text = "Milligram(s) (mg)" });
+    measurementItems.Add(new SelectListItem { Value = "L", Text = "Liter(s) (L)" });
+    measurementItems.Add(new SelectListItem { Value = "ml", Text = "Mililiter(s) (ml)" });
 
-<div class="container">
+}
 
-            @{
-                if (Model.Offers.Count < 0)
-                {
 
-                }
-                else
-                {
+@{
+<div class="input-group mb-3">
+    <div class="input-group-prepend">
 
-                    foreach (var item in Model.Offers)
-                    {
-                       
+        @Html.DropDownListFor(model => model.NewOffer.Currency, currencyItems, new { @class = "dropdown-menu", @style = "min-height:35px;", @id = "currencyType" })
+    </div>
+    @Html.EditorFor(model=>model.NewOffer.Price, new { htmlAttributes = new { @class = "form-control" } })
+   
+</div>
+<div class="input-group mb-3">
+    <div class="input-group-prepend">
+        @Html.EditorFor(model => model.NewOffer.Units, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+       @Html.DropDownListFor(model => model.NewOffer.Units, measurementItems, new { @class = "form-control text-default", @style = "min-height:35px;", @id = "currencyType" })
+</div>  
+        
+ 
+        foreach (var item in Model.Offers)
+        {
+
             <tr>
                 <th scope="row"></th>
                 <td>@item.Units @item.Measurement</td>
@@ -39,19 +60,17 @@
                 }
 
 
-                        <td>
-                            <a class="btn btn-info float-left" href="/Manage/EditOffer/@item.OfferId">Edit</a>
-                            <a class="btn btn-danger float-right" href="/Manage/RemoveOffer/@item.OfferId">Remove</a>
-                        </td>
+                <td>
+                    <a class="btn btn-info float-left" href="/Manage/EditOffer/@item.OfferId">Edit</a>
+                    <a class="btn btn-danger float-right" href="/Manage/RemoveOffer/@item.OfferId">Remove</a>
+                </td>
 
             </tr>
 
-                   
 
-                    }
-                </tbody>
-            </table>
+
         }
 
-            }
-        </div>
+    }
+
+}

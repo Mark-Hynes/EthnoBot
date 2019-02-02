@@ -1,44 +1,169 @@
-﻿@model EthnoBot.Models.AddListingViewModel
+﻿@model EthnoBot.Models.ListingViewModel
 
     @{
         ViewBag.Title = "AddListing";
-      
+        var remainingTags = Model.ListingTags;
+        int tagCategoryCount = Model.ListingTagCategories.Count();
+        List<SelectListItem> currencyItems = new List<SelectListItem>();
+        currencyItems.Add(new SelectListItem { Value = "USD", Text = "$ (USD)" });
+        currencyItems.Add(new SelectListItem { Value = "EUR", Text = "€ (EUR)" });
+        currencyItems.Add(new SelectListItem { Value = "GBP", Text = "£ (GBP)" });
+        List<SelectListItem> measurementItems = new List<SelectListItem>();
+        measurementItems.Add(new SelectListItem { Value = "Kg", Text = "kilogram(s) (kg)" });
+        measurementItems.Add(new SelectListItem { Value = "g", Text = "gram(s) (g)" });
+        measurementItems.Add(new SelectListItem { Value = "mg", Text = "Milligram(s) (mg)" });
+        measurementItems.Add(new SelectListItem { Value = "L", Text = "Liter(s) (L)" });
+        measurementItems.Add(new SelectListItem { Value = "ml", Text = "Mililiter(s) (ml)" });
     }
 
     <h3 class="text-muted text-center">Add a Listing</h3>
     <hr />    
-<div class="container">
+    <div class="container">
         <div class="form-group">
             <div class="row">
-                
-            <select id="productSelect" class="form-control productInput" style="height:auto">
-                <option value="" selected disabled hidden>--Product--</option>
-                @foreach (var item in Model.Products)
-                {
-                    <option value="@item.ProductId" id="@item.ProductId">@item.Title</option>
-                }
-            </select>
+                <div class="col-4"></div>
+
+                <div class="col-4">
+                    <select id="productSelectInput" class="form-control form-control-md productInput" style="height:auto">
+                        <option value="" selected disabled hidden>--Select Product--</option>
+
+                        @foreach (var item in Model.Products)
+                        {
+                            <option value="@item.ProductId" id="@item.ProductId" onclick="updateTags(this)">@item.Title</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-4"></div>
+
             </div>
-            <br />
-           
-                <div class="container">
-                    @Html.ActionLink("Cancel","SellerIndex", new {@class= "btn btn-outline-info" })
-                    <button type="button" id="SaveChanges" class="btn btn-info">Create Listing</button>
+            <hr />
+
+            <div class="container" id="mainContent">
+                <div class="row">
+                    @{
+                        int rowcount = 0;
+                        foreach (var item in Model.ListingTagCategories)
+                        {
+                            if ((rowcount % 3) == 0)
+                            {
+
+                                <br /><br />
+                            }
+                            rowcount = rowcount + 1;
+                            <div class="col-4">
+                                <p>@item.Name</p>
+                                <select class="form-control form-control-md" name="tags" style="min-height:40px">
+                                    @foreach (var tag in remainingTags)
+                                    {
+                                        if (tag.ListingTagCategoryId.Contains(item.ListingTagCategoryId))
+                                        {
+                                            <option value="@tag.ListingTagId">@tag.Name</option>
+                                            //remainingTags = remainingTags.Where((x => x.ListingTagId.Contains(tag.ListingTagId))).ToList();
+                                        }
+                                    }
+
+                                </select>
+                            </div>
+
+                        }
+
+
+                    }
+                </div>
+
+
+            </div>
+
+
+            <hr />
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h3 class="text-center"><b>Description</b></h3>
+                    @Html.TextAreaFor(model => model.Listing.Description, new { htmlAttributes = new { @class = "form-control text-default md-textarea" }, @id = "descriptionInput", @rows = "4", })
                 </div>
             </div>
+            <hr>
+            <div class="row">
+                <div class="col-6">
+                    <div class="row">
+                        <div class="input-group mb-3">
+                            @Html.DropDownListFor(model => model.NewOffer.Currency, currencyItems, new { @class = "input-group-prepend form-control text-success", @style = "min-height:35px;", @id = "currencyTypeInput"})
+                            @Html.EditorFor(model => model.NewOffer.Price, new { htmlAttributes = new { @class = "form-control text-success", @id="currencyAmountInput" ,@type = "number", @min = "0.01", @step = "0.01", @value = "01.00", @placeholder = "01.00" } })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <div class="row">
+                        <div class="input-group mb-3">
+                            @Html.EditorFor(model => model.NewOffer.Units, new { htmlAttributes = new { @class = "input-group-prepend form-control text-info", @type = "number", @min = "0.01",@id= "unitAmountInput", @step = "0.01",  @value = "01.00", @placeholder = "01.00" } })
+                            @Html.DropDownListFor(model => model.NewOffer.Units, measurementItems, new { @class = "form-control text-info", @style = "min-height:35px;", @id = "unitMeasurementInput" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <br />
+            @Html.ActionLink("Cancel", "SellerIndex",null, new { @class = "btn btn-outline-danger text-danger" })
+            <div class="btn btn-outline-success text-success" onclick="createListing()">Create</div> 
+            
+          
         </div>
-    
+            <script>
+                function createListing()
+                {
+                    var productId = document.getElementById("productSelectInput").options[document.getElementById("productSelectInput").selectedIndex].value;
+                    var description = document.getElementById("descriptionInput").value;
+                    var currencyType = document.getElementById("currencyTypeInput").options[document.getElementById("currencyTypeInput").selectedIndex].value;
+                    var currencyAmount = document.getElementById("currencyAmountInput").value;
+                    var unitMeasurement = document.getElementById("unitMeasurementInput").options[document.getElementById("unitMeasurementInput").selectedIndex].value;;
+                    var unitAmount = document.getElementById("unitAmountInput").value;
+                    var tags = [];
+                    $('select[name^=tags]').each(function () {
+                        tags.push($(this).children("option:selected").val());
+                       
+                    });
+                    var arrayString = "";
+                    var data = JSON.stringify({
+                        'selectedTags': tags.toString(),
+                        'productId': productId,
+                        'description': description,
+                        'currency': currencyType,
+                        'currencyAmount': currencyAmount,
+                        'unitMeasurement': unitMeasurement,
+                        'unitAmount': unitAmount
+                    });
 
-    <script type="text/javascript">
-        var product = "";
+                    $.ajax({
+        type: "POST",
+        url: "@Url.Action("CompleteListing","Manage")",
+                        data: data,
+                        success: function () { window.location.href= "@Url.Action("MyListings","Manage")" },
+        contentType: 'application/json'
+    });
 
-    (function () {
-        document.getElementById("SaveChanges").onclick = function () {
-            product = $('.productInput option:selected').val();
-            var quantity = document.getElementById("KGUnits").value;
-            var price = document.getElementById("Modal-Price").value;
-            location.href = '@Url.Action("CompleteListing", "Manage")? '&productId=' + product + '&quantity=' + quantity + '&unitPrice=' + price;
 
-        };
-    })();
-    </script>
+                };
+
+                function updateTags(dropdownel) {
+                    document.getElementById("resultsTable").style.display = "none";
+
+                    var productId = $(this).attr('value');
+
+                    debugger
+                    $.ajax({
+                        type: "POST",
+                        url: "/Manage/LoadListingTags=" + productId,
+                        contentType: "html",
+                        success: function (response) {
+
+                            $("#resultsTable").html(response);
+                            document.getElementById("searchLoader").style.display = "none";
+                            document.getElementById("resultsTable").style.display = "block";
+                        }
+                    });
+
+                }
+
+
+            </script>

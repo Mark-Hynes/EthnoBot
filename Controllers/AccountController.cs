@@ -192,6 +192,11 @@ namespace EthnoBot.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
+            if (!model.TermsOfServiceConsent)
+            {
+                ViewData["ErrorMessage"] = "You must agree to our terms of service to create an account";
+                return View("Register");
+            }
             using (var context = new ApplicationDbContext())
             {
                 if (ModelState.IsValid)

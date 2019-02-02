@@ -17,13 +17,13 @@ namespace EthnoBot.Models
             [Column]
             public string ListingId { get; set; }
             [Column]
-            public string Price { get; set; }
+            public Decimal Price { get; set; }
             [Column]
             public string Currency { get; set; }
             [Column]
-            public decimal Units { get; set; }
+            public Decimal Units { get; set; }
             [Column]
-            public decimal Measurement { get; set; }
+            public string Measurement { get; set; }
 
     }
     }

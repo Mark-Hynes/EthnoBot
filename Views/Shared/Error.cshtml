@@ -4,7 +4,10 @@
     ViewBag.Title = "Error";
 }
 
-<h1 class="text-danger">Error.</h1>
-<h2 class="text-danger">Sorry, an error occured when you tried to view this page.</h2>
-@Html.ActionLink("Return Home", "Index", "Home", null, new { @class = "text-success" });
-
+<div class="container text-center">
+    <h1 class="text-danger text-center">Oh no! :(</h1>
+    <br />
+    
+    <h2 class="text-center">Sorry, an error occured when you tried to view this page.</h2><br />
+    @Html.ActionLink("Return Home", "Index", "Home", null, new { @class = "btn btn-success" })
+</div>

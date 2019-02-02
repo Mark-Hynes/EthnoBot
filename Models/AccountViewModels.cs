@@ -73,6 +73,7 @@ namespace EthnoBot.Models
         public string FirstName { get; set; }
         [Display(Name = "IsSeller")]
         public bool isSeller { get; set; }
+        public bool TermsOfServiceConsent { get; set; }
         [Required]
         [Display(Name = "Last Name")]
         public string LastName { get; set; }

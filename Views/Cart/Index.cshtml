@@ -57,7 +57,7 @@ else
     @foreach (var item in Model)
     {
         total += (int)item.Subtotal;
-        decimal itemsubtotal = Convert.ToDecimal(item.CartItem.UnitsKG * item.Listing.UnitPriceKG);
+        //decimal itemsubtotal = Convert.ToDecimal(item.CartItem.UnitsKG * item.Listing.UnitPriceKG);
         <li class="list-group-item">
 
 
@@ -65,15 +65,15 @@ else
                 <div class="col-xl-2 border border-bottom-0 border-top-0 border-left-0">@Html.ActionLink(item.Product.Title, "ProductAndListings", "Categories", new { productId = item.Product.ProductId }, new { @class = "text-info", })</div>
                 <div class="col-xl-2 border border-bottom-0 border-top-0 border-left-0">@Html.ActionLink(item.Seller.FirstName + " " + item.Seller.LastName, "SellerAndListings", "Categories", new { sellerId = item.Seller.SellerId }, new { @class = "text-info", })</div>
                 <div class="col-xl-2 border border-bottom-0 border-top-0 border-left-0">
-                    <p class="text-muted">€@item.Listing.UnitPriceKG per 1KG Unit</p>
+                 
                 </div>
                 <div class="col-xl-1 border border-bottom-0 border-top-0 border-left-0">
-                    <p class="text-muted">@item.CartItem.UnitsKG Kg Units</p>
+                    
                 </div>
                 <div class="col border border-bottom-0 border-top-0 border-left-0">
-                    <p>€@itemsubtotal<br /></p>
+                 
                 </div>
-                <div class="col-xl-2 offset-xl-0 border border-bottom-0 border-top-0 border-left-0 align-self-center"><button class="btn btn-info" type="button" data-toggle="modal" onclick="editItemPopup('@item.Seller.SellerId','@item.Seller.FirstName @item.Seller.LastName','@item.Listing.UnitPriceKG','@item.Product.ProductId','@item.Product.Title','@item.CartItem.UnitsKG','@item.CartItem.CartItemId')" data-target="#Modal">Edit Item</button></div>
+                <div class="col-xl-2 offset-xl-0 border border-bottom-0 border-top-0 border-left-0 align-self-center"><button class="btn btn-info" type="button" data-toggle="modal" onclick="editItemPopup('@item.Seller.SellerId','@item.Seller.FirstName @item.Seller.LastName','@item.Product.ProductId','@item.Product.Title','@item.CartItem.UnitsKG','@item.CartItem.CartItemId')" data-target="#Modal">Edit Item</button></div>
                 <div class="col"><button class="btn btn-info align-self-center" type="button" onclick="deleteItem('@item.CartItem.CartItemId')" data-target="#Modal">Delete</button></div>
             </div>
 

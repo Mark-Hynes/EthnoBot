@@ -458,6 +458,16 @@ namespace EthnoBot.Controllers
         public ActionResult DeleteTagCategoryConfirmed(string id)
         {
             TagCategory tagCategory = db.TagCategories.Find(id);
+            string categoryId = tagCategory.TagCategoryId;
+           
+            List < Tag > tags = db.Tags.Where(x => x.TagCategoryId.Contains(categoryId)).ToList();
+            foreach (var item in tags)
+            {
+                string tagid = item.TagId;
+                List<TagAssociation> associations = db.TagAssociations.Where(x => x.TagId.Contains(tagid)).ToList();
+                db.TagAssociations.RemoveRange(associations);
+            }
+            db.Tags.RemoveRange(tags);
             db.TagCategories.Remove(tagCategory);
             db.SaveChanges();
             return RedirectToAction("TagCategoryIndex");
@@ -683,8 +693,18 @@ namespace EthnoBot.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteListingTagCategoryConfirmed(string id)
         {
-            ListingTagCategory listingTagCategory = db.ListingTagCategories.Find(id);
-            db.ListingTagCategories.Remove(listingTagCategory);
+           ListingTagCategory tagCategory = db.ListingTagCategories.Find(id);
+            string listingcategoryId = tagCategory.ListingTagCategoryId;
+
+            List<ListingTag> tags = db.ListingTags.Where(x => x.ListingTagCategoryId.Contains(listingcategoryId)).ToList();
+            foreach (var item in tags)
+            {
+                string tagid = item.ListingTagId;
+                List<ListingTagAssociation> associations = db.ListingTagAssociations.Where(x => x.ListingTagId.Contains(tagid)).ToList();
+                db.ListingTagAssociations.RemoveRange(associations);
+            }
+            db.ListingTags.RemoveRange(tags);
+            db.ListingTagCategories.Remove(tagCategory);
             db.SaveChanges();
             return RedirectToAction("ListingTagCategoryIndex");
         }

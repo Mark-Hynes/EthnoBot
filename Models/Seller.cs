@@ -55,7 +55,7 @@ namespace EthnoBot.Models
         public string Country { get; set; }
 
         [DisplayName("Quality of Service Rating")]
-        public int AverageRating { get; set; }
+        public decimal AverageRating { get; set; }
         [DisplayName("Mobile Number")]
         public string Mobile { get; set; }
         [DisplayName("Email")]

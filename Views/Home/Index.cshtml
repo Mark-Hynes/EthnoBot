@@ -3,49 +3,66 @@
 }
     <div class="homeLoader" style="display:block;" id="homeLoader"></div>
 
-<div id="mainContent" style="display:none">
-    <div class="jumbotron border" style="background: url('/Images/Home3.jpg');width:100%;height:400px!important;word-wrap:break-word;background-repeat:no-repeat!important">
-       
-            
-            <h2 class="text-light" style="color:#fff;text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000;">
+    <div id="mainContent" style="display:none">
+        <div id="main-jumbo"class="jumbotron border" style="background: url('/Images/home-background_v3.png');width:100%;min-height:380px;height:380px!important;word-wrap:break-word;background-repeat:no-repeat!important;background-size: cover;">
+            <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-1"></div>
+        <div class="col-lg-6 col-md-6 col-sm-11">
+            <h2 id="jumbo-heading" class="text-light text-right" style="color:#fff;text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000;">
                 <b>Welcome to EthnoBotanicsInternational Marketplace</b>
             </h2>
-            <br />
-            <h3 class="text-light" style="color:#fff;text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000;">
-                Access the diverse range of ethnobotanical, medicinal and theraputic plant species used by people around the world for their useful properties.
-                <b> All our traders comply with international regualations on the handling of endangered species, such as CITES, and practice sustainable practices.</b>
-            </h3>
-       
+            <br /></div>
+            </div>
+            <div class="row">
+                <div class="col-md-11 col-lg-6 col-sm-1"></div>
+                <div class="col-md-11 col-lg-6 col-sm-11">
+                    <h3 id="jumbo-text" class="text-light text-right text-sm-right jumbo-text" style="color:#fff;text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000;font-size:1.5em">
+                        Access the diverse range of ethnobotanical, medicinal and theraputic plant species used by people around the world for their useful properties.
+                        <b> All our traders comply with international regualations on the handling of endangered species, such as CITES, and practice sustainable practices.</b>
+                    </h3>
+                </div>
+            </div>
 
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 col-lg-4 col-sm-12 border-success">
+                    <h3 class="text-success">Getting started</h3>
+                    <p class="text-success">
+                        Create an account by clicking on the button below and visit our Products page to browse our range of Products
+                    </p>
+                    <p>@Html.ActionLink("Sign Up", "Register", "Account", routeValues: null, htmlAttributes: new { @class = "btn btn-success btn-lg", @role = "button" })</p>
+                </div>
+                <div class="col-md-4 col-lg-4 col-sm-12 border-info">
+                    <h3 class="text-info">Become a Partner</h3>
+                    <p class="text-info">
+                        Looking to sign up as a trusted seller? Once your details and products have been verified, you can start selling your produce on our site. It's easy: simply click the button below and fill out the form
+                    </p>
+                    <p class="text-info">@Html.ActionLink("Sign Up", "Register", "Account", routeValues: null, htmlAttributes: new { @class = "btn btn-info btn-lg", @role = "button" })</p>
+                </div>
+                <div class="col-md-4 col-lg-4 col-sm-12 border-success pull-right">
+                    <h3 class="text-success">Contact Us</h3>
+                    <p class="text-success">
+                        Have any questions? Get in touch! Visit our contact page to find more information about EthnoBotanicals Ireland. All feedback is appreciated.
+                    </p>
+                    <p class="text-success">@Html.ActionLink("Contact Us", "About", "Home", new { @class = "btn btn-success btn-lg", @role = "button" })</p>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="row">
-        <div class="col-md-4 border-success">
-            <h3 class="text-success">Getting started</h3>
-            <p class="text-success">
-                Create an account by clicking on the button below and visit our Products page to browse our range of Products
-            </p>
-            <p>@Html.ActionLink("Sign Up", "Register", "Account", routeValues: null, htmlAttributes: new { @class = "btn btn-success btn-lg", @role = "button" })</p>
-        </div>
-        <div class="col-md-4 border-info">
-            <h3 class="text-info">Become a Partner</h3>
-            <p class="text-info">
-                Looking to sign up as a trusted seller? Once your details and products have been verified, you can start selling your produce on our site. It's easy: simply click the button below and fill out the form
-            </p>
-            <p class="text-info">@Html.ActionLink("Sign Up", "Register", "Account", routeValues: null, htmlAttributes: new { @class = "btn btn-info btn-lg", @role = "button" })</p>
-        </div>
-        <div class="col-md-4 border-success">
-            <h3 class="text-success">Contact Us</h3>
-            <p class="text-success">
-                Have any questions? Get in touch! Visit our contact page to find more information about EthnoBotanicals Ireland. All feedback is appreciated.
-            </p>
-            <p class="text-success">@Html.ActionLink("Contact Us", "About", "Home", new { @class = "btn btn-success btn-lg", @role = "button" })</p>
-        </div>
-    </div>
-</div>
 <script language="JavaScript" type="text/javascript" src="/Scripts/jquery-3.3.1.min.js"></script>
 <script>
+  
 
     $(document).ready(function () {
+        if ($(window).width() < 560) {
+            var el = document.getElementById("jumbo-heading");
+            el.style.fontSize = "x-large";
+            el = document.getElementById("jumbo-text");
+            el.style.fontSize = "large";
+            el = document.getElementById("navbarSupportedContent");
+            el.style.background = "#F8F9FA";
+        }
         document.getElementById("mainContent").style.display = "block";
         document.getElementById("homeLoader").style.display = "none";
        
